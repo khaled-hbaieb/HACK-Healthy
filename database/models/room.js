@@ -9,7 +9,7 @@ const roomSchema = new Schema({
   availibility: {
     type: Boolean,
   },
-  patient: {
+  patientCIN: {
     type: String,
   },
 });

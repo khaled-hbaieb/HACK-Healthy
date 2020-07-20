@@ -37,6 +37,15 @@ app.use("/api/users/clinicX/administrators", routes.administratorRoutes);
 //Doctor Routes
 app.use("/api/users/clinicX/doctors", routes.doctorRoutes);
 
+//Patient Routes
+app.use("/api/users/clinicX/patients", routes.patientRoutes);
+
+//Clinic Routes
+app.use("/api/clinics", routes.clinicRoutes);
+
+//Room Routes
+app.use("/api/rooms", routes.roomRoutes);
+
 app.listen(PORT, (err) => {
   if (!err) {
     console.log(`App Is Listetning On Port: ${PORT}`);
