@@ -16,21 +16,21 @@
 </template>
 
 <script>
-import Navbar from "@/administrator/full/header/Navbar.vue";
-import SideBar from "@/administrator/full/sidebar/SideBar.vue";
-import sidebarLinks from "@/administrator/full/sidebar/sidebarlinks.js";
+import Navbar from "@/administrator/fullAdmin/header/Navbar.vue";
+import SideBar from "@/administrator/fullAdmin/sidebar/SideBar.vue";
+import sidebarLinks from "@/administrator/fullAdmin/sidebar/sidebarlinks.js";
 
 export default {
   name: "adminInterface",
   components: {
     Navbar,
-    SideBar
+    SideBar,
   },
   data: () => ({
     topbarColor: "#3D89FF",
     logotitle: "Ibn Rochd Clinic",
-    sidebarLinks: sidebarLinks
+    sidebarLinks: sidebarLinks,
   }),
-  methods: {}
+  methods: {},
 };
 </script>
