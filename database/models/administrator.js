@@ -12,6 +12,7 @@ const administratorSchema = new Schema({
   gender: {
     type: String,
   },
+
   password: {
     type: String,
   },

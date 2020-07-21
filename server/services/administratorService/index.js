@@ -5,6 +5,7 @@ module.exports = {
     return Administrators.find(administrator);
   },
   async createAdministrator(administrator) {
+    //hash jwt
     return Administrators.create(administrator);
   },
   async updateAdministrator(administrator) {
