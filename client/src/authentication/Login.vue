@@ -43,9 +43,9 @@
     </div> -->
     <div>
         <p>I'am a: </p>
-    <vs-button :color="colorx" type="border" v-bind="doctor" @click="clickDoctor">Doctor</vs-button>
-    <vs-button :color="colorx" type="border" v-bind="admin" @click="clickAdmin">Administrator</vs-button>
-    <vs-button :color="colorx" type="border" v-bind="patient" @click="clickPatient">Patient</vs-button>
+    <vs-button :color="colorx" type="border" v-model="doctor" @click="clickDoctor">Doctor</vs-button>
+    <vs-button :color="colorx" type="border" v-model="admin" @click="clickAdmin">Administrator</vs-button>
+    <vs-button :color="colorx" type="border" v-model="patient" @click="clickPatient">Patient</vs-button>
     </div>
         <div class="form-group row">
           <div class="col-md-12">
@@ -164,20 +164,26 @@ export default {
       if(this.admin.length !== 0 && this.patient.length === 0 && this.doctor.length === 0) {
 axios.post("/api/users/clinicX/administrators", user).then((res) => {
   console.log(res)
-    // if(res.status === 200)
-    // this.$router.push("/administrator");
+     if(res.status === 200) {
+this.$router.push("/administrator");
+     }
+    
 })
       }
       else if (this.admin.length === 0 && this.patient.length !== 0 && this.doctor.length === 0) {
-          axios.post("/api/users/clinicX/patients", user).then((res) => {
-    // if(res.status === 200)
-    // this.$router.push("/patient");
+          axios.post("/api/users/clinicX/patients/checkPatient", user).then((res) => {
+    if(res.status === 200) {
+this.$router.push("/patient");
+    }
+    
 })
       }
       else if(this.admin.length === 0 && this.patient.length === 0 && this.doctor.length !== 0) {
-          axios.post("/api/users/clinicX/doctors", user).then((res) => {
-    // if(res.status === 200)
-    // this.$router.push("/doctor");
+          axios.post("/api/users/clinicX/doctors/", user).then((res) => {
+    if(res.status === 200) {
+      this.$router.push("/doctor");
+    }
+    
 })
       }
     //   axios.post("/api/users/clinicX/administrators", user).then((res) => {

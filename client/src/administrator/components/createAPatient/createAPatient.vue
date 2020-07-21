@@ -334,16 +334,16 @@ export default {
         email: this.email,
         gender: this.gender,
         dateOfBirth: this.dateOfBirth,
-        password: this.password,
+        password: this.pwd,
         CIN: this.CIN,
         phoneNumber: this.phoneNumber,
         address: this.address,
         job: this.job,
 
       }
-      axios.post('/api/users/clinicX/patients', newPatient)
+      axios.post('/api/users/clinicX/patients/createPatient', newPatient)
       .then(res => {
-        console.log(res)
+        console.log(res.config.data)
       })
     },
   },
