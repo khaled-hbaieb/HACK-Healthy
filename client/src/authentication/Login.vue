@@ -163,20 +163,21 @@ export default {
       console.log(this.admin.length)
       if(this.admin.length !== 0 && this.patient.length === 0 && this.doctor.length === 0) {
 axios.post("/api/users/clinicX/administrators", user).then((res) => {
-    console.log(res.data);
-    this.$router.push("/administrator");
+  console.log(res)
+    // if(res.status === 200)
+    // this.$router.push("/administrator");
 })
       }
       else if (this.admin.length === 0 && this.patient.length !== 0 && this.doctor.length === 0) {
           axios.post("/api/users/clinicX/patients", user).then((res) => {
-    console.log(res.data);
-    this.$router.push("/patient");
+    // if(res.status === 200)
+    // this.$router.push("/patient");
 })
       }
       else if(this.admin.length === 0 && this.patient.length === 0 && this.doctor.length !== 0) {
           axios.post("/api/users/clinicX/doctors", user).then((res) => {
-    console.log(res.data);
-    this.$router.push("/doctor");
+    // if(res.status === 200)
+    // this.$router.push("/doctor");
 })
       }
     //   axios.post("/api/users/clinicX/administrators", user).then((res) => {
