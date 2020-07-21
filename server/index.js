@@ -12,10 +12,6 @@ app.use(express.static("client/dist"));
 
 app.use(bodyParser.json());
 
-app.get("*", (req, res) => {
-  let dirPath = path.join(__dirname, "../client/dist/index.html");
-  res.sendFile(dirPath);
-});
 
 //DB Connection//
 let URI = process.env.URI;
@@ -44,7 +40,19 @@ app.use("/api/users/clinicX/patients", routes.patientRoutes);
 app.use("/api/clinics", routes.clinicRoutes);
 
 //Room Routes
-app.use("/api/rooms", routes.roomRoutes);
+app.use("/api/clinicX/rooms", routes.roomRoutes);
+
+//History Routes
+app.use("api/users/clinicX/history", routes.historyRoutes);
+
+//Current Patients Routes
+app.use("api/users/clinicX/currentPatients", routes.currentPatientsRoutes);
+
+
+app.get("*", (req, res) => {
+  let dirPath = path.join(__dirname, "../client/dist/index.html");
+  res.sendFile(dirPath);
+});
 
 app.listen(PORT, (err) => {
   if (!err) {

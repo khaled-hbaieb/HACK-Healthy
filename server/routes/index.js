@@ -4,5 +4,7 @@ module.exports = {
   patientRoutes: require("./patientRoutes"),
   clinicRoutes: require("./clinicRoutes"),
   roomRoutes: require("./roomRoutes"),
-  currentPatients: require("./currentPatientsRoutes"),
+  currentPatientsRoutes: require("./currentPatientsRoutes"),
+  historyRoutes: require("./historyRoutes"),
+
 };

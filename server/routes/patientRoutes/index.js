@@ -13,14 +13,13 @@ router.post("/", async (req, res) => {
 });
 router.post("/createPatient", async (req, res) => {
   try {
-    
     var newPatient = await services.patientService.createPatient(req.body);
     res.send(newPatient);
   } catch (error) {
     res.send(error);
   }
 });
-router.post("/updatePatient", async (req, res) => {
+router.post("/updatePatient/:CIN", async (req, res) => {
   try {
     var newPatient = await services.patientService.updatePatient(req.body);
     res.send(newPatient);

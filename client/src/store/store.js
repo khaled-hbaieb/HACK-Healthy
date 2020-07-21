@@ -6,6 +6,7 @@ export default new Vuex.Store({
   state: {
     isSidebarActive: false,
     themeColor: "#2962ff",
+    isAuthenticated: !!localStorage.token || false,
   },
   mutations: {
     //This is for Sidbar trigger in mobile

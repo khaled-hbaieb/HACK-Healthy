@@ -58,13 +58,21 @@
               <div class="images-container-body">
                 <label class="col-sm-12">Profile Image</label>
                 <div class="centerx">
-                  <vs-upload automatic action="http://localhost:8080/" @on-success="successUpload" />
+                  <vs-upload
+                    automatic
+                    action="http://localhost:8080/"
+                    @on-success="successUpload"
+                  />
                 </div>
               </div>
               <div class="images-container-body">
                 <label class="col-sm-12">CIN & Certificate Images</label>
                 <div class="centerx">
-                  <vs-upload automatic action="http://localhost:8080/" @on-success="successUpload" />
+                  <vs-upload
+                    automatic
+                    action="http://localhost:8080/"
+                    @on-success="successUpload"
+                  />
                 </div>
               </div>
             </div>
@@ -77,7 +85,7 @@
               v-model="specialityValue"
             >
               <vs-select-item
-                v-for="(speciality,index) in specialities"
+                v-for="(speciality, index) in specialities"
                 :text="speciality"
                 :key="index"
                 :value="speciality"
@@ -193,8 +201,16 @@
               placeholder="Your LinkedIN URL"
             />
             <div id="buttons-doctor-creation">
-              <vs-button type="submit" class="btn btn-inverse waves-effect waves-light">Cancel</vs-button>
-              <vs-button type="submit" class="btn btn-info waves-effect waves-light m-r-10">Submit</vs-button>
+              <vs-button
+                type="submit"
+                class="btn btn-inverse waves-effect waves-light"
+                >Cancel</vs-button
+              >
+              <vs-button
+                type="submit"
+                class="btn btn-info waves-effect waves-light m-r-10"
+                >Submit</vs-button
+              >
             </div>
           </form>
         </vs-card>
@@ -245,26 +261,26 @@ export default {
         "PSYCHIATRY",
         "RADIATION ONCOLOGY",
         "SURGERY",
-        "UROLOGY"
-      ]
+        "UROLOGY",
+      ],
     };
   },
   validations: {
     name: {
-      required
+      required,
     },
-    gender: {}
+    gender: {},
   },
   methods: {
     successUpload() {
       this.$vs.notify({
         color: "success",
         title: "Upload Success",
-        text: this.name + " Uploaded The image Successfully!"
+        text: this.name + " Uploaded The image Successfully!",
       });
     },
-    submitForm() {}
-  }
+    submitForm() {},
+  },
 };
 </script>
 <style>

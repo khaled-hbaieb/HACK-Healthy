@@ -7,15 +7,45 @@ export default new Router({
   mode: "history",
   routes: [
     {
-      // ======================
-      // Full Layout
-      // ======================
-      path: "/",
+      path: "/doctor",
+      name: "doctor",
       component: () => import("./administrator/fullAdmin/AdminInterface.vue"),
-      // ======================
-      // Theme routes / pages
-      // ======================
-
+      children: [
+        {
+          path: "appointments",
+          name: "",
+        },
+        {
+          path: "calendar",
+          name: "calendar",
+          component: () => import("./doctor/components/Calendar/Calendar.vue"),
+        },
+        {
+          path: "patients",
+          name: "",
+        },
+        {
+          path: "doctors",
+          name: "",
+        },
+        {
+          path: "chatRoom",
+          name: "",
+        },
+        {
+          path: "forum",
+          name: "",
+        },
+        {
+          path: "assignBill",
+          name: "",
+        },
+      ],
+    },
+    {
+      path: "/administrator",
+      name: "administrator",
+      component: () => import("./administrator/fullAdmin/AdminInterface.vue"),
       children: [
         {
           path: "/currentPatients",
