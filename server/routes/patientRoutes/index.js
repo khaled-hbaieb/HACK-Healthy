@@ -13,6 +13,7 @@ router.post("/", async (req, res) => {
 });
 router.post("/createPatient", async (req, res) => {
   try {
+    
     var newPatient = await services.patientService.createPatient(req.body);
     res.send(newPatient);
   } catch (error) {
