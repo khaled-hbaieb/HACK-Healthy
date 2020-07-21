@@ -20,14 +20,11 @@ app.get("*", (req, res) => {
 //DB Connection//
 let URI = process.env.URI;
 const mongoose = require("mongoose");
-mongoose.connect(
-  "mongodb+srv://hackhealthy:hackhealthy@hack-healthy-cluster.eixvm.mongodb.net/hackhealthy?retryWrites=true&w=majorit",
-  {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopology: true,
-  }
-);
+mongoose.connect(URI, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useUnifiedTopology: true,
+});
 
 const connection = mongoose.connection;
 connection.once("open", () => {
