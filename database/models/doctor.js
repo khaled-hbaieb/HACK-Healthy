@@ -41,6 +41,9 @@ const doctorSchema = new Schema({
   createdAt: {
     type: String,
   },
+  image: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model("Doctors", doctorSchema);
