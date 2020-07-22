@@ -1,5 +1,6 @@
-<template>
-  <div
+
+
+  <!-- <div
     class="login-register"
     style="background-image:url(../assets/images/background/login-register.jpg);"
   >
@@ -16,21 +17,21 @@
               type="text"
               required=""
               placeholder="Email"
-              v-model="doctor.email"
-              
+              v-model="email"
+              v-validate="'required'"
             />
           </div>
         </div>
-        <div class="form-group">
-          <div class="col-xs-12">
+        <div class="form-group"> -->
+          <!-- <div class="col-xs-12">
             <vs-input
               type="password"
               required=""
               placeholder="Password"
-              v-model="doctor.password"
+              v-model="password"
             />
           </div>
-        </div>
+        </div> -->
         <!-- <div class="con-select-example">
     <vs-select
       class="selectExample"
@@ -47,7 +48,7 @@
     <vs-button :color="colorx" type="border" v-model="doctor" @click="clickDoctor">Doctor</vs-button>
     <vs-button :color="colorx" type="border" v-model="admin" @click="clickAdmin">Administrator</vs-button>
     <vs-button :color="colorx" type="border" v-model="patient" @click="clickPatient">Patient</vs-button>
-    </div> -->
+    </div>
         <div class="form-group row">
           <div class="col-md-12">
             <div class="d-flex no-block align-items-center">
@@ -74,7 +75,7 @@
           <div class="col-xs-12 p-b-20">
             <vs-button
               class="btn btn-block btn-lg btn-info btn-rounded"
-             @click="handleLogin"
+              @click="login"
             >
               Log In
             </vs-button>
@@ -138,55 +139,81 @@
 </template>
 
 <script>
-import Doctor from '../models/doctor';
+import axios from "axios";
 
 export default {
-  name:'Login',
-  data() {
+  name: "Login",
+  data:() => {
     return {
-      doctor: new Doctor('', ''),
-  loading:false,
-    }
+      email: "",
+      password: "",
+      users:[{text: 'Administrator', value: 1},
+        {text: 'Doctor', value: 2},
+        {text: 'Patient', value: 3}],
+        colorx:'#c72a75',
+        admin:'',
+        patient:'',
+        doctor:'',
+    };
   },
-  computed: {
-    loggedIn() {
-      return this.$store.state.auth.status.loggedIn;
+  methods: {
+    login() {
+      let user = {
+        email: this.email,
+        password: this.password,
+      };
+      console.log(this.admin.length)
+      if(this.admin.length !== 0 && this.patient.length === 0 && this.doctor.length === 0) {
+axios.post("/api/users/clinicX/administrators", user).then((res) => {
+  console.log(res)
+     if(res.status === 200) {
+this.$router.push("/administrator");
+     }
+    
+})
+      }
+      else if (this.admin.length === 0 && this.patient.length !== 0 && this.doctor.length === 0) {
+          axios.post("/api/users/clinicX/patients/checkPatient", user).then((res) => {
+    if(res.status === 200) {
+this.$router.push("/patient");
     }
-  },
-  created() {
-    if (this.loggedIn) {
-      this.$router.push('/doctors')
+    
+})
+      }
+      else if(this.admin.length === 0 && this.patient.length === 0 && this.doctor.length !== 0) {
+          axios.post("/api/users/clinicX/doctors/", user).then((res) => {
+    if(res.status === 200) {
+      this.$router.push("/doctor");
     }
-  },
-   methods: {
-    handleLogin() {
-      
-      this.loading = true;
-      
-      // this.store.$validator.validateAll().then(isValid => {
-      //   if (!isValid) {
-      //     this.loading = false;
-      //     return;
-      //   }
-console.log(this.doctor)
-        if (this.doctor.email && this.doctor.password) {
-          this.$store.dispatch('auth/login', this.doctor).then(
-            () => {
-              this.$router.push('/doctors');
-            },
-            error => {
-              this.loading = false;
-              this.message =
-                (error.response && error.response.data) ||
-                error.message ||
-                error.toString();
-            }
-          );
-        }
-      // });
-    }
-  }
-}
-</script>
+    
+})
+      } -->
+    //   axios.post("/api/users/clinicX/administrators", user).then((res) => {
+        //if successfull
+        // console.log(res.data);
+        // if(res.data)
+        // const id = res.data.
+        // this.$router.push("/administrator");
+        // if (res.status === 200) {
+        //   localStorage.setItem("token", res.data.token);
+        //   this.$router.push('/administrator')
+        // }
+    //   });
+//     },
+//     clickAdmin() {
+//         this.admin = 'admin'
+//         console.log(this.admin)
+//     },
+//     clickPatient() {
+// this.patient = 'patient'
+//         console.log(this.patient)
+//     },
+//     clickDoctor() {
+// this.doctor = 'doctor'
+//         console.log(this.doctor)
+//     },
+//   },
+// };
+// </script>
 
-<style scoped></style>
+// <style scoped></style>

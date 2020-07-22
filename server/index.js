@@ -13,10 +13,7 @@ app.use(express.static("client/dist"));
 
 app.use(bodyParser.json());
 
-app.get("*", (req, res) => {
-  let dirPath = path.join(__dirname, "../client/dist/index.html");
-  res.sendFile(dirPath);
-});
+
 
 //DB Connection//
 let URI = process.env.URI;
@@ -47,6 +44,10 @@ app.use("/api/clinics", routes.clinicRoutes);
 //Room Routes
 app.use("/api/rooms", routes.roomRoutes);
 
+app.get("*", (req, res) => {
+  let dirPath = path.join(__dirname, "../client/dist/index.html");
+  res.sendFile(dirPath);
+});
 app.listen(PORT, (err) => {
   if (!err) {
     console.log(`App Is Listetning On Port: ${PORT}`);

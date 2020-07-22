@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import { auth } from './auth.module';
 Vue.use(Vuex);
 /* eslint-disable */
 export default new Vuex.Store({
@@ -13,6 +14,13 @@ export default new Vuex.Store({
       state.isSidebarActive = value;
     },
   },
-  actions: {},
-  getters: {},
+  actions: {
+    
+  },
+  getters: {
+
+  },
+  modules: {
+    auth
+  },
 });
