@@ -23,6 +23,7 @@ const jwt = require('jsonwebtoken')
 // });
 
 router.post('/createpatient', async (req, res) => {
+  console.log('req of body', req.body)
   try {
     var newPatient = await services.patientService.createPatient(req.body);
     res.send(newPatient);
@@ -67,12 +68,16 @@ router.post('/checkLogin', (req, res) => {
       title:'server error', 
       error: err
     })
+    console.log('user',user)
     if(!user) {
       return res.status(401).json({
         title:'user not found',
         error: 'invalid credentials'
       })
-    } // incorrect password
+    }
+    console.log('userpw',user.password)
+    console.log('body',req.body.password)
+    // incorrect password
     if(!bcrypt.compareSync(req.body.password, user.password)) {
       return res.status(401).json ({
         title: 'login failed',

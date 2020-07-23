@@ -56,7 +56,7 @@
               id="url"
               name="url"
               placeholder="Your CIN"
-              v-model="CIN"
+              v-model="cin"
             />
             <label class="col-md-12" for="special">Job</label>
             <vs-input
@@ -104,13 +104,13 @@
               data-mask="(999) 999-9999"
               v-model="phoneNumber"
             />
-            <label class="col-md-12" for="pwd">Password</label>
+            <label class="col-md-12" for="password">Password</label>
             <vs-input
               class="doctor-form-inputs-doctor-creation"
               type="password"
               id="pwd"
-              name="pwd"
-              v-model="pwd"
+              name="password"
+              v-model="password"
               placeholder="enter your password"
             />
             <label class="col-md-12" for="cpwd">Confirm Password</label>
@@ -265,7 +265,7 @@ export default {
       gender: "",
       phoneNumber: "",
       email: "",
-      pwd: "",
+      password: "",
       cpwd: "",
       job: "",
       address: "",
@@ -327,7 +327,8 @@ export default {
     },
     handleRegister() {
       let user;
-      user = new Patient(this.email, this.pwd);
+      user = new Patient(this.fullName,this.email, this.gender, this.dateOfBirth,  this.password,this.CIN, this.phoneNumber, this.address, this.job);
+      // user = new Patient(this.email, this.pwd);
       // this.message = '';
       // this.submitted = true;
       // this.$validator.validate().then(isValid => {

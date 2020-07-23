@@ -21,9 +21,37 @@ class AuthService {
   }
 
   register(user) {
+    console.log('user',user)
     return axios.post(API_URL + 'patients/createpatient', {
       email: user.email,
       password: user.password,
+      fullName: user.fullName,
+      gender: user.gender, 
+      dateOfBirth: user.dateOfBirth,
+      cin: user.cin,
+      phoneNumber: user.phoneNumber,
+      address: user.address,
+      job: user.job
+    });
+  }
+
+  registerDoc(user) {
+    console.log('user',user)
+    return axios.post(API_URL + 'doctors/createdoctor', {
+      fullName: user.fullName,
+      email: user.email,
+      gender: user.gender, 
+      dateOfBirth: user.dateOfBirth,
+      password: user.password,
+      phoneNumber: user.phoneNumber,
+      speciality: user.speciality,
+      yearsOfExperience: user.yearsOfExperience,
+      educationBackground: user.educationBackground,
+      address: user.address,
+      CIN: user.CIN,
+      
+      
+      
     });
   }
 }

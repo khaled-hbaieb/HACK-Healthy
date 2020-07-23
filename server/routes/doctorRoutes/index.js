@@ -23,30 +23,38 @@ router.post("/", async (req, res) => {
 //   }
 // });
 
-router.post('createDoctor', (req, res) => {
-  const newUser = new Doctors({
-    email: req.body.email,
+// router.post('createDoctor', (req, res) => {
+//   const newUser = new Doctors({
+//     email: req.body.email,
     
-    password: bcrypt.hashSync(req.body.password, 10),
-  });
-  newUser.save((err) => {
-    if (err) {
-      return res.status(400).json({
-        title: "error",
-        error: "email in use",
-      });
-    }
-    return res.status(200).json({
-      title: "sign Up success",
-    });
-  });
-})
+//     password: bcrypt.hashSync(req.body.password, 10),
+//   });
+//   newUser.save((err) => {
+//     if (err) {
+//       return res.status(400).json({
+//         title: "error",
+//         error: "email in use",
+//       });
+//     }
+//     return res.status(200).json({
+//       title: "sign Up success",
+//     });
+//   });
+// })
 
 
-router.post('createDoctor', (req, res) => {
+router.post('/createdoctor', (req, res) => {
   const newUser = new Doctors({
     email: req.body.email,
-    
+    fullName: req.body.fullName,
+    gender: req.body.gender,
+    dateOfBirth: req.body.dateOfBirth,
+    phoneNumber: req.body.phoneNumber,
+    speciality: req.body.speciality,
+    yearsOfExperiance: req.body.yearsOfExperiance,
+    educationBackground: req.body.educationBackground,
+    address: req.body.address,
+    CIN: req.body.CIN,
     password: bcrypt.hashSync(req.body.password, 10),
   });
   newUser.save((err) => {
@@ -77,12 +85,15 @@ router.post('/checkLogin', (req, res) => {
       title:'server error', 
       error: err
     })
+    
     if(!user) {
       return res.status(401).json({
         title:'user not found',
         error: 'invalid credentials'
       })
     } // incorrect password
+    // console.log('body pass', req.body.password)
+    // console.log('user pass', user.password)
     // if(!bcrypt.compareSync(req.body.password, user.password)) {
     //   return res.status(401).json ({
     //     title: 'login failed',

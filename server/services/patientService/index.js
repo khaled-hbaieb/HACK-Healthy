@@ -7,7 +7,7 @@ module.exports = {
     return Patients.find(patient);
   },
   async createPatient(patient) {
-    console.log(patient.password);
+    console.log('password',patient.password);
     patient.password = bcrypt.hashSync(patient.password, 10);
     return Patients.create(patient);
   },
