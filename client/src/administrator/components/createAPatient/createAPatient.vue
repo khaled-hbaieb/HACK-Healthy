@@ -47,11 +47,7 @@
             </vs-select>
             <label class="col-sm-12">Profile Image</label>
             <div class="centerx">
-              <vs-upload
-                automatic
-                action="http://localhost:8080/"
-                @on-success="successUpload"
-              />
+              <vs-upload automatic action="http://localhost:8080/" @on-success="successUpload" />
             </div>
             <label class="col-md-12" for="special">CIN</label>
             <vs-input
@@ -154,9 +150,7 @@
               placeholder="Father Name"
               v-model="fatherName"
             />
-            <label class="col-md-12" for="example-email"
-              >Father Phone Number</label
-            >
+            <label class="col-md-12" for="example-email">Father Phone Number</label>
             <vs-input
               class="doctor-form-inputs-doctor-creation"
               type="number"
@@ -174,9 +168,7 @@
               placeholder="Mother Name"
               v-model="motherName"
             />
-            <label class="col-md-12" for="example-email"
-              >Mother Phone Number</label
-            >
+            <label class="col-md-12" for="example-email">Mother Phone Number</label>
             <vs-input
               class="doctor-form-inputs-doctor-creation"
               type="number"
@@ -224,8 +216,7 @@
               icon="add"
               id="allergy-button"
               @click="addAllergyInput"
-              >Add Allergy Input</vs-button
-            >
+            >Add Allergy Input</vs-button>
             <br />
             <br />
             <br />
@@ -244,22 +235,15 @@
               icon="add"
               id="vaccination-button"
               @click="addVaccinationInput"
-              >Add Vaccination Input</vs-button
-            >
+            >Add Vaccination Input</vs-button>
           </form>
           <div id="button-admin-patient-container">
-            <vs-button
-              type="submit"
-              class="btn btn-inverse waves-effect waves-light"
-              
-              >Cancel</vs-button
-            >
+            <vs-button type="submit" class="btn btn-inverse waves-effect waves-light">Cancel</vs-button>
             <vs-button
               type="submit"
               class="btn btn-info waves-effect waves-light m-r-10"
-              
-              >Submit</vs-button
-            >
+              @click="handleRegister"
+            >Submit</vs-button>
           </div>
         </vs-card>
       </vs-col>
@@ -269,6 +253,7 @@
 
 <script>
 // import axios from 'axios'
+import Patient from "../../../models/patient";
 export default {
   name: "createDoctor",
   data: () => {
@@ -302,7 +287,19 @@ export default {
           placeholder: "Enter The Vaccination",
         },
       ],
+      // patient: new Patient('', ''),
+      successful: false,
     };
+  },
+  computed: {
+    loggedIn() {
+      return this.$store.state.auth.status.loggedIn;
+    },
+  },
+  mounted() {
+    if (this.loggedIn) {
+      this.$router.push("/patients");
+    }
   },
   methods: {
     successUpload() {
@@ -328,24 +325,31 @@ export default {
         placeholder: "Enter The Vaccination",
       });
     },
-    // submitForm() {
-    //   let newPatient = {
-    //     fullName: this.fullName,
-    //     email: this.email,
-    //     gender: this.gender,
-    //     dateOfBirth: this.dateOfBirth,
-    //     password: this.pwd,
-    //     CIN: this.CIN,
-    //     phoneNumber: this.phoneNumber,
-    //     address: this.address,
-    //     job: this.job,
-
-    //   }
-    //   axios.post('/api/users/clinicX/patients/createPatient', newPatient)
-    //   .then(res => {
-    //     console.log(res.config.data)
-    //   })
-    // },
+    handleRegister() {
+      let user;
+      user = new Patient(this.email, this.pwd);
+      // this.message = '';
+      // this.submitted = true;
+      // this.$validator.validate().then(isValid => {
+      //   if (isValid) {
+      // if (this.email && this.pwd) {
+        this.$store.dispatch("auth/register", user).then(
+          () => {
+            console.log('entered')
+            // this.message = data.message;
+            this.successful = true;
+          },
+          (error) => {
+            this.message =
+              (error.response && error.response.data) ||
+              error.message ||
+              error.toString();
+            this.successful = false;
+          }
+        );
+      // }
+    },
+    // });
   },
 };
 </script>
@@ -417,5 +421,4 @@ input::-webkit-inner-spin-button {
   margin-top: 0%;
   position: relative !important;
 }
-
 </style>

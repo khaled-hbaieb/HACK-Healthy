@@ -30,8 +30,8 @@
         <div>
           <p>I'am a:</p>
           <vs-button :color="colorx" type="border" @click="doctor">Doctor</vs-button>
-          <vs-button :color="colorx" type="border" v-model="role">Administrator</vs-button>
-          <vs-button :color="colorx" type="border" v-model="role">Patient</vs-button>
+          <vs-button :color="colorx" type="border" @click="administrator">Administrator</vs-button>
+          <vs-button :color="colorx" type="border" @click="patient">Patient</vs-button>
         </div>
         <div class="form-group row">
           <div class="col-md-12">
@@ -100,8 +100,8 @@
 
 <script>
 import doctor from "../models/doctor";
-import administrator from "../models/doctor";
-import patient from "../models/doctor";
+import administrator from "../models/administrator";
+import patient from "../models/patient";
 
 export default {
   name: "Login",
@@ -127,6 +127,12 @@ export default {
     doctor() {
       this.role = "doctor";
     },
+    patient() {
+      this.role = 'patient'
+    },
+    administrator() {
+      this.role = 'administrator'
+    },
     handleLogin() {
       let user;
       this.loading = true;
@@ -138,6 +144,12 @@ export default {
       //   }
       if (this.role === "doctor") {
         user = new doctor(this.email, this.password);
+      }
+      if (this.role === "administrator") {
+        user = new administrator(this.email, this.password);
+      }
+      if (this.role === "patient") {
+        user = new patient(this.email, this.password);
       }
       user.role = this.role;
       if (this.email && this.password) {

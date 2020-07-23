@@ -5,15 +5,15 @@ const services = require("../../services");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 
-// router.post("/", async (req, res) => {
-//   try {
-//     var Doctors = await services.doctorService.findDoctors(req.body);
-//     res.send(Doctors);
-//   } catch (error) {
-//     res.send(error);
-//   }
+router.post("/", async (req, res) => {
+  try {
+    var Doctors = await services.doctorService.findDoctors(req.body);
+    res.send(Doctors);
+  } catch (error) {
+    res.send(error);
+  }
   
-// });
+});
 // router.post("/createDoctor", async (req, res) => {
 //   try {
 //     var newDoctor = await services.doctorService.createDoctor(req.body);
@@ -22,6 +22,26 @@ const jwt = require('jsonwebtoken')
 //     res.send(error);
 //   }
 // });
+
+router.post('createDoctor', (req, res) => {
+  const newUser = new Doctors({
+    email: req.body.email,
+    
+    password: bcrypt.hashSync(req.body.password, 10),
+  });
+  newUser.save((err) => {
+    if (err) {
+      return res.status(400).json({
+        title: "error",
+        error: "email in use",
+      });
+    }
+    return res.status(200).json({
+      title: "sign Up success",
+    });
+  });
+})
+
 
 router.post('createDoctor', (req, res) => {
   const newUser = new Doctors({

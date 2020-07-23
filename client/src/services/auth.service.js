@@ -17,13 +17,13 @@ class AuthService {
   }
 
   logout() {
-    localStorage.removeItem("doctor");
+    localStorage.removeItem("token");
   }
 
   register(user) {
-    return axios.post(API_URL + `create${user.role}`, {
-      email: doctor.email,
-      password: doctor.password,
+    return axios.post(API_URL + 'patients/createpatient', {
+      email: user.email,
+      password: user.password,
     });
   }
 }

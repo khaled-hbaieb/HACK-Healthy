@@ -2,6 +2,8 @@ const express = require("express");
 const Patient = require('../../../database/models/patient')
 const router = express.Router();
 const services = require("../../services");
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 // router.post("/", async (req, res) => {
 //   try {
@@ -20,23 +22,15 @@ const services = require("../../services");
 //   }
 // });
 
-router.post('createPatient', (req, res) => {
-  const newUser = new Patient({
-    email: req.body.email,
-    
-    password: bcrypt.hashSync(req.body.password, 10),
-  });
-  newUser.save((err) => {
-    if (err) {
-      return res.status(400).json({
-        title: "error",
-        error: "email in use",
-      });
-    }
-    return res.status(200).json({
-      title: "sign Up success",
-    });
-  });
+router.post('/createpatient', async (req, res) => {
+  try {
+    var newPatient = await services.patientService.createPatient(req.body);
+    res.send(newPatient);
+  } catch (error) {
+    res.send(error);
+  }
+  
+
 })
 
 router.post("/updatePatient", async (req, res) => {
@@ -67,7 +61,7 @@ router.post("/updateDoctor", async (req, res) => {
   }
 });
 
-router.post('/', (req, res) => {
+router.post('/checkLogin', (req, res) => {
   Patient.findOne({ email: req.body.email}, (err, user) => {
     if (err) return res.status(500).json({
       title:'server error', 
