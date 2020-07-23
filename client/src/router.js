@@ -18,7 +18,8 @@ export default new Router({
         {
           path: "calendar",
           name: "calendar",
-          component: () => import("./doctor/components/Calendar/Calendar.vue"),
+          component: () =>
+            import("./patient/components/makeAppointment/MakeAppointment.vue"),
         },
         {
           path: "patients",

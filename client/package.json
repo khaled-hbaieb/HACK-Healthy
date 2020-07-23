@@ -9,6 +9,9 @@
     "heroku-postbuild": "npm i && npm run build"
   },
   "dependencies": {
+    "@fullcalendar/daygrid": "^5.1.0",
+    "@fullcalendar/interaction": "^5.1.0",
+    "@fullcalendar/vue": "^5.1.0",
     "auth0-js": "^9.11.3",
     "axios": "^0.19.2",
     "chart.js": "^2.8.0",

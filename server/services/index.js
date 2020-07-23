@@ -6,4 +6,5 @@ module.exports = {
   roomService: require("./roomService"),
   currentPatientsService: require("./currentPatientsService"),
   historyService: require("./historyService"),
+  appointmentsService: require("./appointmentsService"),
 };

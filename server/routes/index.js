@@ -6,5 +6,5 @@ module.exports = {
   roomRoutes: require("./roomRoutes"),
   currentPatientsRoutes: require("./currentPatientsRoutes"),
   historyRoutes: require("./historyRoutes"),
-
+  appointmentsRoutes: require("./appointmentsRoutes"),
 };

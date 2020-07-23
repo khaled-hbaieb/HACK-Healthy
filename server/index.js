@@ -12,7 +12,6 @@ app.use(express.static("client/dist"));
 
 app.use(bodyParser.json());
 
-
 //DB Connection//
 let URI = process.env.URI;
 const mongoose = require("mongoose");
@@ -48,6 +47,8 @@ app.use("api/users/clinicX/history", routes.historyRoutes);
 //Current Patients Routes
 app.use("api/users/clinicX/currentPatients", routes.currentPatientsRoutes);
 
+//Appointments Routes
+app.use("/api/appointments", routes.appointmentsRoutes);
 
 app.get("*", (req, res) => {
   let dirPath = path.join(__dirname, "../client/dist/index.html");

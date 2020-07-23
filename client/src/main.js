@@ -21,6 +21,7 @@ Vue.component(VsPrism.name, VsPrism);
 import Vuelidate from "vuelidate";
 Vue.use(Vuelidate);
 
+
 // Vue Router
 import router from "./router";
 Vue.config.productionTip = false;
