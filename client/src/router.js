@@ -11,7 +11,7 @@ export default new Router({
       // Full Layout
       // ======================
       path: "/",
-      component: () => import("./administrator/fullAdmin/AdminInterface.vue"),
+      component: () => import("./doctor/components/chatDoctor/ChatView.vue"),
       // ======================
       // Theme routes / pages
       // ======================
