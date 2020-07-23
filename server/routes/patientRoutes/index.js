@@ -1,24 +1,44 @@
 const express = require("express");
-
+const Patient = require('../../../database/models/patient')
 const router = express.Router();
 const services = require("../../services");
 
-router.post("/", async (req, res) => {
-  try {
-    var Patients = await services.patientService.findPatients(req.body);
-    res.send(Patients);
-  } catch (error) {
-    res.send(error);
-  }
-});
-router.post("/createPatient", async (req, res) => {
-  try {
-    var newPatient = await services.patientService.createPatient(req.body);
-    res.send(newPatient);
-  } catch (error) {
-    res.send(error);
-  }
-});
+// router.post("/", async (req, res) => {
+//   try {
+//     var Patients = await services.patientService.findPatients(req.body);
+//     res.send(Patients);
+//   } catch (error) {
+//     res.send(error);
+//   }
+// });
+// router.post("/createPatient", async (req, res) => {
+//   try {
+//     var newPatient = await services.patientService.createPatient(req.body);
+//     res.send(newPatient);
+//   } catch (error) {
+//     res.send(error);
+//   }
+// });
+
+router.post('createPatient', (req, res) => {
+  const newUser = new Patient({
+    email: req.body.email,
+    
+    password: bcrypt.hashSync(req.body.password, 10),
+  });
+  newUser.save((err) => {
+    if (err) {
+      return res.status(400).json({
+        title: "error",
+        error: "email in use",
+      });
+    }
+    return res.status(200).json({
+      title: "sign Up success",
+    });
+  });
+})
+
 router.post("/updatePatient", async (req, res) => {
   try {
     var newPatient = await services.patientService.updatePatient(req.body);
@@ -37,5 +57,41 @@ router.post("/checkPatient", async (req, res) => {
     res.send(err);
   }
 });
+
+router.post("/updateDoctor", async (req, res) => {
+  try {
+    var newDoctor = await services.doctorService.updateDoctor(req.body);
+    res.send(newDoctor);
+  } catch (error) {
+    res.send(error);
+  }
+});
+
+router.post('/', (req, res) => {
+  Patient.findOne({ email: req.body.email}, (err, user) => {
+    if (err) return res.status(500).json({
+      title:'server error', 
+      error: err
+    })
+    if(!user) {
+      return res.status(401).json({
+        title:'user not found',
+        error: 'invalid credentials'
+      })
+    } // incorrect password
+    if(!bcrypt.compareSync(req.body.password, user.password)) {
+      return res.status(401).json ({
+        title: 'login failed',
+        error: 'invalid credentials'
+      })
+    }
+    //case if all is good create a token and send to front
+    let token = jwt.sign({ userId: user._id}, 'secretKey') // => assigned only the user id to the token // add more here
+    return res.status(200).json({
+      title: 'login success',
+      token: token
+    })
+  })
+})
 
 module.exports = router;

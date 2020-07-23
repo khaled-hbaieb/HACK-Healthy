@@ -257,7 +257,7 @@
             <vs-button
               type="submit"
               class="btn btn-info waves-effect waves-light m-r-10"
-              @click="submitForm"
+              
               >Submit</vs-button
             >
           </div>
@@ -268,7 +268,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 export default {
   name: "createDoctor",
   data: () => {
@@ -328,24 +328,24 @@ export default {
         placeholder: "Enter The Vaccination",
       });
     },
-    submitForm() {
-      let newPatient = {
-        fullName: this.fullName,
-        email: this.email,
-        gender: this.gender,
-        dateOfBirth: this.dateOfBirth,
-        password: this.pwd,
-        CIN: this.CIN,
-        phoneNumber: this.phoneNumber,
-        address: this.address,
-        job: this.job,
+    // submitForm() {
+    //   let newPatient = {
+    //     fullName: this.fullName,
+    //     email: this.email,
+    //     gender: this.gender,
+    //     dateOfBirth: this.dateOfBirth,
+    //     password: this.pwd,
+    //     CIN: this.CIN,
+    //     phoneNumber: this.phoneNumber,
+    //     address: this.address,
+    //     job: this.job,
 
-      }
-      axios.post('/api/users/clinicX/patients/createPatient', newPatient)
-      .then(res => {
-        console.log(res.config.data)
-      })
-    },
+    //   }
+    //   axios.post('/api/users/clinicX/patients/createPatient', newPatient)
+    //   .then(res => {
+    //     console.log(res.config.data)
+    //   })
+    // },
   },
 };
 </script>
