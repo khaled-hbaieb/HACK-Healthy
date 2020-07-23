@@ -7,6 +7,11 @@ export default new Router({
   mode: "history",
   routes: [
     {
+path:"/",
+component: () => import("./authentication/Login.vue"),
+
+    },
+    {
       // ======================
       // Full Layout
       // ======================
@@ -114,5 +119,14 @@ export default new Router({
         },
       ],
     },
+    {
+      path:"/doctor",
+component: () => import("./doctor/fullDoctor/AdminInterface.vue"),
+    },
+    // {
+    //   path: "/patient",
+    //   component: () => import("./patient/fullDoctor/AdminInterface.vue")
+    // }
   ],
+
 });
