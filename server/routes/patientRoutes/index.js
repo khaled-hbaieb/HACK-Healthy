@@ -27,5 +27,15 @@ router.post("/updatePatient/:CIN", async (req, res) => {
     res.send(error);
   }
 });
+router.post("/checkPatient", async (req, res) => {
+  try {
+    // console.log('test',req.body)
+    var Patients = await services.patientService.checkPatient(req.body);
+    console.log("patients", !!Patients.length);
+    res.send(Patients);
+  } catch (err) {
+    res.send(err);
+  }
+});
 
 module.exports = router;

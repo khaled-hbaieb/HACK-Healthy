@@ -32,6 +32,8 @@ export default new Router({
         {
           path: "chatRoom",
           name: "",
+          component: () =>
+            import("./doctor/components/chatDoctor/ChatView.vue"),
         },
         {
           path: "forum",
@@ -145,5 +147,13 @@ export default new Router({
         },
       ],
     },
+    {
+      path: "/doctor",
+      component: () => import("./doctor/fullDoctor/AdminInterface.vue"),
+    },
+    // {
+    //   path: "/patient",
+    //   component: () => import("./patient/fullDoctor/AdminInterface.vue")
+    // }
   ],
 });
