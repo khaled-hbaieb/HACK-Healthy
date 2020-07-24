@@ -7,6 +7,11 @@ export default new Router({
   mode: "history",
   routes: [
     {
+      path: "/",
+      name: "login",
+      component: () => import("./authentication/Login.vue"),
+    },
+    {
       path: "/doctor",
       name: "doctor",
       component: () => import("./administrator/fullAdmin/AdminInterface.vue"),

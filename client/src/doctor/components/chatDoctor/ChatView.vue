@@ -74,9 +74,7 @@
                 <vs-list-item icon="supervisor_account"
                   >View profile</vs-list-item
                 >
-                <vs-list-item icon="add">
-                  Add to close friends
-                </vs-list-item>
+                <vs-list-item icon="add">Add to close friends</vs-list-item>
               </vs-list>
             </div>
           </div>
@@ -146,6 +144,7 @@ import {
   // createLocalTracks,
   createLocalVideoTrack,
 } from "twilio-video";
+import { EventBus } from "../../../Event";
 import axios from "axios";
 export default {
   name: "ChatView",
@@ -229,9 +228,12 @@ export default {
   methods: {
     // Generate access token
     async getAccessToken() {
-      let token = await axios.get(`/token?identity=${this.username}`);
+      let token = await axios.get(`/token?identity=${localStorage.username}`);
       console.log(token.data);
       return token.data;
+    },
+    dispatchLog(message) {
+      EventBus.$emit("new_log", message);
     },
     // Attach the Tracks to the DOM.
     attachTracks(tracks, container) {
@@ -249,11 +251,11 @@ export default {
       this.loading = true;
       const VueThis = this;
       this.getAccessToken().then((data) => {
-        // VueThis.roomName = room_name;
+        VueThis.roomName = "General";
         const token = data.token;
 
         let connectOptions = {
-          // name: room_name,
+          name: "General",
           // logLevel: "debug",
           audio: true,
           video: { width: 400 },
@@ -268,15 +270,15 @@ export default {
         // this.leaveRoomIfJoined();
 
         connect(token, connectOptions).then((room) => {
-          // VueThis.dispatchLog("Successfully joined a Room: " + room_name);
+          VueThis.dispatchLog("Successfully joined a Room: " + "General");
 
           // set active toom
           // VueThis.activeRoom = room;
-          // VueThis.roomName = room_name;
-          //   VueThis.loading = false;
+          VueThis.roomName = "General";
+          // VueThis.loading = false;
 
           // Attach the Tracks of all the remote Participants.
-
+          console.log(room.participants);
           room.participants.forEach(function(participant) {
             let previewContainer = document.getElementById("remoteTrack");
             VueThis.attachParticipantTracks(participant, previewContainer);
