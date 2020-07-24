@@ -13,50 +13,10 @@ router.post("/", async (req, res) => {
     res.send(error);
   }
 });
-// router.post("/createDoctor", async (req, res) => {
-//   try {
-//     var newDoctor = await services.doctorService.createDoctor(req.body);
-//     res.send(newDoctor);
-//   } catch (error) {
-//     res.send(error);
-//   }
-// });
-
-// router.post('createDoctor', (req, res) => {
-//   const newUser = new Doctors({
-//     email: req.body.email,
-
-//     password: bcrypt.hashSync(req.body.password, 10),
-//   });
-//   newUser.save((err) => {
-//     if (err) {
-//       return res.status(400).json({
-//         title: "error",
-//         error: "email in use",
-//       });
-//     }
-//     return res.status(200).json({
-//       title: "sign Up success",
-//     });
-//   });
-// })
 
 router.post("/createdoctor", async (req, res) => {
   try {
-    console.log("creating", req.body);
-    let newDoc = await Doctors.create({
-      email: req.body.email,
-      fullName: req.body.fullName,
-      gender: req.body.gender,
-      dateOfBirth: req.body.dateOfBirth,
-      phoneNumber: req.body.phoneNumber,
-      speciality: req.body.speciality,
-      yearsOfExperiance: req.body.yearsOfExperiance,
-      educationBackground: req.body.educationBackground,
-      address: req.body.address,
-      CIN: req.body.CIN,
-      password: bcrypt.hashSync(req.body.password, 10),
-    });
+    let newDoc = await services.doctorService.createDoctor(req.body);
     res.send(newDoc);
   } catch (error) {
     res.send(error);
@@ -85,17 +45,14 @@ router.post("/checkLogin", (req, res) => {
         title: "user not found",
         error: "invalid credentials",
       });
-    } // incorrect password
-    // console.log('body pass', req.body.password)
-    // console.log('user pass', user.password)
-    // if(!bcrypt.compareSync(req.body.password, user.password)) {
-    //   return res.status(401).json ({
-    //     title: 'login failed',
-    //     error: 'invalid credentials'
-    //   })
-    // }
-    //case if all is good create a token and send to front
-    let token = jwt.sign({ userId: user._id }, "secretKey"); // => assigned only the user id to the token // add more here
+    }
+    if (!bcrypt.compareSync(req.body.password, user.password)) {
+      return res.status(401).json({
+        title: "login failed",
+        error: "invalid credentials",
+      });
+    }
+    let token = jwt.sign({ userId: user._id }, "secretKey");
     return res.status(200).json({
       title: "login success",
       token: token,

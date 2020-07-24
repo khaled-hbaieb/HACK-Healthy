@@ -63,12 +63,12 @@
           class="cardx"
         >
           <div slot="media">
-              <img
-                @click="rendershowPatientInfo"
-                id="patient-profile-image"
-                :src="patient.image"
-                alt="user"
-              />
+            <img
+              @click="rendershowPatientInfo"
+              id="patient-profile-image"
+              :src="patient.image"
+              alt="user"
+            />
           </div>
 
           <div id="footer" slot="footer">
@@ -96,11 +96,11 @@ export default {
   }),
   methods: {
     renderCreatePatient() {
-      this.$router.push("patients/createAPatient");
+      this.$router.push("/administrator/patients/createAPatient");
     },
-    rendershowPatientInfo(){
-      this.$router.push("patients/PatientMoreInfos")
-    }
+    rendershowPatientInfo() {
+      this.$router.push("/patients/PatientMoreInfos");
+    },
   },
   beforeMount: async function() {
     let patients = await axios.post("/api/users/clinicX/patients");
