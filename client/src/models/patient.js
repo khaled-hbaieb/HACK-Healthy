@@ -1,10 +1,10 @@
 export default class Patient {
   constructor(
-    fullName,
     email,
+    password,
+    fullName,
     gender,
     dateOfBirth,
-    password,
 
     CIN,
     phoneNumber,

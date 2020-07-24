@@ -5,4 +5,6 @@ module.exports = {
   clinicService: require("./clinicService"),
   roomService: require("./roomService"),
   currentPatientsService: require("./currentPatientsService"),
+  historyService: require("./historyService"),
+  appointmentsService: require("./appointmentsService"),
 };

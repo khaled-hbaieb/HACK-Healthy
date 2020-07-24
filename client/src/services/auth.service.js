@@ -11,6 +11,7 @@ class AuthService {
     });
     if (users.data.token) {
       localStorage.setItem("token", users.data.token);
+      localStorage.setItem("role", user.role);
     }
 
     return users.data;
@@ -21,26 +22,25 @@ class AuthService {
   }
 
   register(user) {
-    console.log('user',user)
-    return axios.post(API_URL + 'patients/createpatient', {
-      email: user.email,
-      password: user.password,
-      fullName: user.fullName,
-      gender: user.gender, 
-      dateOfBirth: user.dateOfBirth,
-      cin: user.cin,
-      phoneNumber: user.phoneNumber,
-      address: user.address,
-      job: user.job
+    return axios.post(API_URL + `${user.role}s/create${user.role}`, {
+      email: user.user.email,
+      password: user.user.password,
+      fullName: user.user.fullName,
+      gender: user.user.gender,
+      dateOfBirth: user.user.dateOfBirth,
+      cin: user.user.cin,
+      phoneNumber: user.user.phoneNumber,
+      address: user.user.address,
+      job: user.user.job,
     });
   }
 
   registerDoc(user) {
-    console.log('user',user)
-    return axios.post(API_URL + 'doctors/createdoctor', {
+    console.log("sending");
+    return axios.post(API_URL + "doctors/createdoctor", {
       fullName: user.fullName,
       email: user.email,
-      gender: user.gender, 
+      gender: user.gender,
       dateOfBirth: user.dateOfBirth,
       password: user.password,
       phoneNumber: user.phoneNumber,
@@ -49,9 +49,6 @@ class AuthService {
       educationBackground: user.educationBackground,
       address: user.address,
       CIN: user.CIN,
-      
-      
-      
     });
   }
 }

@@ -7,23 +7,56 @@ export default new Router({
   mode: "history",
   routes: [
     {
-path:"/",
-component: () => import("./authentication/Login.vue"),
-
+      path: "/",
+      name: "login",
+      component: () => import("./authentication/Login.vue"),
     },
     {
-      // ======================
-      // Full Layout
-      // ======================
-      path: "/",
-      component: () => import("./doctor/components/chatDoctor/ChatView.vue"),
-      // ======================
-      // Theme routes / pages
-      // ======================
-
+      path: "/doctor",
+      name: "doctor",
+      component: () => import("./administrator/fullAdmin/AdminInterface.vue"),
       children: [
         {
-          path: "/currentPatients",
+          path: "appointments",
+          name: "",
+        },
+        {
+          path: "calendar",
+          name: "calendar",
+          component: () =>
+            import("./patient/components/makeAppointment/MakeAppointment.vue"),
+        },
+        {
+          path: "patients",
+          name: "",
+        },
+        {
+          path: "doctors",
+          name: "",
+        },
+        {
+          path: "chatRoom",
+          name: "",
+          component: () =>
+            import("./doctor/components/chatDoctor/ChatView.vue"),
+        },
+        {
+          path: "forum",
+          name: "",
+        },
+        {
+          path: "assignBill",
+          name: "",
+        },
+      ],
+    },
+    {
+      path: "/administrator",
+      name: "administrator",
+      component: () => import("./administrator/fullAdmin/AdminInterface.vue"),
+      children: [
+        {
+          path: "currentPatients",
           name: "currentPatients",
           index: 1,
           component: () =>
@@ -50,7 +83,7 @@ component: () => import("./authentication/Login.vue"),
           ],
         },
         {
-          path: "/patients",
+          path: "patients",
           name: "patients",
           index: 2,
           component: () =>
@@ -77,7 +110,7 @@ component: () => import("./authentication/Login.vue"),
           ],
         },
         {
-          path: "/doctors",
+          path: "doctors",
           name: "doctors",
           index: 3,
           component: () =>
@@ -104,14 +137,14 @@ component: () => import("./authentication/Login.vue"),
           ],
         },
         {
-          path: "/clinicState",
+          path: "clinicState",
           name: "clinicState",
           index: 4,
           component: () =>
             import("./administrator/components/clinicState/ClinicState.vue"),
         },
         {
-          path: "/makeABill",
+          path: "makeABill",
           name: "Checkbox",
           index: 7,
           component: () =>
@@ -119,15 +152,5 @@ component: () => import("./authentication/Login.vue"),
         },
       ],
     },
-    {
-      path:"/doctor",
-component: () => import("./doctor/fullDoctor/AdminInterface.vue"),
-    },
-    // {
-    //   path: "/patient",
-    //   component: () => import("./patient/fullDoctor/AdminInterface.vue")
-    // }
   ],
-
 });
-

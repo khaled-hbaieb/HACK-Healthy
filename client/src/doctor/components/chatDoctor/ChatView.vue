@@ -1,6 +1,6 @@
 <template>
-  <div >
-    <vs-row id="all"  >
+  <div>
+    <vs-row id="all">
       <!-- class="row justify-content-center h-100" -->
       <div class="col-md-4 col-xl-3 chat">
         <div class="card mb-sm-3 mb-md-0 contacts_card">
@@ -74,23 +74,21 @@
                 <vs-list-item icon="supervisor_account"
                   >View profile</vs-list-item
                 >
-                <vs-list-item icon="add">
-                  Add to close friends
-                </vs-list-item>
+                <vs-list-item icon="add">Add to close friends</vs-list-item>
               </vs-list>
             </div>
           </div>
           <div class="card-body msg_card_body">
             <div id="chatbox" class="row remote_video_container">
-                  <div id="remoteTrack"></div>
-                </div>
-                <div class="spacing"></div>
-                <div class="row">
-                  <div id="localTrack"></div>
-                </div>
-            
-            <div class="d-flex justify-content-start mb-4" >
-              
+              <div id="remoteTrack"></div>
+            </div>
+            <div class="spacing"></div>
+            <div class="row">
+              <div id="localTrack"></div>
+            </div>
+
+            <div class="d-flex justify-content-start mb-4">
+
               <div class="img_cont_msg">
                 <img class="rounded-circle user_img_msg" />
               </div>
@@ -99,12 +97,12 @@
               </div>
             </div>
             <div class="d-flex justify-content-end mb-4">
-              
+
               <div class="msg_cotainer_send">
                 <!-- <span class="msg_time_send">8:55 AM, Today</span> -->
               </div>
               <div class="img_cont_msg">
-                
+
                 <img class="rounded-circle user_img_msg" />
               </div>
             </div>
@@ -131,15 +129,14 @@
           </div>
         </div>
       </div>
-      
-        <div id="chatbox" class="row remote_video_container">
-                  <div id="remoteTrack"></div>
-                </div>
-                <div class="spacing"></div>
-                <div class="row">
-                  <div id="localTrack"></div>
-                </div>
-     
+
+      <div id="chatbox" class="row remote_video_container">
+        <div id="remoteTrack"></div>
+      </div>
+      <div class="spacing"></div>
+      <div class="row">
+        <div id="localTrack"></div>
+      </div>
     </vs-row>
   </div>
 </template>
@@ -150,6 +147,7 @@ import {
   // createLocalTracks,
   createLocalVideoTrack,
 } from "twilio-video";
+import { EventBus } from "../../../Event";
 import axios from "axios";
 export default {
   name: "ChatView",
@@ -233,8 +231,12 @@ export default {
   methods: {
     // Generate access token
     async getAccessToken() {
-      let token = await axios.get(`/token?identity=${this.username}`);
+      let token = await axios.get(`/token?identity=${localStorage.username}`);
+      console.log(token.data);
       return token.data;
+    },
+    dispatchLog(message) {
+      EventBus.$emit("new_log", message);
     },
     // Attach the Tracks to the DOM.
     attachTracks(tracks, container) {
@@ -252,11 +254,11 @@ export default {
       this.loading = true;
       const VueThis = this;
       this.getAccessToken().then((data) => {
-        // VueThis.roomName = room_name;
+        VueThis.roomName = "General";
         const token = data.token;
 
         let connectOptions = {
-          // name: room_name,
+          name: "General",
           // logLevel: "debug",
           audio: true,
           video: { width: 400 },
@@ -271,15 +273,15 @@ export default {
         // this.leaveRoomIfJoined();
 
         connect(token, connectOptions).then((room) => {
-          // VueThis.dispatchLog("Successfully joined a Room: " + room_name);
+          VueThis.dispatchLog("Successfully joined a Room: " + "General");
 
           // set active toom
           // VueThis.activeRoom = room;
-          // VueThis.roomName = room_name;
-          //   VueThis.loading = false;
+          VueThis.roomName = "General";
+          // VueThis.loading = false;
 
           // Attach the Tracks of all the remote Participants.
-
+          console.log(room.participants);
           room.participants.forEach(function(participant) {
             let previewContainer = document.getElementById("remoteTrack");
             VueThis.attachParticipantTracks(participant, previewContainer);
@@ -335,18 +337,17 @@ export default {
 };
 </script>
 <style>
-.chat{
+.chat {
   height: 50%;
   border: 5px solid green;
 }
-#all{
-  border: 5px solid red ;
- height: 100%;
+#all {
+  border: 5px solid red;
+  height: 100%;
 }
 .remote_video_container {
   left: 0;
   margin: 0;
-  
 }
 #localTrack video {
   border: 3px solid rgb(124, 129, 124);

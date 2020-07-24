@@ -58,13 +58,21 @@
               <div class="images-container-body">
                 <label class="col-sm-12">Profile Image</label>
                 <div class="centerx">
-                  <vs-upload automatic action="http://localhost:8080/" @on-success="successUpload" />
+                  <vs-upload
+                    automatic
+                    action="http://localhost:8080/"
+                    @on-success="successUpload"
+                  />
                 </div>
               </div>
               <div class="images-container-body">
                 <label class="col-sm-12">CIN & Certificate Images</label>
                 <div class="centerx">
-                  <vs-upload automatic action="http://localhost:8080/" @on-success="successUpload" />
+                  <vs-upload
+                    automatic
+                    action="http://localhost:8080/"
+                    @on-success="successUpload"
+                  />
                 </div>
               </div>
             </div>
@@ -77,7 +85,7 @@
               v-model="specialityValue"
             >
               <vs-select-item
-                v-for="(speciality,index) in specialities"
+                v-for="(speciality, index) in specialities"
                 :text="speciality"
                 :key="index"
                 :value="speciality"
@@ -193,8 +201,17 @@
               placeholder="Your LinkedIN URL"
             />
             <div id="buttons-doctor-creation">
-              <vs-button type="submit" class="btn btn-inverse waves-effect waves-light">Cancel</vs-button>
-              <vs-button type="submit" class="btn btn-info waves-effect waves-light m-r-10">Submit</vs-button>
+              <vs-button
+                type="submit"
+                class="btn btn-inverse waves-effect waves-light"
+                >Cancel</vs-button
+              >
+              <vs-button
+                type="submit"
+                class="btn btn-info waves-effect waves-light m-r-10"
+                @click="handleRegisterDoc"
+                >Submit</vs-button
+              >
             </div>
           </form>
         </vs-card>
@@ -205,7 +222,7 @@
 
 <script>
 import { required } from "vuelidate/lib/validators";
-import Doctor from '../../../models/doctor'
+import Doctor from "../../../models/doctor";
 export default {
   name: "createDoctor",
   data: () => {
@@ -245,7 +262,7 @@ export default {
         "PSYCHIATRY",
         "RADIATION ONCOLOGY",
         "SURGERY",
-        "UROLOGY"
+        "UROLOGY",
       ],
       successful: false,
     };
@@ -262,37 +279,49 @@ export default {
   },
   validations: {
     name: {
-      required
+      required,
     },
-    gender: {}
+    gender: {},
   },
   methods: {
     successUpload() {
       this.$vs.notify({
         color: "success",
         title: "Upload Success",
-        text: this.name + " Uploaded The image Successfully!"
+        text: this.name + " Uploaded The image Successfully!",
       });
     },
     submitForm() {},
     handleRegisterDoc() {
       let user;
-      user = new Doctor(this.fullName,this.email,this.gender,this.dateOfBirth,this.pwd,this.phoneNumber,this.specialityValue,this.yearsOfExperience,this.educationBackground,this.address,this.CIN)
-    this.$store.dispatch("auth/register", user).then(
-      () => {
-      console.log('entered doc creation')
-      this.successful = true
+      user = new Doctor(
+        this.email,
+        this.pwd,
+        this.fullName,
+        this.gender,
+        this.dateOfBirth,
+        this.phoneNumber,
+        this.specialityValue,
+        this.yearsOfExperience,
+        this.educationBackground,
+        this.address,
+        this.CIN
+      );
+      this.$store.dispatch("auth/register", { user, role: "doctor" }).then(
+        () => {
+          console.log("entered doc creation");
+          this.successful = true;
+        },
+        (error) => {
+          this.message =
+            (error.response && error.response.data) ||
+            error.message ||
+            error.toString();
+          this.successful = false;
+        }
+      );
     },
-    (error) => {
-      this.message = 
-      (error.response && error.response.data) ||
-              error.message ||
-              error.toString();
-            this.successful = false; 
-    }
-    )
-    }
-  }
+  },
 };
 </script>
 <style>

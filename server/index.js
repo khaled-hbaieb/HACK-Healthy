@@ -13,8 +13,6 @@ app.use(express.static("client/dist"));
 
 app.use(bodyParser.json());
 
-
-
 //DB Connection//
 let URI = process.env.URI;
 const mongoose = require("mongoose");
@@ -42,20 +40,16 @@ app.use("/api/users/clinicX/patients", routes.patientRoutes);
 app.use("/api/clinics", routes.clinicRoutes);
 
 //Room Routes
-app.use("/api/rooms", routes.roomRoutes);
+app.use("/api/clinicX/rooms", routes.roomRoutes);
 
-app.get("*", (req, res) => {
-  let dirPath = path.join(__dirname, "../client/dist/index.html");
-  res.sendFile(dirPath);
-});
-app.listen(PORT, (err) => {
-  if (!err) {
-    console.log(`App Is Listetning On Port: ${PORT}`);
-  }
-});
+//History Routes
+app.use("api/users/clinicX/history", routes.historyRoutes);
 
+//Current Patients Routes
+app.use("api/users/clinicX/currentPatients", routes.currentPatientsRoutes);
 
-"use strict";
+//Appointments Routes
+app.use("/api/appointments", routes.appointmentsRoutes);
 
 /**
  * Load Twilio configuration from .env config file - the following environment
@@ -70,7 +64,6 @@ require("dotenv").config();
 var http = require("http");
 var AccessToken = require("twilio").jwt.AccessToken;
 var VideoGrant = AccessToken.VideoGrant;
-
 
 // Create Express webapp.
 
@@ -119,3 +112,13 @@ var server = http.createServer(app);
 // server.listen(port, function() {
 //   console.log("Express server running on *:" + port);
 // });
+app.get("*", (req, res) => {
+  let dirPath = path.join(__dirname, "../client/dist/index.html");
+  res.sendFile(dirPath);
+});
+
+app.listen(PORT, (err) => {
+  if (!err) {
+    console.log(`App Is Listetning On Port: ${PORT}`);
+  }
+});
