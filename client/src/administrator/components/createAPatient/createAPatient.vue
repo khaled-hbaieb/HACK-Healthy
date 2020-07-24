@@ -49,8 +49,10 @@
             <div class="centerx">
               <vs-upload
                 automatic
-                action="http://localhost:8080/"
-                @on-success="successUpload"
+                action="http://localhost:3000/upload-images"
+                fileName="image"
+                @change="onFilePicked"
+                @on-success="onFileUploaded"
               />
             </div>
             <label class="col-md-12" for="special">CIN</label>
@@ -267,6 +269,7 @@
 </template>
 
 <script>
+import axios from "axios";
 // import axios from 'axios'
 import Patient from "../../../models/patient";
 export default {
@@ -276,6 +279,9 @@ export default {
       fullName: "",
       CIN: "",
       fatherName: "",
+      fatherNumber: "",
+      motherName: "",
+      motherNumber: "",
       dateOfBirth: "",
       gender: "",
       phoneNumber: "",
@@ -284,7 +290,9 @@ export default {
       cpwd: "",
       job: "",
       address: "",
+      imageName: "",
       bloodType: "",
+      image: null,
       bloodTypes: ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"],
       allergyInputs: [
         {

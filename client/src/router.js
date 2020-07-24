@@ -8,51 +8,10 @@ export default new Router({
   routes: [
     {
       path: "/",
-      name: "login",
       component: () => import("./authentication/Login.vue"),
     },
     {
-      path: "/doctor",
-      name: "doctor",
-      component: () => import("./administrator/fullAdmin/AdminInterface.vue"),
-      children: [
-        {
-          path: "appointments",
-          name: "",
-        },
-        {
-          path: "calendar",
-          name: "calendar",
-          component: () =>
-            import("./patient/components/makeAppointment/MakeAppointment.vue"),
-        },
-        {
-          path: "patients",
-          name: "",
-        },
-        {
-          path: "doctors",
-          name: "",
-        },
-        {
-          path: "chatRoom",
-          name: "",
-          component: () =>
-            import("./doctor/components/chatDoctor/ChatView.vue"),
-        },
-        {
-          path: "forum",
-          name: "",
-        },
-        {
-          path: "assignBill",
-          name: "",
-        },
-      ],
-    },
-    {
       path: "/administrator",
-      name: "administrator",
       component: () => import("./administrator/fullAdmin/AdminInterface.vue"),
       children: [
         {
@@ -105,6 +64,15 @@ export default new Router({
               component: () =>
                 import(
                   "./administrator/components/createAPatient/createAPatient.vue"
+                ),
+            },
+            {
+              path: "PatientMoreInfos",
+              name: "PatientMoreInfos",
+              index: 3,
+              component: () =>
+                import(
+                  "./administrator/components/patientsAdmin/PatientMoreInfo.vue"
                 ),
             },
           ],
