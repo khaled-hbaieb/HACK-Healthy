@@ -2,38 +2,24 @@ const express = require("express");
 const routes = require("./routes");
 const bodyParser = require("body-parser");
 const path = require("path");
-const multer = require("multer");
+const upload = require("./multer");
+const cloudinary = require("./cloudinary");
+const fs = require("fs");
 require("dotenv").config();
 
 const app = express();
 
-const PORT = 3000;
-
+const PORT = process.env.PORT || 3000;
+app.use(express.static("uploads"));
 app.use(express.static("client/dist"));
 
 app.use(bodyParser.json());
 
-app.get("*", (req, res) => {
-  let dirPath = path.join(__dirname, "../client/dist/index.html");
-  res.sendFile(dirPath);
-});
-
-var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads");
-  },
-  filename: function (req, file, cb) {
-    cb(
-      null,
-      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
-    );
-  },
-});
-var upload = multer({ storage: storage }).single('file');
-
 //DB Connection//
 let URI = process.env.URI;
 const mongoose = require("mongoose");
+const { join } = require("path");
+const { json } = require("body-parser");
 mongoose.connect(URI, {
   useNewUrlParser: true,
   useCreateIndex: true,
@@ -45,38 +31,60 @@ connection.once("open", () => {
   console.log("MongoDB connected");
 });
 
-// app.post("/uploadfile", upload.single("myfile"), (req, res, next) => {
-//   const file = req.file;
-//   if (!file) {
-//     const error = new Error("Please upload a file");
-//     error.httpsStatusCode = 400;
-//     return next(error);
-//   }
-//   res.send(file);
-// });
-// app.post("/uploadphoto", upload.single("picture"), (req, res) => {
-//   var img = fs.readFileSync(req.file.path);
-//   var encode_image = img.toString("base64");
-
-//   var finalImg = {
-//     contentType: req.file.mimetype,
-//     image: new Buffer(encode_image, "base64"),
-//   };
-//   db.collection("quotes").insertOne(finalImg, (err, result) => {
-//     console.log(result);
-
-//     if (err) return console.log(err);
-
-//     console.log("saved to database");
-//     res.redirect("/");
-//   });
-// });
 //Administrator Routes
 app.use("/api/users/clinicX/administrators", routes.administratorRoutes);
 
 //Doctor Routes
 app.use("/api/users/clinicX/doctors", routes.doctorRoutes);
 
+//Patient Routes
+app.use("/api/users/clinicX/patients", routes.patientRoutes);
+
+//Clinic Routes
+app.use("/api/clinics", routes.clinicRoutes);
+
+//Room Routes
+app.use("/api/rooms", routes.roomRoutes);
+
+//Multer Routes
+app.use("/api/pics", routes.multerRoutes);
+
+app.use("/api/cloud", routes.cloudinaryRoutes);
+
+////////////////////////////////
+
+app.use("/upload-images", upload.array("image"), async (req, res) => {
+  // try {
+  const uploader = async (path) => await cloudinary.uploads(path, "Images");
+  if (req.method === "POST") {
+    const urls = [];
+    const files = req.files;
+
+    for (const file of files) {
+      const { path } = file;
+
+      const newPath = await uploader(path);
+
+      urls.push(newPath);
+
+      fs.unlinkSync(path);
+    }
+    res.send(urls[0].url);
+  } else {
+    res.status(405).json({
+      err: "Images not uploaded successfully",
+    });
+  }
+  // } catch (error) {
+  // }
+});
+
+app.get("*", (req, res) => {
+  let dirPath = path.join(__dirname, "../client/dist/index.html");
+  res.sendFile(dirPath);
+});
+
+///////////////////////////////
 app.listen(PORT, (err) => {
   if (!err) {
     console.log(`App Is Listetning On Port: ${PORT}`);

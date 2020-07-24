@@ -12,7 +12,12 @@
               type="button"
               class="btn btn-info d-block d-lg-block"
             >
-              <vs-icon icon="add_circle_outline" id="doctor-icon" round></vs-icon>Create New Doctor
+              <vs-icon
+                icon="add_circle_outline"
+                id="doctor-icon"
+                round
+              ></vs-icon
+              >Create New Doctor
             </vs-button>
           </div>
         </vs-col>
@@ -32,13 +37,26 @@
           />
         </vs-col>
         <vs-col vs-sm="2" vs-xs="3" vs-lg="2">
-          <vs-button size="33px" id="search-doctor-button" color="dark" type="border">Search</vs-button>
+          <vs-button
+            size="33px"
+            id="search-doctor-button"
+            color="dark"
+            type="border"
+            >Search</vs-button
+          >
         </vs-col>
       </vs-row>
     </vs-card>
     <vs-row class="row">
-      <vs-col id="yess" vs-xs="12" vs-sm="6" vs-lg="4">
-        <vs-card id="profile" class="card">
+      <vs-col
+        v-for="(doctor, index) in doctors"
+        :key="index"
+        id="yess"
+        vs-xs="12"
+        vs-sm="6"
+        vs-lg="4"
+      >
+        <vs-card id="profile" class="card" vs-xs="12" vs-sm="12" vs-lg="12">
           <vs-row class="row">
             <vs-col vs-xs="6" vs-sm="8" vs-lg="6">
               <a href="/doctors/doctor">
@@ -51,13 +69,14 @@
               </a>
             </vs-col>
             <vs-col vs-xs="6" vs-sm="4" vs-lg="6">
-              <h5 class="card-title m-b-0">Houssem Guesmi</h5>
-              <small>Life Coach</small>
+              <h5 class="card-title m-b-0">{{ doctor.fullName }}</h5>
+              <small>{{ doctor.speciality }}</small>
               <address>
-                15 Street 20 Mars
+                {{ doctor.address }}
                 <br />
                 <br />
-                <abbr title="Phone">Phone:</abbr> (+216) 56 418 566
+                <abbr title="Phone">Phone:</abbr> (+216)
+                {{ doctor.phoneNumber }}
               </address>
             </vs-col>
           </vs-row>
@@ -67,27 +86,22 @@
   </div>
 </template>
 <script>
+import axios from "axios";
 export default {
   name: "doctorsList",
   data: () => ({
     title: "Doctors",
-    users: [
-      {
-        id: "1",
-        CIN: "14404510",
-        name: "Houssem Guesmi",
-        email: "houssemguesmi14@gmail.com",
-        phone: "56418566",
-        speciality: "Surgical",
-        age: "23"
-      }
-    ]
+    doctors: [],
   }),
   methods: {
     renderCreateDoctor() {
       this.$router.push("/doctors/createDoctor");
-    }
-  }
+    },
+  },
+  beforeMount: async function() {
+    let doctors = await axios.post("/api/users/clinicX/doctors", {});
+    this.doctors = doctors.data;
+  },
 };
 </script>
 <style>

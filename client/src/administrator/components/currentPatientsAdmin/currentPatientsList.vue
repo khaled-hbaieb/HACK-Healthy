@@ -7,8 +7,17 @@
         </vs-col>
         <vs-col class="col-md-7 align-self-center text-right">
           <div class="d-flex justify-content-end align-items-center">
-            <vs-button @click="redirectAssignRoom" type="button" class="btn btn-info d-lg-block">
-              <vs-icon icon="add_circle_outline" id="patient-icon" round></vs-icon>Assign A Room
+            <vs-button
+              @click="redirectAssignRoom"
+              type="button"
+              class="btn btn-info d-lg-block"
+            >
+              <vs-icon
+                icon="add_circle_outline"
+                id="patient-icon"
+                round
+              ></vs-icon
+              >Assign A Room
             </vs-button>
           </div>
         </vs-col>
@@ -27,13 +36,26 @@
           />
         </vs-col>
         <vs-col vs-sm="2" vs-xs="3" vs-lg="2">
-          <vs-button size="33px" id="search-patient-button" color="dark" type="border">Search</vs-button>
+          <vs-button
+            size="33px"
+            id="search-patient-button"
+            color="dark"
+            type="border"
+            >Search</vs-button
+          >
         </vs-col>
       </vs-row>
     </vs-card>
     <vs-row class="row el-element-overlay">
       <vs-col vs-xs="12" vs-sm="6" vs-lg="3">
-        <vs-card vs-xs="12" vs-sm="12" vs-lg="12" id="profile" actionable class="card">
+        <vs-card
+          vs-xs="12"
+          vs-sm="12"
+          vs-lg="12"
+          id="profile"
+          actionable
+          class="card"
+        >
           <div slot="media">
             <a href="/patients/patient">
               <img
@@ -54,7 +76,14 @@
         </vs-card>
       </vs-col>
       <vs-col vs-xs="12" vs-sm="6" vs-lg="3">
-        <vs-card vs-xs="12" vs-sm="12" vs-lg="12" id="profile" actionable class="card">
+        <vs-card
+          vs-xs="12"
+          vs-sm="12"
+          vs-lg="12"
+          id="profile"
+          actionable
+          class="card"
+        >
           <div slot="media">
             <a href="/patients/patient">
               <img
@@ -89,12 +118,12 @@ export default {
     active1: true,
     active2: true,
     examplealert: false,
-    value1: ""
+    value1: "",
   }),
   methods: {
     redirectAssignRoom() {
       this.$router.push("currentPatients/assignARoom");
-    }
+    },
   },
   computed: {
     inputValid() {
@@ -103,8 +132,8 @@ export default {
       } else {
         return true;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>

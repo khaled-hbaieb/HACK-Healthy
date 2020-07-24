@@ -7,10 +7,14 @@ export default new Router({
   mode: "history",
   routes: [
     {
+      path: "/",
+      component: () => import("./authentication/Login.vue"),
+    },
+    {
       // ======================
       // Full Layout
       // ======================
-      path: "/",
+      path: "/administrator",
       component: () => import("./administrator/fullAdmin/AdminInterface.vue"),
       // ======================
       // Theme routes / pages
@@ -22,19 +26,25 @@ export default new Router({
           name: "currentPatients",
           index: 1,
           component: () =>
-            import("./administrator/components/currentPatientsAdmin/currentPatients.vue"),
+            import(
+              "./administrator/components/currentPatientsAdmin/currentPatients.vue"
+            ),
           children: [
             {
               path: "/",
               name: "currentPatientsList",
               component: () =>
-                import("./administrator/components/currentPatientsAdmin/currentPatientsList.vue"),
+                import(
+                  "./administrator/components/currentPatientsAdmin/currentPatientsList.vue"
+                ),
             },
             {
               path: "assignARoom",
               name: "assignARoom",
               component: () =>
-                import("./administrator/components/assignARoom/assignARoom.vue"),
+                import(
+                  "./administrator/components/assignARoom/assignARoom.vue"
+                ),
             },
           ],
         },
@@ -50,14 +60,27 @@ export default new Router({
               name: "patientsList",
               index: 1,
               component: () =>
-                import("./administrator/components/patientsAdmin/patientsList.vue"),
+                import(
+                  "./administrator/components/patientsAdmin/patientsList.vue"
+                ),
             },
             {
               path: "createAPatient",
               name: "createAPatient",
               index: 2,
               component: () =>
-                import("./administrator/components/createAPatient/createAPatient.vue"),
+                import(
+                  "./administrator/components/createAPatient/createAPatient.vue"
+                ),
+            },
+            {
+              path: "PatientMoreInfos",
+              name: "PatientMoreInfos",
+              index: 3,
+              component: () =>
+                import(
+                  "./administrator/components/patientsAdmin/PatientMoreInfo.vue"
+                ),
             },
           ],
         },
@@ -73,14 +96,18 @@ export default new Router({
               name: "doctorsList",
               index: 1,
               component: () =>
-                import("./administrator/components/doctorsAdmin/doctorsList.vue"),
+                import(
+                  "./administrator/components/doctorsAdmin/doctorsList.vue"
+                ),
             },
             {
               path: "createDoctor",
               name: "createDoctor",
               index: 2,
               component: () =>
-                import("./administrator/components/createDoctor/createDoctor.vue"),
+                import(
+                  "./administrator/components/createDoctor/createDoctor.vue"
+                ),
             },
           ],
         },
@@ -100,5 +127,13 @@ export default new Router({
         },
       ],
     },
+    {
+      path: "/doctor",
+      component: () => import("./doctor/fullDoctor/AdminInterface.vue"),
+    },
+    // {
+    //   path: "/patient",
+    //   component: () => import("./patient/fullDoctor/AdminInterface.vue")
+    // }
   ],
 });

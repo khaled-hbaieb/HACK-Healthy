@@ -49,8 +49,10 @@
             <div class="centerx">
               <vs-upload
                 automatic
-                action="http://localhost:8080/"
-                @on-success="successUpload"
+                action="http://localhost:3000/upload-images"
+                fileName="image"
+                @change="onFilePicked"
+                @on-success="onFileUploaded"
               />
             </div>
             <label class="col-md-12" for="special">CIN</label>
@@ -256,6 +258,7 @@
             <vs-button
               type="submit"
               class="btn btn-info waves-effect waves-light m-r-10"
+              @click="submitForm"
               >Submit</vs-button
             >
           </div>
@@ -266,6 +269,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "createDoctor",
   data: () => {
@@ -273,6 +277,9 @@ export default {
       fullName: "",
       CIN: "",
       fatherName: "",
+      fatherNumber: "",
+      motherName: "",
+      motherNumber: "",
       dateOfBirth: "",
       gender: "",
       phoneNumber: "",
@@ -281,7 +288,9 @@ export default {
       cpwd: "",
       job: "",
       address: "",
+      imageName: "",
       bloodType: "",
+      image: null,
       bloodTypes: ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"],
       allergyInputs: [
         {
@@ -325,7 +334,29 @@ export default {
         placeholder: "Enter The Vaccination",
       });
     },
-    submitForm() {},
+    submitForm() {
+      let newPatient = {
+        fullName: this.fullName,
+        email: this.email,
+        gender: this.gender,
+        dateOfBirth: this.dateOfBirth,
+        password: this.pwd,
+        CIN: this.CIN,
+        phoneNumber: this.phoneNumber,
+        address: this.address,
+        job: this.job,
+        image: this.image,
+      };
+      axios.post("/api/users/clinicX/patients/createPatient", newPatient);
+    },
+
+    onFilePicked(event) {
+      const fileName = event.slice(12);
+      this.imageName = fileName;
+    },
+    onFileUploaded(event) {
+      this.image = event.target.response;
+    },
   },
 };
 </script>
@@ -397,5 +428,4 @@ input::-webkit-inner-spin-button {
   margin-top: 0%;
   position: relative !important;
 }
-
 </style>
