@@ -49,7 +49,7 @@
             <div class="centerx">
               <vs-upload
                 automatic
-                action="http://localhost:3000/upload-images"
+                :action="backEndUrl"
                 fileName="image"
                 @on-success="onFileUploaded"
               />
@@ -314,6 +314,9 @@ export default {
     loggedIn() {
       return this.$store.state.auth.status.loggedIn;
     },
+    backEndUrl() {
+      return `${process.env.APP_VUE_BACKEND_URL}/upload-images`;
+    },
   },
 
   methods: {
@@ -371,7 +374,6 @@ export default {
         }
       );
     },
-    // });
   },
 };
 </script>

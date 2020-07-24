@@ -356,7 +356,6 @@ export default {
   background-repeat: no-repeat;
 }
 .spacing {
-  /* padding: 20px; */
   width: 100%;
 }
 .chat {

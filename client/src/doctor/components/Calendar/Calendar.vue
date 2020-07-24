@@ -11,15 +11,18 @@
           <FullCalendar :options="calendarOptions" />
         </vs-card>
         <vs-popup :title="Title" color="black" :active.sync="popupActivo">
-          <vs-col v-for="(appointment,index) in calendarOptions.appointments" :key="index">
+          <vs-col
+            v-for="(appointment, index) in calendarOptions.appointments"
+            :key="index"
+          >
             <vs-card>
-              Appointment N°: {{index+1}}
+              Appointment N°: {{ index + 1 }}
               <br />
-              PatientCIN: {{appointment.patientCIN}}
+              PatientCIN: {{ appointment.patientCIN }}
               <br />
-              Time: {{appointment.time}}
+              Time: {{ appointment.time }}
               <br />
-              Cause: {{appointment.cause}}
+              Cause: {{ appointment.cause }}
               <br />
             </vs-card>
           </vs-col>
@@ -53,7 +56,7 @@ export default {
     };
   },
   methods: {
-    handleDateClick: function (arg) {
+    handleDateClick: function(arg) {
       this.calendarOptions.appointments = [];
       for (let i = 0; i < this.calendarOptions.events.length; i++) {
         if (this.calendarOptions.events[i].date === arg.dateStr) {
@@ -66,11 +69,14 @@ export default {
       this.popupActivo = true;
     },
   },
-  beforeMount: async function () {
-    let appoints = await axios.post("/api/appointments/appointment", {
-      doctorCIN: 14404510,
-      state: false,
-    });
+  beforeMount: async function() {
+    let appoints = await axios.post(
+      `${process.env.APP_VUE_BACKEND_URL}/api/appointments/appointment`,
+      {
+        doctorCIN: 14404510,
+        state: false,
+      }
+    );
     for (let i = 0; i < appoints.data.length; i++) {
       appoints.data[i].title = `Appointment At ${appoints.data[i].time}`;
     }

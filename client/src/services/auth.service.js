@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "/api/users/clinicX/";
+const API_URL = `${process.env.APP_VUE_BACKEND_URL}/api/users/clinicX/`;
 
 class AuthService {
   async login(user) {
@@ -24,7 +24,6 @@ class AuthService {
   }
 
   register(user) {
-    console.log(API_URL, `${user.role}s/create${user.role}`);
     return axios.post(API_URL + `${user.role}s/create${user.role}`, {
       email: user.user.email,
       password: user.user.password,

@@ -92,7 +92,6 @@ export default {
     patients: [],
     colorx: "#4a5153",
     popupActivo5: false,
-    // popupActivo5:false,
   }),
   methods: {
     renderCreatePatient() {
@@ -103,7 +102,7 @@ export default {
     },
   },
   beforeMount: async function() {
-    let patients = await axios.post("/api/users/clinicX/patients");
+    let patients = await axios.post(`${process.env.APP_VUE_BACKEND_URL}/api/users/clinicX/patients`);
     this.patients = patients.data;
   },
 };
@@ -135,6 +134,5 @@ export default {
 }
 .col-lg-3 {
   max-width: 100% !important;
-  /* width: 25% !important; */
 }
 </style>

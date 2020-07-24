@@ -22,27 +22,6 @@ module.exports = {
   },
 
   async checkPatient(patient) {
-    //   return Patients.find({email: patient.email}, (err, user) => {
-    //     console.log('userrrr', user)
-
-    //     if(!user) {
-    //       return res.status(401).json({
-    //         title:'user not found',
-    //         error: 'invalid credentials'
-    //       })
-    //     } //incorrect password
-    //     if(!bcrypt.compareSync(patient.password, user[0].password)) {
-    //       return res.status(401).json ({
-    //         title: 'login failed',
-    //         error: 'invalid credentials'
-    //       })
-    //     } // if all good
-    //     let token = jwt.sign({ userId: user[0]._id}, 'secretKey')
-    //     return res.status(200).json({
-    //       title: 'login success',
-    //       token: token
-    //     })
-    //   })
     return Patients.find({ email: patient.email });
   },
 };

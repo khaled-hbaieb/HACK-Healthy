@@ -6,58 +6,67 @@
     <vs-row>
       <vs-col vs-lg="4">
         <vs-row>
-
-        <vs-card>
-          <form>
-            <label for="patientCIN">Your CIN:</label>
-            <vs-input name="patientCIN" id="patient-CIN" v-model="patientCIN" disabled></vs-input>
-            <label for="Speciality">Speciality:</label>
-            <vs-select name="Speciality" autocomplete v-model="spec" @change="getDoctors">
-              <vs-select-item
-                v-for="(speciality, index) in specialities"
-                :key="index"
-                :text="speciality"
-                :value="speciality"
-              ></vs-select-item>
-            </vs-select>
-            <label v-if="doctorsList.length !== 0" for="DoctorName">Doctor Name:</label>
-            <vs-select
-              @change="inputChange"
-              v-if="doctorsList.length !== 0"
-              name="DoctorName"
-              autocomplete
-              v-model="doctorName"
-            >
-              <vs-select-item
-                v-for="(doctor, index) in doctorsList"
-                :key="index"
-                :text="doctor.fullName"
-                :value="doctor.fullName"
-              ></vs-select-item>
-            </vs-select>
-          </form>
-        </vs-card>
+          <vs-card>
+            <form>
+              <label for="patientCIN">Your CIN:</label>
+              <vs-input
+                name="patientCIN"
+                id="patient-CIN"
+                v-model="patientCIN"
+                disabled
+              ></vs-input>
+              <label for="Speciality">Speciality:</label>
+              <vs-select
+                name="Speciality"
+                autocomplete
+                v-model="spec"
+                @change="getDoctors"
+              >
+                <vs-select-item
+                  v-for="(speciality, index) in specialities"
+                  :key="index"
+                  :text="speciality"
+                  :value="speciality"
+                ></vs-select-item>
+              </vs-select>
+              <label v-if="doctorsList.length !== 0" for="DoctorName"
+                >Doctor Name:</label
+              >
+              <vs-select
+                @change="inputChange"
+                v-if="doctorsList.length !== 0"
+                name="DoctorName"
+                autocomplete
+                v-model="doctorName"
+              >
+                <vs-select-item
+                  v-for="(doctor, index) in doctorsList"
+                  :key="index"
+                  :text="doctor.fullName"
+                  :value="doctor.fullName"
+                ></vs-select-item>
+              </vs-select>
+            </form>
+          </vs-card>
         </vs-row>
         <vs-row>
           <vs-col>
             <vs-card>
-
-            Hellooo
+              Hellooo
             </vs-card>
           </vs-col>
         </vs-row>
-      
       </vs-col>
       <vs-col v-if="isChosen" vs-lg="8">
         <vs-card>
           <FullCalendar :options="calendarOptions"></FullCalendar>
         </vs-card>
         <vs-popup :title="Title" color="black" :active.sync="popupActivo">
-          <vs-col v-for="(appointment,index) in appointments" :key="index">
+          <vs-col v-for="(appointment, index) in appointments" :key="index">
             <vs-card>
-              Appointment N°: {{index+1}}
+              Appointment N°: {{ index + 1 }}
               <br />
-              Time: {{appointment.time}}
+              Time: {{ appointment.time }}
               <br />
             </vs-card>
           </vs-col>
@@ -120,7 +129,7 @@ export default {
     };
   },
   methods: {
-    handleDateClick: function (arg) {
+    handleDateClick: function(arg) {
       this.appointments = [];
       for (let i = 0; i < this.calendarOptions.events.length; i++) {
         if (this.calendarOptions.events[i].date === arg.dateStr) {
@@ -131,12 +140,18 @@ export default {
       this.popupActivo = true;
     },
     async inputChange() {
-      let doctor = await axios.post("/api/users/clinicX/doctors", {
-        fullName: this.doctorName,
-      });
-      let appoints = await axios.post("/api/appointments/appointment", {
-        doctorCIN: doctor.data.CIN,
-      });
+      let doctor = await axios.post(
+        `${process.env.APP_VUE_BACKEND_URL}/api/users/clinicX/doctors`,
+        {
+          fullName: this.doctorName,
+        }
+      );
+      let appoints = await axios.post(
+        `${process.env.APP_VUE_BACKEND_URL}/api/appointments/appointment`,
+        {
+          doctorCIN: doctor.data.CIN,
+        }
+      );
       this.calendarOptions.events = appoints.data;
       for (let i = 0; i < appoints.data.length; i++) {
         appoints.data[i].title = `Appointment At ${appoints.data[i].time}`;
@@ -144,10 +159,13 @@ export default {
       console.log(this.calendarOptions.events);
       this.isChosen = true;
     },
-    getDoctors: async function () {
-      let doctors = await axios.post("/api/users/clinicX/doctors/", {
-        speciality: this.spec,
-      });
+    getDoctors: async function() {
+      let doctors = await axios.post(
+        `${process.env.APP_VUE_BACKEND_URL}/api/users/clinicX/doctors/`,
+        {
+          speciality: this.spec,
+        }
+      );
       this.doctorsList = doctors.data;
     },
   },

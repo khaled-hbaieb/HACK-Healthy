@@ -13,7 +13,12 @@
               type="button"
               class="btn btn-info d-block d-lg-block"
             >
-              <vs-icon icon="add_circle_outline" id="doctor-icon" round></vs-icon>Create New Doctor
+              <vs-icon
+                icon="add_circle_outline"
+                id="doctor-icon"
+                round
+              ></vs-icon
+              >Create New Doctor
             </vs-button>
           </div>
         </vs-col>
@@ -33,7 +38,13 @@
           />
         </vs-col>
         <vs-col vs-sm="2" vs-xs="3" vs-lg="2">
-          <vs-button size="33px" id="search-doctor-button" color="dark" type="border">Search</vs-button>
+          <vs-button
+            size="33px"
+            id="search-doctor-button"
+            color="dark"
+            type="border"
+            >Search</vs-button
+          >
         </vs-col>
       </vs-row>
     </vs-card>
@@ -90,8 +101,11 @@ export default {
       this.$router.push("/administrator/doctors/createDoctor");
     },
   },
-  beforeMount: async function () {
-    let doctors = await axios.post("/api/users/clinicX/doctors", {});
+  beforeMount: async function() {
+    let doctors = await axios.post(
+      `${process.env.APP_VUE_BACKEND_URL}/api/users/clinicX/doctors`,
+      {}
+    );
     this.doctors = doctors.data;
   },
 };

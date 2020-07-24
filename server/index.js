@@ -16,7 +16,7 @@ app.use(express.static("client/dist"));
 
 app.use(bodyParser.json());
 
-//DB Connection//
+
 let URI = process.env.URI;
 const mongoose = require("mongoose");
 const { join } = require("path");
@@ -32,43 +32,30 @@ connection.once("open", () => {
   console.log("MongoDB connected");
 });
 
-//Administrator Routes
 app.use("/api/users/clinicX/administrators", routes.administratorRoutes);
 
-//Doctor Routes
 app.use("/api/users/clinicX/doctors", routes.doctorRoutes);
 
-//Patient Routes
 app.use("/api/users/clinicX/patients", routes.patientRoutes);
 
-//Clinic Routes
 app.use("/api/clinics", routes.clinicRoutes);
 
-//Room Routes
 app.use("/api/clinicX/rooms", routes.roomRoutes);
 
-//History Routes
 app.use("api/users/clinicX/history", routes.historyRoutes);
 
-//Current Patients Routes
 app.use("api/users/clinicX/currentPatients", routes.currentPatientsRoutes);
 
-//Appointments Routes
 app.use("/api/appointments", routes.appointmentsRoutes);
 
-//Multer Routes
 app.use("/api/pics", routes.multerRoutes);
 
-//Cloudinary Routes
 app.use("/api/cloud", routes.cloudinaryRoutes);
 
 var http = require("http");
 var AccessToken = require("twilio").jwt.AccessToken;
 var VideoGrant = AccessToken.VideoGrant;
 
-/**
- * Generate an Access Token for a chat application user provided via the url
- */
 app.get("/token", function(request, response) {
   response.header("Access-Control-Allow-Origin", "*");
   response.header(
@@ -84,35 +71,26 @@ app.get("/token", function(request, response) {
     });
   }
 
-  // Create an access token which we will sign and return to the client,
-  // containing the grant we just created.
+
   var token = new AccessToken(
     process.env.TWILIO_ACCOUNT_SID,
     process.env.TWILIO_API_KEY,
     process.env.TWILIO_API_SECRET
   );
 
-  // Assign the generated identity to the token.
   token.identity = identity;
 
-  // Grant the access token Twilio Video capabilities.
   var grant = new VideoGrant();
   token.addGrant(grant);
-  // Serialize the token to a JWT string and include it in a JSON response.
   response.send({
     identity: identity,
     token: token.toJwt(),
   });
 });
 
-// Create http server and run it.
 var server = http.createServer(app);
-// var port = process.env.PORT || 3000;
-// server.listen(port, function() {
-//   console.log("Express server running on *:" + port);
-// });
 
-////////////////////////////////
+
 
 app.use("/upload-images", upload.array("image"), async (req, res) => {
   const uploader = async (path) => await cloudinary.uploads(path, "Images");
@@ -138,7 +116,7 @@ app.get("*", (req, res) => {
   res.sendFile(dirPath);
 });
 
-///////////////////////////////
+
 app.listen(PORT, (err) => {
   if (!err) {
     console.log(`App Is Listetning On Port: ${PORT}`);

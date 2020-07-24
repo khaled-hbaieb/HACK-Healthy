@@ -80,11 +80,13 @@
             type="border"
             class="btn btn-info waves-effect waves-light m-r-10 handling-buttons-assign"
             @click="submitAssignRoom"
-          >Submit</vs-button>
+            >Submit</vs-button
+          >
           <vs-button
             class="btn btn-inverse waves-effect waves-light handling-buttons-assign"
             type="submit"
-          >Cancel</vs-button>
+            >Cancel</vs-button
+          >
         </vs-card>
       </vs-col>
     </vs-row>
@@ -102,7 +104,7 @@ export default {
       CIND: "",
       ED: "",
       illness: "",
-      availableRooms: []
+      availableRooms: [],
     };
   },
   methods: {
@@ -110,25 +112,28 @@ export default {
       this.$vs.notify({
         color: "success",
         title: "Upload Success",
-        text: this.name + " Uploaded The image Successfully!"
+        text: this.name + " Uploaded The image Successfully!",
       });
     },
     submitAssignRoom() {
-      axios.post("/api/clinicX/rooms/assignRoom", {
-        roomNumber: this.roomNumber,
-        CINP: this.CINP,
-        CIND: this.CIND,
-        ED: this.ED,
-        illness: this.illness
-      });
-    }
+      axios.post(
+        `${process.env.APP_VUE_BACKEND_URL}/api/clinicX/rooms/assignRoom`,
+        {
+          roomNumber: this.roomNumber,
+          CINP: this.CINP,
+          CIND: this.CIND,
+          ED: this.ED,
+          illness: this.illness,
+        }
+      );
+    },
   },
   beforeMount: async function() {
-    let available = await axios.post("/api/clinicX/rooms", {
-      availibility: true
+    let available = await axios.post(`${process.env.APP_VUE_BACKEND_URL}/api/clinicX/rooms`, {
+      availibility: true,
     });
     this.availableRooms = available.data;
-  }
+  },
 };
 </script>
 <style>

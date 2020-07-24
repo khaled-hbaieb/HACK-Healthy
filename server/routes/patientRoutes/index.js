@@ -13,14 +13,6 @@ router.post("/", async (req, res) => {
     res.send(error);
   }
 });
-// router.post("/createPatient", async (req, res) => {
-//   try {
-//     var newPatient = await services.patientService.createPatient(req.body);
-//     res.send(newPatient);
-//   } catch (error) {
-//     res.send(error);
-//   }
-// });
 
 router.post("/createpatient", async (req, res) => {
   try {
@@ -62,15 +54,13 @@ router.post("/checkLogin", (req, res) => {
         error: "invalid credentials",
       });
     }
-    // incorrect password
     if (!bcrypt.compareSync(req.body.password, user.password)) {
       return res.status(401).json({
         title: "login failed",
         error: "invalid credentials",
       });
     }
-    //case if all is good create a token and send to front
-    let token = jwt.sign({ userId: user._id }, "secretKey"); // => assigned only the user id to the token // add more here
+    let token = jwt.sign({ userId: user._id }, "secretKey");
     return res.status(200).json({
       title: "login success",
       token: token,
