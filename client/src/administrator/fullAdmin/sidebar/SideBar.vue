@@ -39,10 +39,6 @@ export default {
     parent: {
       type: String,
     },
-    sidebarLinks: {
-      type: Array,
-      required: true,
-    },
     index: {
       default: null,
       type: [String, Number],
@@ -51,6 +47,7 @@ export default {
   data: () => ({
     doNotClose: false,
     windowWidth: window.innerWidth,
+    sidebarLinks: [],
   }),
   computed: {
     //This is for mobile trigger
@@ -62,6 +59,108 @@ export default {
         this.$store.commit("IS_SIDEBAR_ACTIVE", val);
       },
     },
+  },
+  beforeMount() {
+    if (localStorage.role === "administrator") {
+      this.sidebarLinks = [
+        {
+          url: "/administrator/currentPatients",
+          name: "Current Patients",
+          icon: "person",
+        },
+        {
+          url: "/administrator/patients",
+          name: "Patients",
+          icon: "person",
+        },
+        {
+          url: "/administrator/doctors",
+          name: "Doctors",
+          icon: "person",
+        },
+        {
+          url: "/administrator/clinicState",
+          name: "Clinic State",
+          icon: "dns",
+        },
+        {
+          url: "/administrator/makeABill",
+          name: "Make A Bill",
+          icon: "money",
+        },
+      ];
+    } else if (localStorage.role === "doctor") {
+      this.sidebarLinks = [
+        {
+          url: "/doctor/appointments",
+          name: "Appointments",
+          icon: "dns",
+        },
+        {
+          url: "/doctor/calendar",
+          name: "Calendar",
+          icon: "history",
+        },
+        {
+          url: "/doctor/patients",
+          name: "Patients",
+          icon: "person",
+        },
+        {
+          url: "/doctor/doctors",
+          name: "Doctors",
+          icon: "person",
+        },
+        {
+          url: "/doctor/chatRoom",
+          name: "Chat Room",
+          icon: "chat",
+        },
+        {
+          url: "/doctor/forum",
+          name: "Forum",
+          icon: "forum",
+        },
+        {
+          url: "/doctor/assignBill",
+          name: "Assign A Bill",
+          icon: "money",
+        },
+      ];
+    } else {
+      this.sidebarLinks = [
+        {
+          url: "/patient/makeAppointment",
+          name: "Make An Appointment",
+          icon: "dns",
+        },
+        {
+          url: "/patient/appointments",
+          name: "Appointments",
+          icon: "dns",
+        },
+        {
+          url: "/patient/doctors",
+          name: "Doctors",
+          icon: "person",
+        },
+        {
+          url: "/patient/billing",
+          name: "Billing",
+          icon: "money",
+        },
+        {
+          url: "/patient/history",
+          name: "History",
+          icon: "history",
+        },
+        {
+          url: "/patient/forum",
+          name: "Forum",
+          icon: "forum",
+        },
+      ];
+    }
   },
   watch: {},
   methods: {

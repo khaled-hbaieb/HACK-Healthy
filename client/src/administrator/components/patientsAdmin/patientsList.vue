@@ -63,14 +63,14 @@
           class="cardx"
         >
           <div slot="media">
-            <a href="/patients/patient">
               <img
+                @click="rendershowPatientInfo"
                 id="patient-profile-image"
-                :src="require('@/assets/images/users/ali.jpg')"
+                :src="patient.image"
                 alt="user"
               />
-            </a>
           </div>
+
           <div id="footer" slot="footer">
             <h3 class="box-title">{{ patient.fullName }}</h3>
             <small>Job: {{ patient.job }}</small>
@@ -90,11 +90,17 @@ export default {
     title: "Patients",
     search: "",
     patients: [],
+    colorx: "#4a5153",
+    popupActivo5: false,
+    // popupActivo5:false,
   }),
   methods: {
     renderCreatePatient() {
       this.$router.push("patients/createAPatient");
     },
+    rendershowPatientInfo(){
+      this.$router.push("patients/PatientMoreInfos")
+    }
   },
   beforeMount: async function() {
     let patients = await axios.post("/api/users/clinicX/patients");

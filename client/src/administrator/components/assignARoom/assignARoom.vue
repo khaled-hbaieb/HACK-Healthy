@@ -28,20 +28,40 @@
               placeholder="Enter THE Patient's CIN"
               v-model="CINP"
             />
+            <label class="col-md-12" for="CIND">CIN Of Doctor</label>
+            <vs-input
+              :success="CIND.length === 8"
+              success-text="Thank You For Typing the CIN of the Doctor"
+              class="doctor-form-inputs-doctor-creation"
+              type="number"
+              id="example-text"
+              name="CIND"
+              placeholder="Enter THE Doctor's CIN"
+              v-model="CIND"
+            />
+            <label class="col-md-12" for="illness">Illness</label>
+            <vs-input
+              class="doctor-form-inputs-doctor-creation"
+              name="illness"
+              placeholder="Type In The illness"
+              v-model="illness"
+              success-text="Thank You For Selecting The Room"
+              :success="illness !== ''"
+            />
             <label class="col-md-12" for="room">Room Number</label>
             <vs-select
               class="doctor-form-inputs-doctor-creation"
               name="room"
               placeholder="Select The Room"
-              v-model="chosenRoom"
+              v-model="roomNumber"
               success-text="Thank You For Selecting The Room"
-              :success="chosenRoom !== ''"
+              :success="roomNumber !== ''"
             >
               <vs-select-item
                 v-for="(room, index) in availableRooms"
-                :text="room"
                 :key="index"
-                :value="room"
+                :text="room.roomNumber"
+                :value="room.roomNumber"
               ></vs-select-item>
             </vs-select>
             <label class="col-md-12" for="CINP">Entry Date</label>
@@ -55,6 +75,16 @@
               v-model="ED"
             />
           </form>
+          <vs-button
+            color="primary"
+            type="border"
+            class="btn btn-info waves-effect waves-light m-r-10 handling-buttons-assign"
+            @click="submitAssignRoom"
+          >Submit</vs-button>
+          <vs-button
+            class="btn btn-inverse waves-effect waves-light handling-buttons-assign"
+            type="submit"
+          >Cancel</vs-button>
         </vs-card>
       </vs-col>
     </vs-row>
@@ -62,14 +92,17 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "createDoctor",
   data: () => {
     return {
+      roomNumber: "",
       CINP: "",
+      CIND: "",
       ED: "",
-      chosenRoom: "",
-      availableRooms: ["5", "4", "112", "124"]
+      illness: "",
+      availableRooms: []
     };
   },
   methods: {
@@ -79,7 +112,22 @@ export default {
         title: "Upload Success",
         text: this.name + " Uploaded The image Successfully!"
       });
+    },
+    submitAssignRoom() {
+      axios.post("/api/clinicX/rooms/assignRoom", {
+        roomNumber: this.roomNumber,
+        CINP: this.CINP,
+        CIND: this.CIND,
+        ED: this.ED,
+        illness: this.illness
+      });
     }
+  },
+  beforeMount: async function() {
+    let available = await axios.post("/api/clinicX/rooms", {
+      availibility: true
+    });
+    this.availableRooms = available.data;
   }
 };
 </script>
@@ -91,6 +139,10 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+.handling-buttons-assign {
+  margin-top: 15px;
+  float: right;
 }
 #button-admin-patient-container {
   margin-top: 15px;

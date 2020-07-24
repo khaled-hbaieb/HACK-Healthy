@@ -7,20 +7,15 @@ const currentPatientsSchema = new Schema({
   },
   patientCIN: {
     type: String,
-    unique: true,
   },
   doctorCIN: {
     type: String,
-    unique: true,
   },
   roomNumber: {
     type: String,
     unique: true,
   },
   entryDate: {
-    type: String,
-  },
-  exitDate: {
     type: String,
   },
   illness: {

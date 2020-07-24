@@ -49,8 +49,10 @@
             <div class="centerx">
               <vs-upload
                 automatic
-                action="http://localhost:8080/"
-                @on-success="successUpload"
+                action="http://localhost:3000/upload-images"
+                fileName="image"
+                @change="onFilePicked"
+                @on-success="onFileUploaded"
               />
             </div>
             <label class="col-md-12" for="special">CIN</label>
@@ -60,7 +62,7 @@
               id="url"
               name="url"
               placeholder="Your CIN"
-              v-model="CIN"
+              v-model="cin"
             />
             <label class="col-md-12" for="special">Job</label>
             <vs-input
@@ -108,13 +110,13 @@
               data-mask="(999) 999-9999"
               v-model="phoneNumber"
             />
-            <label class="col-md-12" for="pwd">Password</label>
+            <label class="col-md-12" for="password">Password</label>
             <vs-input
               class="doctor-form-inputs-doctor-creation"
               type="password"
               id="pwd"
-              name="pwd"
-              v-model="pwd"
+              name="password"
+              v-model="password"
               placeholder="enter your password"
             />
             <label class="col-md-12" for="cpwd">Confirm Password</label>
@@ -256,6 +258,7 @@
             <vs-button
               type="submit"
               class="btn btn-info waves-effect waves-light m-r-10"
+              @click="handleRegister"
               >Submit</vs-button
             >
           </div>
@@ -266,6 +269,9 @@
 </template>
 
 <script>
+import axios from "axios";
+// import axios from 'axios'
+import Patient from "../../../models/patient";
 export default {
   name: "createDoctor",
   data: () => {
@@ -273,15 +279,20 @@ export default {
       fullName: "",
       CIN: "",
       fatherName: "",
+      fatherNumber: "",
+      motherName: "",
+      motherNumber: "",
       dateOfBirth: "",
       gender: "",
       phoneNumber: "",
       email: "",
-      pwd: "",
+      password: "",
       cpwd: "",
       job: "",
       address: "",
+      imageName: "",
       bloodType: "",
+      image: null,
       bloodTypes: ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"],
       allergyInputs: [
         {
@@ -299,7 +310,19 @@ export default {
           placeholder: "Enter The Vaccination",
         },
       ],
+      // patient: new Patient('', ''),
+      successful: false,
     };
+  },
+  computed: {
+    loggedIn() {
+      return this.$store.state.auth.status.loggedIn;
+    },
+  },
+  mounted() {
+    if (this.loggedIn) {
+      this.$router.push("/patients");
+    }
   },
   methods: {
     successUpload() {
@@ -325,7 +348,42 @@ export default {
         placeholder: "Enter The Vaccination",
       });
     },
-    submitForm() {},
+    handleRegister() {
+      let user;
+      user = new Patient(
+        this.email,
+        this.password,
+        this.fullName,
+        this.gender,
+        this.dateOfBirth,
+        this.CIN,
+        this.phoneNumber,
+        this.address,
+        this.job
+      );
+      // user = new Patient(this.email, this.pwd);
+      // this.message = '';
+      // this.submitted = true;
+      // this.$validator.validate().then(isValid => {
+      //   if (isValid) {
+      // if (this.email && this.pwd) {
+      this.$store.dispatch("auth/register", { user, role: "patient" }).then(
+        () => {
+          console.log("entered");
+          // this.message = data.message;
+          this.successful = true;
+        },
+        (error) => {
+          this.message =
+            (error.response && error.response.data) ||
+            error.message ||
+            error.toString();
+          this.successful = false;
+        }
+      );
+      // }
+    },
+    // });
   },
 };
 </script>
@@ -397,5 +455,4 @@ input::-webkit-inner-spin-button {
   margin-top: 0%;
   position: relative !important;
 }
-
 </style>
