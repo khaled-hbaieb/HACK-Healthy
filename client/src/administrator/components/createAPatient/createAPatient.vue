@@ -49,7 +49,7 @@
             <div class="centerx">
               <vs-upload
                 automatic
-                action="/upload-images"
+                action="http://localhost:3000/upload-images"
                 fileName="image"
                 @on-success="onFileUploaded"
               />
