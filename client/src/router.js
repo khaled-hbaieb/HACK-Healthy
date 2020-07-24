@@ -130,3 +130,4 @@ component: () => import("./doctor/fullDoctor/AdminInterface.vue"),
   ],
 
 });
+
