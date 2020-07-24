@@ -117,7 +117,7 @@ export default {
     },
     submitAssignRoom() {
       axios.post(
-        `${process.env.APP_VUE_BACKEND_URL}/api/clinicX/rooms/assignRoom`,
+        `${process.env.VUE_APP_BACKEND_URL}/api/clinicX/rooms/assignRoom`,
         {
           roomNumber: this.roomNumber,
           CINP: this.CINP,
@@ -129,9 +129,12 @@ export default {
     },
   },
   beforeMount: async function() {
-    let available = await axios.post(`${process.env.APP_VUE_BACKEND_URL}/api/clinicX/rooms`, {
-      availibility: true,
-    });
+    let available = await axios.post(
+      `${process.env.VUE_APP_BACKEND_URL}/api/clinicX/rooms`,
+      {
+        availibility: true,
+      }
+    );
     this.availableRooms = available.data;
   },
 };

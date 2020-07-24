@@ -102,7 +102,9 @@ export default {
     },
   },
   beforeMount: async function() {
-    let patients = await axios.post(`${process.env.APP_VUE_BACKEND_URL}/api/users/clinicX/patients`);
+    let patients = await axios.post(
+      `${process.env.VUE_APP_BACKEND_URL}/api/users/clinicX/patients`
+    );
     this.patients = patients.data;
   },
 };

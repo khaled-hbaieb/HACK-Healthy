@@ -141,13 +141,13 @@ export default {
     },
     async inputChange() {
       let doctor = await axios.post(
-        `${process.env.APP_VUE_BACKEND_URL}/api/users/clinicX/doctors`,
+        `${process.env.VUE_APP_BACKEND_URL}/api/users/clinicX/doctors`,
         {
           fullName: this.doctorName,
         }
       );
       let appoints = await axios.post(
-        `${process.env.APP_VUE_BACKEND_URL}/api/appointments/appointment`,
+        `${process.env.VUE_APP_BACKEND_URL}/api/appointments/appointment`,
         {
           doctorCIN: doctor.data.CIN,
         }
@@ -161,7 +161,7 @@ export default {
     },
     getDoctors: async function() {
       let doctors = await axios.post(
-        `${process.env.APP_VUE_BACKEND_URL}/api/users/clinicX/doctors/`,
+        `${process.env.VUE_APP_BACKEND_URL}/api/users/clinicX/doctors/`,
         {
           speciality: this.spec,
         }

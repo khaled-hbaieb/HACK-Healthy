@@ -71,7 +71,7 @@ export default {
   },
   beforeMount: async function() {
     let appoints = await axios.post(
-      `${process.env.APP_VUE_BACKEND_URL}/api/appointments/appointment`,
+      `${process.env.VUE_APP_BACKEND_URL}/api/appointments/appointment`,
       {
         doctorCIN: 14404510,
         state: false,

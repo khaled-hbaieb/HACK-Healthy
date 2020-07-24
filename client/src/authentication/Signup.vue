@@ -87,7 +87,7 @@ export default {
         email: this.email,
         password: this.password,
       };
-      axios.post(`${process.env.APP_VUE_BACKEND_URL}/signup`, newUser).then(
+      axios.post(`${process.env.VUE_APP_BACKEND_URL}/signup`, newUser).then(
         (res) => {
           console.log(res);
           this.error = "";
@@ -104,16 +104,12 @@ export default {
 </script>
 
 <style scoped>
-
-
 #inputs {
   margin-top: 1%;
   margin-left: 45%;
 }
 
-
 .col-md-12 {
   margin-left: 45% !important;
 }
-
 </style>
