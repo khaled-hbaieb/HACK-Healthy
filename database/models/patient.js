@@ -35,9 +35,9 @@ const patientSchema = new Schema({
   createdAt: {
     type: String,
   },
-  image: {
+  imageName: {
     type: String,
-  }
+  },
 });
 
 module.exports = mongoose.model("Patients", patientSchema);

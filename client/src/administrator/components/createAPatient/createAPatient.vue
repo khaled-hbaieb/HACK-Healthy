@@ -6,7 +6,7 @@
           <h4 id="t1" class="text-themecolor">Add A Patient</h4>
 
           <h6 id="t2" class="text-themecolor">
-            <a href="/patients">Patients</a> > Patient
+            <a href="/administrator/patients">Patients</a> > Patient
           </h6>
         </vs-card>
       </vs-col>
@@ -51,7 +51,6 @@
                 automatic
                 action="http://localhost:3000/upload-images"
                 fileName="image"
-                @change="onFilePicked"
                 @on-success="onFileUploaded"
               />
             </div>
@@ -270,7 +269,6 @@
 
 <script>
 import axios from "axios";
-// import axios from 'axios'
 import Patient from "../../../models/patient";
 export default {
   name: "createDoctor",
@@ -292,7 +290,6 @@ export default {
       address: "",
       imageName: "",
       bloodType: "",
-      image: null,
       bloodTypes: ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"],
       allergyInputs: [
         {
@@ -310,7 +307,6 @@ export default {
           placeholder: "Enter The Vaccination",
         },
       ],
-      // patient: new Patient('', ''),
       successful: false,
     };
   },
@@ -319,12 +315,11 @@ export default {
       return this.$store.state.auth.status.loggedIn;
     },
   },
-  mounted() {
-    if (this.loggedIn) {
-      this.$router.push("/patients");
-    }
-  },
+
   methods: {
+    onFileUploaded(event) {
+      this.imageName = event.target.response;
+    },
     successUpload() {
       this.$vs.notify({
         color: "success",
@@ -349,6 +344,7 @@ export default {
       });
     },
     handleRegister() {
+      console.log(this.image);
       let user;
       user = new Patient(
         this.email,
@@ -359,18 +355,11 @@ export default {
         this.CIN,
         this.phoneNumber,
         this.address,
-        this.job
+        this.job,
+        this.imageName
       );
-      // user = new Patient(this.email, this.pwd);
-      // this.message = '';
-      // this.submitted = true;
-      // this.$validator.validate().then(isValid => {
-      //   if (isValid) {
-      // if (this.email && this.pwd) {
       this.$store.dispatch("auth/register", { user, role: "patient" }).then(
         () => {
-          console.log("entered");
-          // this.message = data.message;
           this.successful = true;
         },
         (error) => {
@@ -381,7 +370,6 @@ export default {
           this.successful = false;
         }
       );
-      // }
     },
     // });
   },

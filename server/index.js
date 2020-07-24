@@ -10,6 +10,7 @@ require("dotenv").config();
 const app = express();
 
 const PORT = process.env.PORT || 3000;
+
 app.use(express.static("uploads"));
 app.use(express.static("client/dist"));
 
@@ -55,21 +56,15 @@ app.use("api/users/clinicX/currentPatients", routes.currentPatientsRoutes);
 //Appointments Routes
 app.use("/api/appointments", routes.appointmentsRoutes);
 
-/**
- * Load Twilio configuration from .env config file - the following environment
- * variables should be set:
- * process.env.TWILIO_ACCOUNT_SID
- * process.env.TWILIO_API_KEY
- * process.env.TWILIO_API_SECRET
- */
+//Multer Routes
+app.use("/api/pics", routes.multerRoutes);
 
-require("dotenv").config();
+//Cloudinary Routes
+app.use("/api/cloud", routes.cloudinaryRoutes);
 
 var http = require("http");
 var AccessToken = require("twilio").jwt.AccessToken;
 var VideoGrant = AccessToken.VideoGrant;
-
-// Create Express webapp.
 
 /**
  * Generate an Access Token for a chat application user provided via the url
@@ -116,32 +111,18 @@ var server = http.createServer(app);
 // server.listen(port, function() {
 //   console.log("Express server running on *:" + port);
 // });
-app.get("*", (req, res) => {
-  let dirPath = path.join(__dirname, "../client/dist/index.html");
-  res.sendFile(dirPath);
-});
-
-//Multer Routes
-app.use("/api/pics", routes.multerRoutes);
-
-app.use("/api/cloud", routes.cloudinaryRoutes);
 
 ////////////////////////////////
 
 app.use("/upload-images", upload.array("image"), async (req, res) => {
-  // try {
   const uploader = async (path) => await cloudinary.uploads(path, "Images");
   if (req.method === "POST") {
     const urls = [];
     const files = req.files;
-
     for (const file of files) {
       const { path } = file;
-
       const newPath = await uploader(path);
-
       urls.push(newPath);
-
       fs.unlinkSync(path);
     }
     res.send(urls[0].url);
@@ -150,8 +131,6 @@ app.use("/upload-images", upload.array("image"), async (req, res) => {
       err: "Images not uploaded successfully",
     });
   }
-  // } catch (error) {
-  // }
 });
 
 app.get("*", (req, res) => {

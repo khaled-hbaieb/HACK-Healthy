@@ -8,16 +8,12 @@
         <vs-col class="col-md-7 align-self-center text-right">
           <div class="d-flex justify-content-end align-items-center">
             <vs-button
+              v-if="administrator"
               @click="renderCreateDoctor"
               type="button"
               class="btn btn-info d-block d-lg-block"
             >
-              <vs-icon
-                icon="add_circle_outline"
-                id="doctor-icon"
-                round
-              ></vs-icon
-              >Create New Doctor
+              <vs-icon icon="add_circle_outline" id="doctor-icon" round></vs-icon>Create New Doctor
             </vs-button>
           </div>
         </vs-col>
@@ -37,13 +33,7 @@
           />
         </vs-col>
         <vs-col vs-sm="2" vs-xs="3" vs-lg="2">
-          <vs-button
-            size="33px"
-            id="search-doctor-button"
-            color="dark"
-            type="border"
-            >Search</vs-button
-          >
+          <vs-button size="33px" id="search-doctor-button" color="dark" type="border">Search</vs-button>
         </vs-col>
       </vs-row>
     </vs-card>
@@ -75,7 +65,8 @@
                 {{ doctor.address }}
                 <br />
                 <br />
-                <abbr title="Phone">Phone:</abbr> (+216)
+                <abbr title="Phone">Phone:</abbr>
+                (+216)
                 {{ doctor.phoneNumber }}
               </address>
             </vs-col>
@@ -92,13 +83,14 @@ export default {
   data: () => ({
     title: "Doctors",
     doctors: [],
+    administrator: localStorage.role === "administrator",
   }),
   methods: {
     renderCreateDoctor() {
       this.$router.push("/administrator/doctors/createDoctor");
     },
   },
-  beforeMount: async function() {
+  beforeMount: async function () {
     let doctors = await axios.post("/api/users/clinicX/doctors", {});
     this.doctors = doctors.data;
   },

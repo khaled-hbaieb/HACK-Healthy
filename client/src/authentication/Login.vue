@@ -128,10 +128,10 @@ export default {
       this.role = "doctor";
     },
     patient() {
-      this.role = 'patient'
+      this.role = "patient";
     },
     administrator() {
-      this.role = 'administrator'
+      this.role = "administrator";
     },
     handleLogin() {
       let user;
@@ -167,6 +167,9 @@ export default {
         );
       }
     },
+  },
+  beforeMount: function () {
+    localStorage.clear();
   },
 };
 </script>

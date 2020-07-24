@@ -8,10 +8,12 @@ export default new Router({
   routes: [
     {
       path: "/",
+      index: 1,
       component: () => import("./authentication/Login.vue"),
     },
     {
       path: "/administrator",
+      index: 2,
       component: () => import("./Interface/AdminInterface.vue"),
       children: [
         {
@@ -19,7 +21,9 @@ export default new Router({
           name: "currentPatients",
           index: 1,
           component: () =>
-            import("./patient/components/makeAppointment/MakeAppointment.vue"),
+            import(
+              "./administrator/components/currentPatientsAdmin/currentPatients.vue"
+            ),
 
           children: [
             {
@@ -121,6 +125,7 @@ export default new Router({
     },
     {
       path: "/doctor",
+      name: "doctor",
       component: () => import("./Interface/AdminInterface.vue"),
       children: [
         {
@@ -134,13 +139,14 @@ export default new Router({
           path: "calendar",
           name: "calendar",
           index: 2,
-          component: () => import("./doctor/components/calendar/Calendar.vue"),
+          component: () => import("./doctor/components/Calendar/Calendar.vue"),
         },
         {
           path: "patients",
           name: "patients",
           index: 3,
-          component: () => import("./doctor/components/patients/patients.vue"),
+          component: () =>
+            import("./administrator/components/patientsAdmin/patients.vue"),
           children: [
             {
               path: "/patient",
@@ -166,8 +172,8 @@ export default new Router({
           ],
         },
         {
-          path: "chat",
-          name: "chat",
+          path: "chatRoom",
+          name: "chatRoom",
           index: 5,
           component: () =>
             import("./doctor/components/chatDoctor/ChatView.vue"),
@@ -180,8 +186,8 @@ export default new Router({
             import("./administrator/components/doctorsAdmin/doctorsList.vue"),
           children: [
             {
-              path: "/doctor",
-              name: "doctor",
+              path: "/doctorProfile",
+              name: "doctorProfile",
               component: () =>
                 import(
                   "./administrator/components/doctorProfile/DoctorProfile.vue"

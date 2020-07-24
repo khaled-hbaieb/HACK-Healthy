@@ -4,7 +4,6 @@ const API_URL = "http://localhost:3000/api/users/clinicX/";
 
 class AuthService {
   async login(user) {
-    console.log("log", user);
     let users = await axios.post(API_URL + `${user.role}s/checkLogin`, {
       email: user.email,
       password: user.password,
@@ -21,10 +20,11 @@ class AuthService {
   }
 
   logout() {
-    localStorage.removeItem("token");
+    localStorage.clear();
   }
 
   register(user) {
+    console.log(API_URL, `${user.role}s/create${user.role}`);
     return axios.post(API_URL + `${user.role}s/create${user.role}`, {
       email: user.user.email,
       password: user.user.password,
@@ -35,23 +35,7 @@ class AuthService {
       phoneNumber: user.user.phoneNumber,
       address: user.user.address,
       job: user.user.job,
-    });
-  }
-
-  registerDoc(user) {
-    console.log("sending");
-    return axios.post(API_URL + "doctors/createdoctor", {
-      fullName: user.fullName,
-      email: user.email,
-      gender: user.gender,
-      dateOfBirth: user.dateOfBirth,
-      password: user.password,
-      phoneNumber: user.phoneNumber,
-      speciality: user.speciality,
-      yearsOfExperience: user.yearsOfExperience,
-      educationBackground: user.educationBackground,
-      address: user.address,
-      CIN: user.CIN,
+      imageName: user.user.imageName,
     });
   }
 }

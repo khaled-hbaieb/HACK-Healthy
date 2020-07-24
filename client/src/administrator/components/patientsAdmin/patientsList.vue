@@ -66,7 +66,7 @@
             <img
               @click="rendershowPatientInfo"
               id="patient-profile-image"
-              :src="patient.image"
+              :src="patient.imageName"
               alt="user"
             />
           </div>

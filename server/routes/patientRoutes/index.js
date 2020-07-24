@@ -42,9 +42,7 @@ router.post("/updatePatient", async (req, res) => {
 
 router.post("/checkPatient", async (req, res) => {
   try {
-    // console.log('test',req.body)
     var Patients = await services.patientService.checkPatient(req.body);
-    console.log("patients", !!Patients.length);
     res.send(Patients);
   } catch (err) {
     res.send(err);
@@ -52,22 +50,18 @@ router.post("/checkPatient", async (req, res) => {
 });
 
 router.post("/checkLogin", (req, res) => {
-  console.log(req.body);
   Patient.findOne({ email: req.body.email }, (err, user) => {
     if (err)
       return res.status(500).json({
         title: "server error",
         error: err,
       });
-    console.log("user", user);
     if (!user) {
       return res.status(401).json({
         title: "user not found",
         error: "invalid credentials",
       });
     }
-    console.log("userpw", user.password);
-    console.log("body", req.body.password);
     // incorrect password
     if (!bcrypt.compareSync(req.body.password, user.password)) {
       return res.status(401).json({

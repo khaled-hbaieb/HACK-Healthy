@@ -30,11 +30,7 @@
       <!---
       Craete new dd
       -->
-      <vs-dropdown
-        vs-trigger-click
-        left
-        class="cursor-pointer pr-2 pl-2 ml-1 mr-1"
-      >
+      <vs-dropdown vs-trigger-click left class="cursor-pointer pr-2 pl-2 ml-1 mr-1">
         <a class="text-white-dark" href="#">
           <vs-icon icon="notifications"></vs-icon>
         </a>
@@ -48,11 +44,7 @@
       <!---
       Craete new dd
       -->
-      <vs-dropdown
-        vs-trigger-click
-        left
-        class="cursor-pointer pr-2 pl-2 ml-1 mr-1"
-      >
+      <vs-dropdown vs-trigger-click left class="cursor-pointer pr-2 pl-2 ml-1 mr-1">
         <a class="text-white-dark" href="#">
           <vs-icon icon="mode_comment"></vs-icon>
         </a>
@@ -66,11 +58,7 @@
       <!---
       Craete new dd
       -->
-      <vs-dropdown
-        vs-trigger-click
-        left
-        class="cursor-pointer pr-2 pl-2 ml-1 mr-md-3"
-      >
+      <vs-dropdown vs-trigger-click left class="cursor-pointer pr-2 pl-2 ml-1 mr-md-3">
         <a class="text-white-dark user-image" href="#">
           <img src="@/assets/images/users/houssem.jpg" alt="User" />
         </a>
@@ -79,7 +67,7 @@
             <vs-icon icon="person_outline" class="mr-1"></vs-icon>My Profile
           </vs-dropdown-item>
           <hr class="mb-1" />
-          <vs-dropdown-item>
+          <vs-dropdown-item @click="logout">
             <vs-icon icon="logout" class="mr-1"></vs-icon>Logout
           </vs-dropdown-item>
         </vs-dropdown-menu>
@@ -110,6 +98,11 @@ export default {
   }),
 
   methods: {
+    logout() {
+      this.$store.dispatch("auth/logout").then(() => {
+        this.$router.push(`/`);
+      });
+    },
     //This is for sidebar trigger in mobile
     activeSidebar() {
       this.$store.commit("IS_SIDEBAR_ACTIVE", true);
