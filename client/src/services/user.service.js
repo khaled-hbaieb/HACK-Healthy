@@ -1,7 +1,7 @@
-import axios from 'axios';
-import authHeader from './auth-header';
+import axios from "axios";
+import authHeader from "./auth-header";
 
-const API_URL = 'http://localhost:3000/api/users/clinicX/';
+const API_URL = "/api/users/clinicX/";
 
 class UserService {
   getPublicContent() {
@@ -9,15 +9,15 @@ class UserService {
   }
 
   getPatientBoard() {
-    return axios.get(API_URL + 'patients', { headers: authHeader() });
+    return axios.get(API_URL + "patients", { headers: authHeader() });
   }
 
   getAdministratorBoard() {
-    return axios.get(API_URL + 'administrators', { headers: authHeader() });
+    return axios.get(API_URL + "administrators", { headers: authHeader() });
   }
 
   getDoctorBoard() {
-    return axios.get(API_URL + 'doctors', { headers: authHeader() });
+    return axios.get(API_URL + "doctors", { headers: authHeader() });
   }
 }
 
