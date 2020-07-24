@@ -37,17 +37,17 @@ export default {
   name: "SideBar",
   props: {
     parent: {
-      type: String
+      type: String,
     },
     index: {
       default: null,
-      type: [String, Number]
-    }
+      type: [String, Number],
+    },
   },
   data: () => ({
     doNotClose: false,
     windowWidth: window.innerWidth,
-    sidebarLinks: []
+    sidebarLinks: [],
   }),
   computed: {
     //This is for mobile trigger
@@ -57,108 +57,108 @@ export default {
       },
       set(val) {
         this.$store.commit("IS_SIDEBAR_ACTIVE", val);
-      }
-    }
+      },
+    },
   },
   beforeMount() {
-    if (localStorage.role === "admin") {
+    if (localStorage.role === "administrator") {
       this.sidebarLinks = [
         {
           url: "/administrator/currentPatients",
           name: "Current Patients",
-          icon: "person"
+          icon: "person",
         },
         {
           url: "/administrator/patients",
           name: "Patients",
-          icon: "person"
+          icon: "person",
         },
         {
           url: "/administrator/doctors",
           name: "Doctors",
-          icon: "person"
+          icon: "person",
         },
         {
           url: "/administrator/clinicState",
           name: "Clinic State",
-          icon: "dns"
+          icon: "dns",
         },
         {
           url: "/administrator/makeABill",
           name: "Make A Bill",
-          icon: "money"
-        }
+          icon: "money",
+        },
       ];
     } else if (localStorage.role === "doctor") {
       this.sidebarLinks = [
         {
           url: "/doctor/appointments",
           name: "Appointments",
-          icon: "dns"
+          icon: "dns",
         },
         {
           url: "/doctor/calendar",
           name: "Calendar",
-          icon: "history"
+          icon: "history",
         },
         {
           url: "/doctor/patients",
           name: "Patients",
-          icon: "person"
+          icon: "person",
         },
         {
           url: "/doctor/doctors",
           name: "Doctors",
-          icon: "person"
+          icon: "person",
         },
         {
           url: "/doctor/chatRoom",
           name: "Chat Room",
-          icon: "chat"
+          icon: "chat",
         },
         {
           url: "/doctor/forum",
           name: "Forum",
-          icon: "forum"
+          icon: "forum",
         },
         {
           url: "/doctor/assignBill",
           name: "Assign A Bill",
-          icon: "money"
-        }
+          icon: "money",
+        },
       ];
     } else {
       this.sidebarLinks = [
         {
           url: "/patient/makeAppointment",
           name: "Make An Appointment",
-          icon: "dns"
+          icon: "dns",
         },
         {
           url: "/patient/appointments",
           name: "Appointments",
-          icon: "dns"
+          icon: "dns",
         },
         {
           url: "/patient/doctors",
           name: "Doctors",
-          icon: "person"
+          icon: "person",
         },
         {
           url: "/patient/billing",
           name: "Billing",
-          icon: "money"
+          icon: "money",
         },
         {
           url: "/patient/history",
           name: "History",
-          icon: "history"
+          icon: "history",
         },
         {
           url: "/patient/forum",
           name: "Forum",
-          icon: "forum"
-        }
+          icon: "forum",
+        },
       ];
     }
   },
@@ -176,7 +176,7 @@ export default {
         this.$store.commit("IS_SIDEBAR_ACTIVE", true);
         this.doNotClose = true;
       }
-    }
+    },
   },
   mounted() {
     this.$nextTick(() => {
@@ -187,6 +187,6 @@ export default {
   beforeDestroy() {
     window.removeEventListener("resize", this.handleWindowResize);
     this.setSidebar();
-  }
+  },
 };
 </script>

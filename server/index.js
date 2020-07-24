@@ -51,8 +51,6 @@ app.use("api/users/clinicX/currentPatients", routes.currentPatientsRoutes);
 //Appointments Routes
 app.use("/api/appointments", routes.appointmentsRoutes);
 
-("use strict");
-
 /**
  * Load Twilio configuration from .env config file - the following environment
  * variables should be set:

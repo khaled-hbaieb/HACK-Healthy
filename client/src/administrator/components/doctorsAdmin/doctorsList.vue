@@ -95,7 +95,7 @@ export default {
   }),
   methods: {
     renderCreateDoctor() {
-      this.$router.push("/doctors/createDoctor");
+      this.$router.push("/administrator/doctors/createDoctor");
     },
   },
   beforeMount: async function() {

@@ -209,6 +209,7 @@
               <vs-button
                 type="submit"
                 class="btn btn-info waves-effect waves-light m-r-10"
+                @click="handleRegisterDoc"
                 >Submit</vs-button
               >
             </div>
@@ -221,7 +222,7 @@
 
 <script>
 import { required } from "vuelidate/lib/validators";
-
+import Doctor from "../../../models/doctor";
 export default {
   name: "createDoctor",
   data: () => {
@@ -263,7 +264,18 @@ export default {
         "SURGERY",
         "UROLOGY",
       ],
+      successful: false,
     };
+  },
+  computed: {
+    loggedIn() {
+      return this.$store.state.auth.status.loggedIn;
+    },
+  },
+  mounted() {
+    if (this.loggedIn) {
+      this.$router.push("/doctors");
+    }
   },
   validations: {
     name: {
@@ -280,6 +292,35 @@ export default {
       });
     },
     submitForm() {},
+    handleRegisterDoc() {
+      let user;
+      user = new Doctor(
+        this.email,
+        this.pwd,
+        this.fullName,
+        this.gender,
+        this.dateOfBirth,
+        this.phoneNumber,
+        this.specialityValue,
+        this.yearsOfExperience,
+        this.educationBackground,
+        this.address,
+        this.CIN
+      );
+      this.$store.dispatch("auth/register", { user, role: "doctor" }).then(
+        () => {
+          console.log("entered doc creation");
+          this.successful = true;
+        },
+        (error) => {
+          this.message =
+            (error.response && error.response.data) ||
+            error.message ||
+            error.toString();
+          this.successful = false;
+        }
+      );
+    },
   },
 };
 </script>

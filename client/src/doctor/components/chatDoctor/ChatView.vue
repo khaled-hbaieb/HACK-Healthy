@@ -88,6 +88,7 @@
             </div>
 
             <div class="d-flex justify-content-start mb-4">
+
               <div class="img_cont_msg">
                 <img class="rounded-circle user_img_msg" />
               </div>
@@ -96,10 +97,12 @@
               </div>
             </div>
             <div class="d-flex justify-content-end mb-4">
+
               <div class="msg_cotainer_send">
                 <!-- <span class="msg_time_send">8:55 AM, Today</span> -->
               </div>
               <div class="img_cont_msg">
+
                 <img class="rounded-circle user_img_msg" />
               </div>
             </div>
