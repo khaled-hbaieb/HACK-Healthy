@@ -103,7 +103,7 @@ export default {
   },
   beforeMount: async function() {
     let doctors = await axios.post(
-      `${process.env.VUE_APP_BACKEND_URL}/api/users/clinicX/doctors`,
+      `https://hackhealthy.herokuapp.com/api/users/clinicX/doctors`,
       {}
     );
     this.doctors = doctors.data;

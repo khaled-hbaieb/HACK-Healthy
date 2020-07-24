@@ -1,17 +1,13 @@
 import axios from "axios";
 
-const API_URL = `${process.env.VUE_APP_BACKEND_URL}/api/users/clinicX/`;
+const API_URL = `https://hackhealthy.herokuapp.com/api/users/clinicX/`;
 
 class AuthService {
   async login(user) {
-    console.log(process.env.VUE_APP_BACKEND_URL);
-    let users = await axios.post(
-      `${process.env.VUE_APP_BACKEND_URL}/api/users/clinicX/${user.role}s/checkLogin`,
-      {
-        email: user.email,
-        password: user.password,
-      }
-    );
+    let users = await axios.post(API_URL + `${user.role}s/checkLogin`, {
+      email: user.email,
+      password: user.password,
+    });
     if (users.data.token) {
       localStorage.setItem("token", users.data.token);
       localStorage.setItem("role", user.role);

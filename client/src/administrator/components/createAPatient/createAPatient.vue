@@ -315,7 +315,7 @@ export default {
       return this.$store.state.auth.status.loggedIn;
     },
     backEndUrl() {
-      return `${process.env.VUE_APP_BACKEND_URL}/upload-images`;
+      return `https://hackhealthy.herokuapp.com/upload-images`;
     },
   },
 

@@ -87,7 +87,7 @@ export default {
         email: this.email,
         password: this.password,
       };
-      axios.post(`${process.env.VUE_APP_BACKEND_URL}/signup`, newUser).then(
+      axios.post(`https://hackhealthy.herokuapp.com/signup`, newUser).then(
         (res) => {
           console.log(res);
           this.error = "";
