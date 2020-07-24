@@ -15,8 +15,8 @@ component: () => import("./authentication/Login.vue"),
       // ======================
       // Full Layout
       // ======================
-      path: "/administrator",
-      component: () => import("./administrator/fullAdmin/AdminInterface.vue"),
+      path: "/",
+      component: () => import("./doctor/components/chatDoctor/ChatView.vue"),
       // ======================
       // Theme routes / pages
       // ======================
