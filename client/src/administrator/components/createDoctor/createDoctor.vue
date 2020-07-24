@@ -205,7 +205,7 @@
 
 <script>
 import { required } from "vuelidate/lib/validators";
-
+import Doctor from '../../../models/doctor'
 export default {
   name: "createDoctor",
   data: () => {
@@ -246,8 +246,19 @@ export default {
         "RADIATION ONCOLOGY",
         "SURGERY",
         "UROLOGY"
-      ]
+      ],
+      successful: false,
     };
+  },
+  computed: {
+    loggedIn() {
+      return this.$store.state.auth.status.loggedIn;
+    },
+  },
+  mounted() {
+    if (this.loggedIn) {
+      this.$router.push("/doctors");
+    }
   },
   validations: {
     name: {
@@ -263,7 +274,24 @@ export default {
         text: this.name + " Uploaded The image Successfully!"
       });
     },
-    submitForm() {}
+    submitForm() {},
+    handleRegisterDoc() {
+      let user;
+      user = new Doctor(this.fullName,this.email,this.gender,this.dateOfBirth,this.pwd,this.phoneNumber,this.specialityValue,this.yearsOfExperience,this.educationBackground,this.address,this.CIN)
+    this.$store.dispatch("auth/register", user).then(
+      () => {
+      console.log('entered doc creation')
+      this.successful = true
+    },
+    (error) => {
+      this.message = 
+      (error.response && error.response.data) ||
+              error.message ||
+              error.toString();
+            this.successful = false; 
+    }
+    )
+    }
   }
 };
 </script>
