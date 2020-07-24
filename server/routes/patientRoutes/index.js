@@ -5,14 +5,14 @@ const services = require("../../services");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-// router.post("/", async (req, res) => {
-//   try {
-//     var Patients = await services.patientService.findPatients(req.body);
-//     res.send(Patients);
-//   } catch (error) {
-//     res.send(error);
-//   }
-// });
+router.post("/", async (req, res) => {
+  try {
+    var Patients = await services.patientService.findPatients(req.body);
+    res.send(Patients);
+  } catch (error) {
+    res.send(error);
+  }
+});
 // router.post("/createPatient", async (req, res) => {
 //   try {
 //     var newPatient = await services.patientService.createPatient(req.body);

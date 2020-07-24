@@ -99,7 +99,7 @@ export default {
       this.$router.push("/administrator/patients/createAPatient");
     },
     rendershowPatientInfo() {
-      this.$router.push("/patients/PatientMoreInfos");
+      this.$router.push("/administrator/patients/PatientMoreInfos");
     },
   },
   beforeMount: async function() {

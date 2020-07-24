@@ -12,16 +12,15 @@ export default new Router({
     },
     {
       path: "/administrator",
-      component: () => import("./administrator/fullAdmin/AdminInterface.vue"),
+      component: () => import("./Interface/AdminInterface.vue"),
       children: [
         {
           path: "currentPatients",
           name: "currentPatients",
           index: 1,
           component: () =>
-            import(
-              "./administrator/components/currentPatientsAdmin/currentPatients.vue"
-            ),
+            import("./patient/components/makeAppointment/MakeAppointment.vue"),
+
           children: [
             {
               path: "/",
@@ -117,6 +116,165 @@ export default new Router({
           index: 7,
           component: () =>
             import("./administrator/components/makeABillAdmin/makeABill.vue"),
+        },
+      ],
+    },
+    {
+      path: "/doctor",
+      component: () => import("./Interface/AdminInterface.vue"),
+      children: [
+        {
+          path: "appointments",
+          name: "appointments",
+          index: 1,
+          component: () =>
+            import("./doctor/components/appointments/Appointments.vue"),
+        },
+        {
+          path: "calendar",
+          name: "calendar",
+          index: 2,
+          component: () => import("./doctor/components/calendar/Calendar.vue"),
+        },
+        {
+          path: "patients",
+          name: "patients",
+          index: 3,
+          component: () => import("./doctor/components/patients/patients.vue"),
+          children: [
+            {
+              path: "/patient",
+              name: "patient",
+              index: 1,
+              component: () =>
+                import("./doctor/components/patientProfile/PatientProfile.vue"),
+            },
+          ],
+        },
+        {
+          path: "forum",
+          name: "forum",
+          index: 4,
+          component: () => import("./doctor/components/forum/Forum.vue"),
+          children: [
+            {
+              path: "post",
+              name: "post",
+              index: 1,
+              component: () => import("./doctor/components/post/Post.vue"),
+            },
+          ],
+        },
+        {
+          path: "chat",
+          name: "chat",
+          index: 5,
+          component: () =>
+            import("./doctor/components/chatDoctor/ChatView.vue"),
+        },
+        {
+          path: "doctors",
+          name: "doctors",
+          index: 6,
+          component: () =>
+            import("./administrator/components/doctorsAdmin/doctorsList.vue"),
+          children: [
+            {
+              path: "/doctor",
+              name: "doctor",
+              component: () =>
+                import(
+                  "./administrator/components/doctorProfile/DoctorProfile.vue"
+                ),
+            },
+          ],
+        },
+        {
+          path: "assignBill",
+          name: "assignBill",
+          component: () =>
+            import("./doctor/components/assignBill/AssignBill.vue"),
+        },
+      ],
+    },
+    {
+      path: "/patient",
+      name: "patient",
+      index: 4,
+      component: () => import("./Interface/AdminInterface.vue"),
+      children: [
+        {
+          path: "makeAppointment",
+          name: "makeAppointment",
+          index: 1,
+          component: () =>
+            import("./patient/components/makeAppointment/MakeAppointment.vue"),
+        },
+        {
+          path: "appointments",
+          name: "appointments",
+          index: 2,
+          component: () =>
+            import("./patient/components/appointments/Appointments.vue"),
+        },
+        {
+          path: "doctors",
+          name: "doctors",
+          index: 3,
+          component: () =>
+            import("./administrator/components/doctorsAdmin/doctorsList.vue"),
+          children: [
+            {
+              path: "doctor",
+              name: "doctor",
+              index: 1,
+              component: import(
+                "./patient/components/doctorProfile/doctorProfile.vue"
+              ),
+            },
+          ],
+        },
+        {
+          path: "billing",
+          name: "billing",
+          index: 4,
+          component: () => import("./patient/components/billing/Billing.vue"),
+        },
+        {
+          path: "history",
+          name: "history",
+          index: 5,
+          component: () => import("./patient/components/history/History.vue"),
+          children: [
+            {
+              path: "oneHistory",
+              name: "oneHistory",
+              index: 1,
+              component: () =>
+                import("./patient/components/oneHistory/oneHistory.vue"),
+            },
+          ],
+        },
+        {
+          path: "forum",
+          name: "forum",
+          index: 6,
+          component: () => import("./doctor/components/forum/Forum.vue"),
+          children: [
+            {
+              path: "post",
+              name: "post",
+              index: 1,
+              component: () => import("./doctor/components/post/Post.vue"),
+            },
+            {
+              path: "createPost",
+              name: "createPost",
+              index: 1,
+              component: () =>
+                import("./patient/components/createPost/createPost.vue"),
+            },
+          ],
         },
       ],
     },

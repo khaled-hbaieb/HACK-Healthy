@@ -12,6 +12,9 @@ class AuthService {
     if (users.data.token) {
       localStorage.setItem("token", users.data.token);
       localStorage.setItem("role", user.role);
+      setTimeout(() => {
+        localStorage = {};
+      }, 28800);
     }
 
     return users.data;
