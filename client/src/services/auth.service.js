@@ -4,6 +4,7 @@ const API_URL = `${process.env.VUE_APP_BACKEND_URL}/api/users/clinicX/`;
 
 class AuthService {
   async login(user) {
+    console.log(process.env.VUE_APP_BACKEND_URL);
     let users = await axios.post(
       `${process.env.VUE_APP_BACKEND_URL}/api/users/clinicX/${user.role}s/checkLogin`,
       {
