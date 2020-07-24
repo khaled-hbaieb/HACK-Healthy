@@ -11,18 +11,11 @@ export default new Router({
       component: () => import("./authentication/Login.vue"),
     },
     {
-      // ======================
-      // Full Layout
-      // ======================
       path: "/administrator",
       component: () => import("./administrator/fullAdmin/AdminInterface.vue"),
-      // ======================
-      // Theme routes / pages
-      // ======================
-
       children: [
         {
-          path: "/currentPatients",
+          path: "currentPatients",
           name: "currentPatients",
           index: 1,
           component: () =>
@@ -49,7 +42,7 @@ export default new Router({
           ],
         },
         {
-          path: "/patients",
+          path: "patients",
           name: "patients",
           index: 2,
           component: () =>
@@ -85,7 +78,7 @@ export default new Router({
           ],
         },
         {
-          path: "/doctors",
+          path: "doctors",
           name: "doctors",
           index: 3,
           component: () =>
@@ -112,14 +105,14 @@ export default new Router({
           ],
         },
         {
-          path: "/clinicState",
+          path: "clinicState",
           name: "clinicState",
           index: 4,
           component: () =>
             import("./administrator/components/clinicState/ClinicState.vue"),
         },
         {
-          path: "/makeABill",
+          path: "makeABill",
           name: "Checkbox",
           index: 7,
           component: () =>
@@ -127,13 +120,5 @@ export default new Router({
         },
       ],
     },
-    {
-      path: "/doctor",
-      component: () => import("./doctor/fullDoctor/AdminInterface.vue"),
-    },
-    // {
-    //   path: "/patient",
-    //   component: () => import("./patient/fullDoctor/AdminInterface.vue")
-    // }
   ],
 });

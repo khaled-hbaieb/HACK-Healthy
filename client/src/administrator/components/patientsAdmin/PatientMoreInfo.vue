@@ -203,11 +203,6 @@
         </div>
       </vs-row>
     </div>
-    <script type="application/javascript" src="../assets/node_modules/flot/jquery.flot.js"></script>
-    <script type="application/javascript" src="../assets/node_modules/flot/jquery.flot.time.js"></script>
-    <script type="application/javascript" src="dist/js/pages/flot-data.js"></script>
-    <script type="application/javascript" src="dist/js/waves.js"></script>
-    <link href="dist/css/pages/float-chart.css" rel="stylesheet">
   </div>
 </template>
 
@@ -224,7 +219,7 @@ export default {
 <style>
 #t1,
 #t2 {
-  width: 49%;
+  width: 49%
 }
 #t2 {
   float: right;

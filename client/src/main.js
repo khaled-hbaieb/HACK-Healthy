@@ -3,6 +3,8 @@ import Vuesax from "vuesax";
 
 import App from "./App.vue";
 
+import { validate } from "vee-validate";
+Vue.use(validate);
 import "vuesax/dist/vuesax.css"; //Vuesax styles
 import "material-icons/iconfont/material-icons.css";
 // Vuex Store
@@ -18,13 +20,15 @@ import VsPrism from "./components/prism/VsPrism.vue";
 Vue.component(VsPrism.name, VsPrism);
 
 //Vuelidate
-import Vuelidate from "vuelidate";
-Vue.use(Vuelidate);
+// import Vuelidate from "vuelidate";
+// Vue.use(Vuelidate);
+
 
 // Vue Router
 import router from "./router";
 Vue.config.productionTip = false;
 Vue.config.devtools = true;
+
 Vue.use(Vuesax, {
   theme: {
     colors: {

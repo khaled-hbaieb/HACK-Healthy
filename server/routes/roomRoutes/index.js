@@ -14,30 +14,45 @@ router.post("/", async (req, res) => {
 router.post("/assignRoom", async (req, res) => {
   try {
     let roomNumber = req.body.roomNumber;
-    let patientCIN = req.body.patientCIN;
-    let doctorCIN = req.body.doctorCIN;
+    let patientCIN = req.body.CINP;
+    let doctorCIN = req.body.CIND;
     let illness = req.body.illness;
-    let entryDate = new Date().now();
-    await services.roomService.updateRoom({
-      roomNumber,
-      patientCIN,
-      doctorCIN,
-    });
-    await services.currentPatientsService.createCurrentPatient({
-      roomNumber,
-      doctorCIN,
-      patientCIN,
-      illness,
-    });
-    await services.historyService.createHistory({
-      roomNumber,
-      doctorCIN,
-      patientCIN,
-      illness,
-      entryDate,
-    });
+    let entryDate = req.body.ED;
+    let arrayOfPromises = [];
+    arrayOfPromises.push(
+      services.roomService.updateRoom(
+        {
+          roomNumber,
+        },
+        {
+          patientCIN,
+          doctorCIN,
+          availibility: false,
+        }
+      )
+    );
+    arrayOfPromises.push(
+      services.currentPatientsService.createCurrentPatient({
+        roomNumber,
+        doctorCIN,
+        patientCIN,
+        illness,
+        entryDate,
+      })
+    );
+    arrayOfPromises.push(
+      services.historyService.createHistory({
+        roomNumber,
+        doctorCIN,
+        patientCIN,
+        illness,
+        entryDate,
+      })
+    );
+    Promise.all(arrayOfPromises);
     res.send("Room Assigned");
   } catch (error) {
+    console.log(error);
     res.send(error);
   }
 });

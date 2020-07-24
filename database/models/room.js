@@ -12,6 +12,9 @@ const roomSchema = new Schema({
   patientCIN: {
     type: String,
   },
+  doctorCIN: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model("Rooms", roomSchema);

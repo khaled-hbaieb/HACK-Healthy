@@ -10,6 +10,7 @@
   "author": "Houssem Guesmi <houssemguesmi14@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "@vue/cli-service": "^4.4.6",
     "axios": "^0.19.2",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
@@ -21,7 +22,10 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.25",
     "multer": "^1.4.2",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "twilio": "^3.48.0",
+    "twilio-video": "^2.7.0",
+    "vue": "^2.6.11"
   },
   "devDependencies": {
     "autoresponsive-vue": "^1.0.22"

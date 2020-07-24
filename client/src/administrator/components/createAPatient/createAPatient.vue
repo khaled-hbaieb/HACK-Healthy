@@ -62,7 +62,7 @@
               id="url"
               name="url"
               placeholder="Your CIN"
-              v-model="CIN"
+              v-model="cin"
             />
             <label class="col-md-12" for="special">Job</label>
             <vs-input
@@ -110,13 +110,13 @@
               data-mask="(999) 999-9999"
               v-model="phoneNumber"
             />
-            <label class="col-md-12" for="pwd">Password</label>
+            <label class="col-md-12" for="password">Password</label>
             <vs-input
               class="doctor-form-inputs-doctor-creation"
               type="password"
               id="pwd"
-              name="pwd"
-              v-model="pwd"
+              name="password"
+              v-model="password"
               placeholder="enter your password"
             />
             <label class="col-md-12" for="cpwd">Confirm Password</label>
@@ -258,7 +258,7 @@
             <vs-button
               type="submit"
               class="btn btn-info waves-effect waves-light m-r-10"
-              @click="submitForm"
+              @click="handleRegister"
               >Submit</vs-button
             >
           </div>
@@ -270,6 +270,8 @@
 
 <script>
 import axios from "axios";
+// import axios from 'axios'
+import Patient from "../../../models/patient";
 export default {
   name: "createDoctor",
   data: () => {
@@ -284,7 +286,7 @@ export default {
       gender: "",
       phoneNumber: "",
       email: "",
-      pwd: "",
+      password: "",
       cpwd: "",
       job: "",
       address: "",
@@ -308,7 +310,19 @@ export default {
           placeholder: "Enter The Vaccination",
         },
       ],
+      // patient: new Patient('', ''),
+      successful: false,
     };
+  },
+  computed: {
+    loggedIn() {
+      return this.$store.state.auth.status.loggedIn;
+    },
+  },
+  mounted() {
+    if (this.loggedIn) {
+      this.$router.push("/patients");
+    }
   },
   methods: {
     successUpload() {
@@ -334,29 +348,42 @@ export default {
         placeholder: "Enter The Vaccination",
       });
     },
-    submitForm() {
-      let newPatient = {
-        fullName: this.fullName,
-        email: this.email,
-        gender: this.gender,
-        dateOfBirth: this.dateOfBirth,
-        password: this.pwd,
-        CIN: this.CIN,
-        phoneNumber: this.phoneNumber,
-        address: this.address,
-        job: this.job,
-        image: this.image,
-      };
-      axios.post("/api/users/clinicX/patients/createPatient", newPatient);
+    handleRegister() {
+      let user;
+      user = new Patient(
+        this.email,
+        this.password,
+        this.fullName,
+        this.gender,
+        this.dateOfBirth,
+        this.CIN,
+        this.phoneNumber,
+        this.address,
+        this.job
+      );
+      // user = new Patient(this.email, this.pwd);
+      // this.message = '';
+      // this.submitted = true;
+      // this.$validator.validate().then(isValid => {
+      //   if (isValid) {
+      // if (this.email && this.pwd) {
+      this.$store.dispatch("auth/register", { user, role: "patient" }).then(
+        () => {
+          console.log("entered");
+          // this.message = data.message;
+          this.successful = true;
+        },
+        (error) => {
+          this.message =
+            (error.response && error.response.data) ||
+            error.message ||
+            error.toString();
+          this.successful = false;
+        }
+      );
+      // }
     },
-
-    onFilePicked(event) {
-      const fileName = event.slice(12);
-      this.imageName = fileName;
-    },
-    onFileUploaded(event) {
-      this.image = event.target.response;
-    },
+    // });
   },
 };
 </script>

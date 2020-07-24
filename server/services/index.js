@@ -7,4 +7,6 @@ module.exports = {
   currentPatientsService: require("./currentPatientsService"),
   multerService: require("./multerService"),
   cloudinaryService: require("./cloudinaryService"),
+  historyService: require("./historyService"),
+  appointmentsService: require("./appointmentsService"),
 };
