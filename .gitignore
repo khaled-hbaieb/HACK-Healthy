@@ -1,6 +1,6 @@
-.env
-*.env
 package-lock.json
 /node_modules
-.env.local
-.env.*.local
+# .env
+# *.env
+# .env.local
+# .env.*.local
