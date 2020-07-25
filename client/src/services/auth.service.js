@@ -39,7 +39,7 @@ class AuthService {
         imageName: user.user.imageName,
       }
     );
-    console.log(newPatient.data);
+    console.log(API_URL + `${user.role}s/create${user.role}`);
     return newPatient.data;
   }
 }

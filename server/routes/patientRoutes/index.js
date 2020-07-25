@@ -17,7 +17,7 @@ router.post("/", async (req, res) => {
 router.post("/createpatient", async (req, res) => {
   try {
     var newPatient = await services.patientService.createPatient(req.body);
-    res.send(newPatient);
+    res.send({ newPatient, yes: "yo" });
   } catch (error) {
     res.send(error);
   }
