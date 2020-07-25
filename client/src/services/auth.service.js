@@ -23,19 +23,24 @@ class AuthService {
     localStorage.clear();
   }
 
-  register(user) {
-    return axios.post(API_URL + `${user.role}s/create${user.role}`, {
-      email: user.user.email,
-      password: user.user.password,
-      fullName: user.user.fullName,
-      gender: user.user.gender,
-      dateOfBirth: user.user.dateOfBirth,
-      cin: user.user.cin,
-      phoneNumber: user.user.phoneNumber,
-      address: user.user.address,
-      job: user.user.job,
-      imageName: user.user.imageName,
-    });
+  async register(user) {
+    let newPatient = await axios.post(
+      API_URL + `${user.role}s/create${user.role}`,
+      {
+        email: user.user.email,
+        password: user.user.password,
+        fullName: user.user.fullName,
+        gender: user.user.gender,
+        dateOfBirth: user.user.dateOfBirth,
+        cin: user.user.cin,
+        phoneNumber: user.user.phoneNumber,
+        address: user.user.address,
+        job: user.user.job,
+        imageName: user.user.imageName,
+      }
+    );
+    console.log(newPatient.data);
+    return newPatient.data;
   }
 }
 

@@ -8,7 +8,6 @@ module.exports = {
   },
   async createPatient(patient) {
     patient.password = bcrypt.hashSync(patient.password, 10);
-    console.log("patient", patient);
     return Patients.create(patient, (err, docs) => {
       if (err) {
         console.log(err);
