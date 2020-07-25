@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <vs-row vs-lg="6" class="row page-titles">
     <vs-card>
-      <vs-row class="row page-titles">
+      <vs-row>
         <vs-col class="col-md-5 align-self-center">
           <h4 class="text-themecolor">Current Patients</h4>
         </vs-col>
@@ -104,7 +104,7 @@
         </vs-card>
       </vs-col>
     </vs-row>
-  </div>
+  </vs-row>
 </template>
 <script>
 export default {

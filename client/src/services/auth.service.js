@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = `https://hackhealthy.herokuapp.com/api/users/clinicX/`;
+const API_URL = `/api/users/clinicX/`;
 
 class AuthService {
   async login(user) {
@@ -32,7 +32,7 @@ class AuthService {
         fullName: user.user.fullName,
         gender: user.user.gender,
         dateOfBirth: user.user.dateOfBirth,
-        cin: user.user.cin,
+        CIN: user.user.CIN,
         phoneNumber: user.user.phoneNumber,
         address: user.user.address,
         job: user.user.job,

@@ -272,11 +272,7 @@ export default {
       return this.$store.state.auth.status.loggedIn;
     },
   },
-  mounted() {
-    if (this.loggedIn) {
-      this.$router.push("/doctors");
-    }
-  },
+  mounted() {},
   validations: {
     name: {
       required,

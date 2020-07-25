@@ -10,7 +10,11 @@ export default {
   components: {},
   data: () => ({}),
   methods: {},
-
 };
 </script>
-<style></style>
+<style>
+#app {
+  height: 100vh;
+  width: 100vw;
+}
+</style>

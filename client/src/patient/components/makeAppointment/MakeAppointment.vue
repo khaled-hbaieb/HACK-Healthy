@@ -141,13 +141,13 @@ export default {
     },
     async inputChange() {
       let doctor = await axios.post(
-        `https://hackhealthy.herokuapp.com/api/users/clinicX/doctors`,
+        `/api/users/clinicX/doctors`,
         {
           fullName: this.doctorName,
         }
       );
       let appoints = await axios.post(
-        `https://hackhealthy.herokuapp.com/api/appointments/appointment`,
+        `/api/appointments/appointment`,
         {
           doctorCIN: doctor.data.CIN,
         }
@@ -161,7 +161,7 @@ export default {
     },
     getDoctors: async function() {
       let doctors = await axios.post(
-        `https://hackhealthy.herokuapp.com/api/users/clinicX/doctors/`,
+        `/api/users/clinicX/doctors/`,
         {
           speciality: this.spec,
         }

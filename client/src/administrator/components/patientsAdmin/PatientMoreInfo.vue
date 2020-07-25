@@ -4,9 +4,8 @@
       <vs-col class="col-sm-12">
         <vs-card id="header-titles" class="card">
           <h4 id="t1" class="text-themecolor">Patient's Info</h4>
-
           <h6 id="t2" class="text-themecolor">
-            <a href="/patients">Patients</a> > Patient's Info
+            <a href="/administrator/patients">Patients</a> > Patient's Info
           </h6>
         </vs-card>
       </vs-col>
@@ -40,7 +39,7 @@
                 </vs-col>
                 <vs-col class="col-md-6">
                   <strong>Phone</strong>
-                  <p>+123 456 789</p>
+                  <p>24</p>
                 </vs-col>
               </vs-row>
               <!-- /.row -->
@@ -115,9 +114,9 @@
             </p>
             <p>
               Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy
-              text ever since the 1500s, when an unknown printer took a galley
-              of type and scrambled it to make a type specimen book. It has
+              industry. Lorem Ipsum has been the industry's standard dummy text
+              ever since the 1500s, when an unknown printer took a galley of
+              type and scrambled it to make a type specimen book. It has
               survived not only five centuries
             </p>
             <p>
@@ -126,100 +125,30 @@
               desktop publishing software like Aldus PageMaker including
               versions of Lorem Ipsum.
             </p>
-            <h4 class="m-t-30">General Report</h4>
-            <hr />
-            <h5>
-              Heart Beat
-              <span class="pull-right">80%</span>
-            </h5>
-            <div class="progress">
-              <div
-                class="progress-bar bg-success"
-                role="progressbar"
-                style="width: 80%; height: 6px;"
-                aria-valuenow="25"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              ></div>
-            </div>
-            <h5 class="m-t-20">
-              Blood Pressure
-              <span class="pull-right">90%</span>
-            </h5>
-            <div class="progress">
-              <div
-                class="progress-bar bg-info"
-                role="progressbar"
-                style="width: 90%; height: 6px;"
-                aria-valuenow="25"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              ></div>
-            </div>
-            <h5 class="m-t-20">
-              Sugar
-              <span class="pull-right">50%</span>
-            </h5>
-            <div class="progress">
-              <div
-                class="progress-bar bg-danger"
-                role="progressbar"
-                style="width: 50%; height: 6px;"
-                aria-valuenow="25"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              ></div>
-            </div>
-            <h5 class="m-t-20">
-              Haemoglobin
-              <span class="pull-right">70%</span>
-            </h5>
-            <div class="progress">
-              <div
-                class="progress-bar bg-primary"
-                role="progressbar"
-                style="width: 70%; height: 6px;"
-                aria-valuenow="25"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              ></div>
-            </div>
-            <h4 class="m-t-30">ECG Report</h4>
-            <hr />
-            <div class="stats-row">
-              <div class="stat-item">
-                <h6>Pulse</h6>
-                <b>85</b>
-              </div>
-              <div class="stat-item">
-                <h6>BP</h6>
-                <b>120</b>
-              </div>
-            </div>
-            <div class="flot-chart">
-              <div class="flot-chart-content" id="flot-line-chart-moving"></div>
-            </div>
           </div>
         </div>
       </vs-row>
     </div>
   </div>
 </template>
-
+​
 <script>
-// import "../../../../dist/js/flot-data.js";
 export default {
   name: "patientsMoreInfos",
+  props: ["patient"],
   data: () => {
     return {};
   },
-  mounted() {},
+  mounted() {
+    // console.log(props);
+    // console.log(patient);
+  },
 };
 </script>
 <style>
 #t1,
 #t2 {
-  width: 49%
+  width: 49%;
 }
 #t2 {
   float: right;
@@ -231,13 +160,11 @@ export default {
   display: block;
   height: 400px;
 }
-
-.flot-chart-content {
+​ .flot-chart-content {
   width: 100%;
   height: 100%;
 }
-
-html body .jqstooltip,
+​ html body .jqstooltip,
 html body .flotTip {
   width: auto !important;
   height: auto !important;
@@ -245,8 +172,7 @@ html body .flotTip {
   color: #fff;
   padding: 5px 10px;
 }
-
-body .jqstooltip {
+​ body .jqstooltip {
   border-color: transparent;
   border-radius: 60px;
 }

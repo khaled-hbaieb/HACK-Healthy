@@ -54,6 +54,7 @@
                 @on-success="onFileUploaded"
               />
             </div>
+            {{ CIN }}
             <label class="col-md-12" for="special">CIN</label>
             <vs-input
               class="doctor-form-inputs-doctor-creation"
@@ -61,7 +62,7 @@
               id="url"
               name="url"
               placeholder="Your CIN"
-              v-model="cin"
+              v-model="CIN"
             />
             <label class="col-md-12" for="special">Job</label>
             <vs-input
@@ -315,7 +316,7 @@ export default {
       return this.$store.state.auth.status.loggedIn;
     },
     backEndUrl() {
-      return `https://hackhealthy.herokuapp.com/upload-images`;
+      return `http://localhost:3000/upload-images`;
     },
   },
 

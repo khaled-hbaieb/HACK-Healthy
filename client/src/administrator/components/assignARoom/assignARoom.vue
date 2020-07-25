@@ -117,7 +117,7 @@ export default {
     },
     submitAssignRoom() {
       axios.post(
-        `https://hackhealthy.herokuapp.com/api/clinicX/rooms/assignRoom`,
+        `/api/clinicX/rooms/assignRoom`,
         {
           roomNumber: this.roomNumber,
           CINP: this.CINP,
@@ -130,7 +130,7 @@ export default {
   },
   beforeMount: async function() {
     let available = await axios.post(
-      `https://hackhealthy.herokuapp.com/api/clinicX/rooms`,
+      `/api/clinicX/rooms`,
       {
         availibility: true,
       }

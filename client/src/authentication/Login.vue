@@ -1,108 +1,127 @@
 <template>
-  <div
-    class="login-register"
-    style="background-image:url(../assets/images/background/login-register.jpg);"
-  >
-    <vs-card class="login-box">
-      <form class="form-horizontal form-material" id="loginform" action="index.html">
-        <h3 class="text-center m-b-20">Sign In</h3>
-        <div class="form-group">
-          <div class="col-xs-12">
-            <vs-input type="text" required placeholder="Email" v-model="email" />
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="col-xs-12">
-            <vs-input type="password" required placeholder="Password" v-model="password" />
-          </div>
-        </div>
-        <!-- <div class="con-select-example">
-    <vs-select
-      class="selectExample"
-      label="Pick a Role"
-      v-model="users"
-      >
-      <vs-select-item v-for="user in users" :text="user.text" :value="user.text" @input="setSelected" />
-      
-    </vs-select>
-    
-        </div>-->
-        <div>
-          <p>I'am a:</p>
-          <vs-button :color="colorx" type="border" @click="doctor">Doctor</vs-button>
-          <vs-button :color="colorx" type="border" @click="administrator">Administrator</vs-button>
-          <vs-button :color="colorx" type="border" @click="patient">Patient</vs-button>
-        </div>
-        <div class="form-group row">
-          <div class="col-md-12">
-            <div class="d-flex no-block align-items-center">
-              <div class="custom-control custom-checkbox">
-                <vs-input type="checkbox" class="custom-control-input" id="customCheck1" />
-                <label class="custom-control-label" for="customCheck1">Remember me</label>
+  <center>
+    <div class="align-self-center">
+      <vs-row class="row page-titles">
+        <vs-col class="align-self-center" vs-lg="8" vs-xs="12">
+          <vs-card vs-lg="10" vs-xs="12">
+            <form
+              class="form-horizontal form-material"
+              id="loginform"
+              action="index.html"
+            >
+              <h3 class="text-center m-b-20">Sign In</h3>
+              <vs-col vs-lg="12">
+                <vs-input
+                  type="text"
+                  required
+                  placeholder="Email"
+                  v-model="email"
+                />
+              </vs-col>
+              <vs-col vs-lg="12">
+                <vs-input
+                  type="password"
+                  required
+                  placeholder="Password"
+                  v-model="password"
+                />
+              </vs-col>
+              <div>
+                <p>I'am a:</p>
+                <vs-button
+                  color="primary"
+                  id="btnUser"
+                  type="border"
+                  @click="doctor"
+                  >Doctor</vs-button
+                >
+                <vs-button
+                  color="primary"
+                  type="border"
+                  id="btnUser"
+                  @click="administrator"
+                  >Administrator</vs-button
+                >
+                <vs-button
+                  color="primary"
+                  type="border"
+                  id="btnUser"
+                  @click="patient"
+                  >Patient</vs-button
+                >
               </div>
-
-              <div class="ml-auto">
-                <a href="javascript:void(0)" id="to-recover" class="text-muted">
-                  <i class="fas fa-lock m-r-5"></i> Forgot pwd?
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="form-group text-center">
-          <div class="col-xs-12 p-b-20">
-            <vs-button class="btn btn-block btn-lg btn-info btn-rounded" @click="handleLogin">Log In</vs-button>
-          </div>
-        </div>
-        <vs-row class="row">
-          <vs-col class="col-xs-12 col-sm-12 col-md-12 m-t-10 text-center">
-            <button class="btn btn-facebook" data-toggle="tooltip" title="Login with Facebook">
-              <i aria-hidden="true" class="fab fa-facebook-f"></i>
-            </button>
-            <vs-button class="btn btn-googleplus" data-toggle="tooltip" title="Login with Google">
-              <i aria-hidden="true" class="fab fa-google-plus-g"></i>
-            </vs-button>
-          </vs-col>
-        </vs-row>
-        <div class="form-group m-b-0">
-          <div class="col-sm-12 text-center">
-            Don't have an account?
-            <a class="text-info m-l-5">
-              <b>Sign Up</b>
-            </a>
-          </div>
-        </div>
-      </form>
-      <form class="form-horizontal" id="recoverform">
-        <div class="form-group">
-          <vs-col class="col-xs-12">
-            <h3>Recover Password</h3>
-            <p class="text-muted">Enter your Email and instructions will be sent to you!</p>
-          </vs-col>
-        </div>
-        <div class="form-group">
-          <vs-col class="col-xs-12">
-            <vs-input type="text" required placeholder="Email" />
-          </vs-col>
-        </div>
-        <div class="form-group text-center m-t-20">
-          <div class="col-xs-12">
-            <vs-button
-              class="btn btn-primary btn-lg btn-block text-uppercase waves-effect waves-light"
-              type="submit"
-            >Reset</vs-button>
-          </div>
-        </div>
-      </form>
-    </vs-card>
-  </div>
+              <vs-col class="col-md-12">
+                <div class="d-flex no-block align-items-center">
+                  <div class="custom-control custom-checkbox">
+                    <vs-input
+                      type="checkbox"
+                      class="custom-control-input"
+                      id="customCheck1"
+                    />
+                    <label class="custom-control-label" for="customCheck1"
+                      >Remember me</label
+                    >
+                  </div>
+                </div>
+              </vs-col>
+              <vs-col class="col-xs-12 p-b-20">
+                <vs-button
+                  id="btn-login"
+                  class="btn btn-block btn-lg btn-info btn-rounded"
+                  @click="handleLogin"
+                  >Log In</vs-button
+                >
+              </vs-col>
+              <vs-row class="row">
+                <vs-col
+                  class="col-xs-12 col-sm-12 col-md-12 m-t-10 text-center"
+                >
+                  <vs-button
+                    class="btn btn-facebook"
+                    data-toggle="tooltip"
+                    title="Login with Facebook"
+                  >
+                    <i aria-hidden="true" class="fab fa-facebook-f"></i>
+                  </vs-button>
+                  <vs-button
+                    class="btn btn-googleplus"
+                    data-toggle="tooltip"
+                    title="Login with Google"
+                  >
+                    <i aria-hidden="true" class="fab fa-google-plus-g"></i>
+                  </vs-button>
+                </vs-col>
+              </vs-row>
+            </form>
+            <form class="form-horizontal" id="recoverform">
+              <vs-col class="col-xs-12">
+                <h3>Recover Password</h3>
+                <p class="text-muted">
+                  Enter your Email and instructions will be sent to you!
+                </p>
+              </vs-col>
+              <vs-col class="col-xs-12">
+                <vs-input type="text" required placeholder="Email" />
+              </vs-col>
+              <vs-col class="col-xs-12">
+                <vs-button
+                  class="btn btn-primary btn-lg btn-block text-uppercase waves-effect waves-light"
+                  type="submit"
+                  id="btn-reset"
+                  >Reset</vs-button
+                >
+              </vs-col>
+            </form>
+          </vs-card>
+        </vs-col>
+      </vs-row>
+    </div>
+  </center>
 </template>
-
 <script>
 import doctor from "../models/doctor";
 import administrator from "../models/administrator";
 import patient from "../models/patient";
-
 export default {
   name: "Login",
   data() {
@@ -118,11 +137,6 @@ export default {
       return this.$store.state.auth.status.loggedIn;
     },
   },
-  created() {
-    if (this.loggedIn) {
-      this.$router.push("/doctor");
-    }
-  },
   methods: {
     doctor() {
       this.role = "doctor";
@@ -137,11 +151,6 @@ export default {
       let user;
       this.loading = true;
 
-      // this.store.$validator.validateAll().then(isValid => {
-      //   if (!isValid) {
-      //     this.loading = false;
-      //     return;
-      //   }
       if (this.role === "doctor") {
         user = new doctor(this.email, this.password);
       }
@@ -168,10 +177,6 @@ export default {
       }
     },
   },
-  beforeMount: function () {
-    localStorage.clear();
-  },
 };
 </script>
-
 <style scoped></style>

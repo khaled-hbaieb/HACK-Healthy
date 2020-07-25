@@ -5,7 +5,6 @@ export default class Patient {
     fullName,
     gender,
     dateOfBirth,
-
     CIN,
     phoneNumber,
     address,

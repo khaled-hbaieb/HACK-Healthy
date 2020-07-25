@@ -71,7 +71,7 @@ export default {
   },
   beforeMount: async function() {
     let appoints = await axios.post(
-      `https://hackhealthy.herokuapp.com/api/appointments/appointment`,
+      `/api/appointments/appointment`,
       {
         doctorCIN: 14404510,
         state: false,
