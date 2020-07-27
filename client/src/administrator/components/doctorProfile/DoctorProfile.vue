@@ -49,6 +49,7 @@ export default {
     UserService.getAdministratorBoard().then(
       (response) => {
         this.currentUser = response;
+        console.log(currentUser)
       },
       (error) => {
         this.content =

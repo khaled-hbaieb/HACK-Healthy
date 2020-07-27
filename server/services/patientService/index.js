@@ -13,6 +13,7 @@ module.exports = {
     return Patients.create(patient);
   },
   async updatePatient(patient) {
+    console.log(patient)
     return Patients.updateOne({ CIN: patient.CIN }, patient.patient);
   },
 
