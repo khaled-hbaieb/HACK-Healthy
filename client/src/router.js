@@ -208,7 +208,14 @@ export default new Router({
       name: "patient",
       index: 4,
       component: () => import("./Interface/AdminInterface.vue"),
+      
       children: [
+        {
+          path:'profile',
+          name:'profile',
+          index:7,
+          component: () => import('./patient/components/profilePatient/ProfilePatient.vue')
+        },
         {
           path: "makeAppointment",
           name: "makeAppointment",
@@ -282,6 +289,8 @@ export default new Router({
             },
           ],
         },
+        
+        
       ],
     },
   ],
