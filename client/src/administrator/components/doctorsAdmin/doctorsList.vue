@@ -93,12 +93,12 @@
             <vs-col vs-xs="6" vs-sm="8" vs-lg="4">
               <a href="/doctors/doctor">
                 <img
+                  @click="rendershowDoctorInfo"
                   id="doctor-profile-image"
-                  :src="require('@/assets/images/users/houssem.jpg')"
+                  :src="doctor.imageName"
                   alt="user"
                   class="img-circle img-responsive"
                 />
-              </a>
             </vs-col>
             <vs-col vs-xs="6" vs-sm="4" vs-lg="8">
               <vs-col vs-lg="5">
@@ -182,6 +182,9 @@ export default {
     },
     renderCreateDoctor() {
       this.$router.push("/administrator/doctors/createDoctor");
+    },
+    rendershowDoctorInfo() {
+      this.$router.push("/administrator/doctors/DoctorMoreInfos");
     },
   },
   beforeMount: async function () {

@@ -66,5 +66,14 @@ router.post("/checkLogin", (req, res) => {
     });
   });
 });
+router.post("/checkDoctor", async (req, res) => {
+  try {
+    var Doctors = await services.doctorService.findDoctors(req.body);
+    res.send(Doctors);
+  } catch (err) {
+    res.send(err);
+  }
+});
+
 
 module.exports = router;

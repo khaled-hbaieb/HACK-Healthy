@@ -16,6 +16,7 @@ module.exports = {
   },
   async createDoctor(doctor) {
     doctor.password = bcrypt.hashSync(doctor.password, 10);
+    console.log(doctor)
     return Doctors.create(doctor);
   },
   async updateDoctor(doctor) {

@@ -1,6 +1,7 @@
 const Patients = require("../../../database/models/patient");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const jwtDecode = require("jwt-decode");
 
 module.exports = {
   async findPatients(patient) {

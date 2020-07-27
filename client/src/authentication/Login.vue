@@ -1,9 +1,10 @@
 <template>
   <center>
     <div class="align-self-center">
-      <vs-row class="row page-titles">
+      
+      <vs-row class="row page-titles" id="container">
         <vs-col class="align-self-center" vs-lg="8" vs-xs="12">
-          <vs-card vs-lg="10" vs-xs="12">
+          <vs-card vs-lg="10" vs-xs="12" id="vsCard">
             <form
               class="form-horizontal form-material"
               id="loginform"
@@ -58,9 +59,7 @@
                       class="custom-control-input"
                       id="customCheck1"
                     />
-                    <label class="custom-control-label" for="customCheck1"
-                      >Remember me</label
-                    >
+                    
                   </div>
                 </div>
               </vs-col>
@@ -72,26 +71,6 @@
                   >Log In</vs-button
                 >
               </vs-col>
-              <vs-row class="row">
-                <vs-col
-                  class="col-xs-12 col-sm-12 col-md-12 m-t-10 text-center"
-                >
-                  <vs-button
-                    class="btn btn-facebook"
-                    data-toggle="tooltip"
-                    title="Login with Facebook"
-                  >
-                    <i aria-hidden="true" class="fab fa-facebook-f"></i>
-                  </vs-button>
-                  <vs-button
-                    class="btn btn-googleplus"
-                    data-toggle="tooltip"
-                    title="Login with Google"
-                  >
-                    <i aria-hidden="true" class="fab fa-google-plus-g"></i>
-                  </vs-button>
-                </vs-col>
-              </vs-row>
             </form>
             <form class="form-horizontal" id="recoverform">
               <vs-col class="col-xs-12">
@@ -179,4 +158,18 @@ export default {
   },
 };
 </script>
-<style scoped></style>
+<style scoped>
+
+#btnUser {
+  margin-left: 1%;
+}
+#btn-login, #btn-reset {
+  width: 18%;
+}
+#container {
+  /* margin-left: 18%; */
+  padding-left: 18%;
+  padding-top: 10%;
+  
+}
+</style>

@@ -5,6 +5,7 @@ const path = require("path");
 const upload = require("./multer");
 const cloudinary = require("./cloudinary");
 const fs = require("fs");
+const nodemailer = require('nodemailer')
 require("dotenv").config();
 
 const app = express();
@@ -15,7 +16,6 @@ app.use(express.static("uploads"));
 app.use(express.static("client/dist"));
 
 app.use(bodyParser.json());
-
 
 let URI = process.env.URI;
 const mongoose = require("mongoose");
@@ -70,7 +70,6 @@ app.get("/token", function(request, response) {
     });
   }
 
-
   var token = new AccessToken(
     process.env.TWILIO_ACCOUNT_SID,
     process.env.TWILIO_API_KEY,
@@ -88,8 +87,6 @@ app.get("/token", function(request, response) {
 });
 
 var server = http.createServer(app);
-
-
 
 app.use("/upload-images", upload.array("image"), async (req, res) => {
   const uploader = async (path) => await cloudinary.uploads(path, "Images");
@@ -114,7 +111,6 @@ app.get("*", (req, res) => {
   let dirPath = path.join(__dirname, "../client/dist/index.html");
   res.sendFile(dirPath);
 });
-
 
 app.listen(PORT, (err) => {
   if (!err) {

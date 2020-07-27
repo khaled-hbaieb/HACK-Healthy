@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
-
+// ./authentication/Login.vue
 Vue.use(Router);
 
 export default new Router({
@@ -9,7 +9,7 @@ export default new Router({
     {
       path: "/",
       index: 1,
-      component: () => import("./authentication/Login.vue"),
+      component: () => import("./doctor/components/post/Post.vue"),
     },
     {
       path: "/administrator",
@@ -70,7 +70,7 @@ export default new Router({
                 ),
             },
             {
-              path: "PatientMoreInfos",
+              path: ":CIN",
               name: "PatientMoreInfos",
               index: 3,
               component: () =>
@@ -103,6 +103,15 @@ export default new Router({
               component: () =>
                 import(
                   "./administrator/components/createDoctor/createDoctor.vue"
+                ),
+            },
+            {
+              path: "DoctorMoreInfos",
+              name: "DoctorMoreInfos",
+              index: 3,
+              component: () =>
+                import(
+                  "./administrator/components/doctorsAdmin/doctorMoreInfo.vue"
                 ),
             },
           ],
@@ -208,7 +217,14 @@ export default new Router({
       name: "patient",
       index: 4,
       component: () => import("./Interface/AdminInterface.vue"),
+      
       children: [
+        {
+          path:'profile',
+          name:'profile',
+          index:7,
+          component: () => import('./patient/components/profilePatient/ProfilePatient.vue')
+        },
         {
           path: "makeAppointment",
           name: "makeAppointment",
@@ -282,6 +298,8 @@ export default new Router({
             },
           ],
         },
+        
+        
       ],
     },
   ],
