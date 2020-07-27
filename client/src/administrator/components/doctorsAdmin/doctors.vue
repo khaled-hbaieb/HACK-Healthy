@@ -16,7 +16,6 @@ export default {
       this.badge1++;
       this.badge2++;
     },
-    
   }
 };
 </script>

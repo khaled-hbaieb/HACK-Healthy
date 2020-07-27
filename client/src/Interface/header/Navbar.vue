@@ -45,52 +45,51 @@
           <vs-dropdown-item>Here</vs-dropdown-item>
         </vs-dropdown-menu>
       </vs-dropdown>
-<<<<<<< HEAD
-      <vs-dropdown
-        vs-trigger-click
-        left
-        class="cursor-pointer pr-2 pl-2 ml-1 mr-md-3"
-      >
-=======
       <!---
       Craete new dd
       -->
-<div v-if="role === 'doctor' || role === 'patient'">
-<vs-dropdown vs-trigger-click left class="cursor-pointer pr-2 pl-2 ml-1 mr-md-3">
-        <a class="text-white-dark user-image" href="#">
-          <img :src="currentUser.imageName" alt="User" />
-        </a>
-        <vs-dropdown-menu class="topbar-dd">
-          <vs-dropdown-item @click="renderProfile">
-            <vs-icon icon="person_outline" class="mr-1"></vs-icon>My Profile
-          </vs-dropdown-item>
-          <hr class="mb-1" />
-          <vs-dropdown-item @click="logout">
-            <vs-icon icon="logout" class="mr-1"></vs-icon>Logout
-          </vs-dropdown-item>
-        </vs-dropdown-menu>
-      </vs-dropdown>
+      <div v-if="role === 'doctor' || role === 'patient'">
+        <vs-dropdown
+          vs-trigger-click
+          left
+          class="cursor-pointer pr-2 pl-2 ml-1 mr-md-3"
+        >
+          <a class="text-white-dark user-image" href="#">
+            <img :src="currentUser.imageName" alt="User" />
+          </a>
+          <vs-dropdown-menu class="topbar-dd">
+            <vs-dropdown-item @click="renderProfile">
+              <vs-icon icon="person_outline" class="mr-1"></vs-icon>My Profile
+            </vs-dropdown-item>
+            <hr class="mb-1" />
+            <vs-dropdown-item @click="logout">
+              <vs-icon icon="logout" class="mr-1"></vs-icon>Logout
+            </vs-dropdown-item>
+          </vs-dropdown-menu>
+        </vs-dropdown>
       </div>
-
 
       <div v-else>
-<vs-dropdown vs-trigger-click left class="cursor-pointer pr-2 pl-2 ml-1 mr-md-3">
->>>>>>> 23ad400182fbec3478fbaf9f83bbb07fa09f2803
-        <a class="text-white-dark user-image" href="#">
-          <img src="@/assets/images/users/houssem.jpg" alt="User" />
-        </a>
-        <vs-dropdown-menu class="topbar-dd">
-          <vs-dropdown-item @click="renderProfile">
-            <vs-icon icon="person_outline" class="mr-1"></vs-icon>My Profile
-          </vs-dropdown-item>
-          <hr class="mb-1" />
-          <vs-dropdown-item @click="logout">
-            <vs-icon icon="logout" class="mr-1"></vs-icon>Logout
-          </vs-dropdown-item>
-        </vs-dropdown-menu>
-      </vs-dropdown>
+        <vs-dropdown
+          vs-trigger-click
+          left
+          class="cursor-pointer pr-2 pl-2 ml-1 mr-md-3"
+        >
+          <a class="text-white-dark user-image" href="#">
+            <img src="@/assets/images/users/houssem.jpg" alt="User" />
+          </a>
+          <vs-dropdown-menu class="topbar-dd">
+            <vs-dropdown-item @click="renderProfile">
+              <vs-icon icon="person_outline" class="mr-1"></vs-icon>My Profile
+            </vs-dropdown-item>
+            <hr class="mb-1" />
+            <vs-dropdown-item @click="logout">
+              <vs-icon icon="logout" class="mr-1"></vs-icon>Logout
+            </vs-dropdown-item>
+          </vs-dropdown-menu>
+        </vs-dropdown>
       </div>
-      
+
       <!-- <vs-dropdown vs-trigger-click left class="cursor-pointer pr-2 pl-2 ml-1 mr-md-3">
         <a class="text-white-dark user-image" href="#">
           <img :src="currentUser.imageName" alt="User" />
@@ -110,7 +109,7 @@
 </template>
 
 <script>
-import UserService from '../../services/user.service'
+import UserService from "../../services/user.service";
 export default {
   name: "Navbar",
   props: {
@@ -127,12 +126,9 @@ export default {
   data: () => ({
     indexActive: 0,
     showToggle: false,
-<<<<<<< HEAD
-=======
     search: "",
     currentUser: null,
     role: null,
->>>>>>> 23ad400182fbec3478fbaf9f83bbb07fa09f2803
   }),
 
   methods: {
@@ -152,29 +148,26 @@ export default {
       this.$store.commit("IS_SIDEBAR_ACTIVE", true);
     },
     renderProfile() {
-<<<<<<< HEAD
-      this.$router.push(`/${localStorage.role}/myProfile`);
-=======
-      this.$router.push("/patient/profile");
->>>>>>> 23ad400182fbec3478fbaf9f83bbb07fa09f2803
+      this.$router.push(`/${localStorage.role}/profile`);
     },
   },
-    beforeMount() {
-    if(localStorage.getItem('role') === 'patient') {
-      this.role = 'patient'
+  beforeMount() {
+    if (localStorage.getItem("role") === "patient") {
+      this.role = "patient";
       UserService.getPatientBoard().then(
-      (response) => {
-        this.currentUser = response;
-      },
-      (error) => {
-        this.content =
-          (error.currentUser && error.response.data) ||
-          error.message ||
-          error.toString();
-      }
-    );
-    } if(localStorage.getItem('role') === 'doctor') {
-this.role = 'patient'
+        (response) => {
+          this.currentUser = response;
+        },
+        (error) => {
+          this.content =
+            (error.currentUser && error.response.data) ||
+            error.message ||
+            error.toString();
+        }
+      );
+    }
+    if (localStorage.getItem("role") === "doctor") {
+      this.role = "patient";
       UserService.getDoctorBoard().then(
         (response) => {
           this.currentUser = response;
@@ -187,21 +180,20 @@ this.role = 'patient'
         }
       );
     }
-    if(localStorage.getItem('role') === 'admin') {
-      this.role = 'admin'
+    if (localStorage.getItem("role") === "admin") {
+      this.role = "admin";
       UserService.getAdminBoard().then(
-      (response) => {
-        this.currentUser = response;
-      },
-      (error) => {
-        this.content =
-          (error.currentUser && error.response.data) ||
-          error.message ||
-          error.toString();
-      }
-    );
+        (response) => {
+          this.currentUser = response;
+        },
+        (error) => {
+          this.content =
+            (error.currentUser && error.response.data) ||
+            error.message ||
+            error.toString();
+        }
+      );
     }
-    }
-}
-
+  },
+};
 </script>
