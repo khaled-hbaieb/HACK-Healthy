@@ -16,7 +16,6 @@ app.use(express.static("client/dist"));
 
 app.use(bodyParser.json());
 
-
 let URI = process.env.URI;
 const mongoose = require("mongoose");
 const { join } = require("path");
@@ -42,9 +41,9 @@ app.use("/api/clinics", routes.clinicRoutes);
 
 app.use("/api/clinicX/rooms", routes.roomRoutes);
 
-app.use("api/users/clinicX/history", routes.historyRoutes);
+app.use("/api/users/clinicX/history", routes.historyRoutes);
 
-app.use("api/users/clinicX/currentPatients", routes.currentPatientsRoutes);
+app.use("/api/users/clinicX/currentPatients", routes.currentPatientsRoutes);
 
 app.use("/api/appointments", routes.appointmentsRoutes);
 
@@ -71,7 +70,6 @@ app.get("/token", function(request, response) {
     });
   }
 
-
   var token = new AccessToken(
     process.env.TWILIO_ACCOUNT_SID,
     process.env.TWILIO_API_KEY,
@@ -89,8 +87,6 @@ app.get("/token", function(request, response) {
 });
 
 var server = http.createServer(app);
-
-
 
 app.use("/upload-images", upload.array("image"), async (req, res) => {
   const uploader = async (path) => await cloudinary.uploads(path, "Images");
@@ -115,7 +111,6 @@ app.get("*", (req, res) => {
   let dirPath = path.join(__dirname, "../client/dist/index.html");
   res.sendFile(dirPath);
 });
-
 
 app.listen(PORT, (err) => {
   if (!err) {
