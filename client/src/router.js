@@ -70,7 +70,7 @@ export default new Router({
                 ),
             },
             {
-              path: "PatientMoreInfos",
+              path: ":CIN",
               name: "PatientMoreInfos",
               index: 3,
               component: () =>
@@ -103,6 +103,15 @@ export default new Router({
               component: () =>
                 import(
                   "./administrator/components/createDoctor/createDoctor.vue"
+                ),
+            },
+            {
+              path: "DoctorMoreInfos",
+              name: "DoctorMoreInfos",
+              index: 3,
+              component: () =>
+                import(
+                  "./administrator/components/doctorsAdmin/doctorMoreInfo.vue"
                 ),
             },
           ],

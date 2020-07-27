@@ -108,7 +108,7 @@ export default {
       this.$store.commit("IS_SIDEBAR_ACTIVE", true);
     },
     renderProfile() {
-      this.$render.push("profile");
+      this.$router.push("profile");
     },
   },
 };
