@@ -7,8 +7,9 @@ class AuthService {
     let users = await axios.post(API_URL + `${user.role}s/checkLogin`, {
       email: user.email,
       password: user.password,
-    });
+    },{ headers: { Authorization:localStorage.getItem('token') } });
     if (users.data.token) {
+      axios.defaults.headers.common['Authorization'] = users.data.token
       localStorage.setItem("token", users.data.token);
       localStorage.setItem("role", user.role);
       setTimeout(() => {
@@ -39,7 +40,7 @@ class AuthService {
         imageName: user.user.imageName,
       }
     );
-    console.log(API_URL + `${user.role}s/create${user.role}`);
+    
     return newPatient.data;
   }
 }
