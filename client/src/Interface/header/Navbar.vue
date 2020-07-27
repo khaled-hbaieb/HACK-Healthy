@@ -58,7 +58,26 @@
       <!---
       Craete new dd
       -->
-      <vs-dropdown vs-trigger-click left class="cursor-pointer pr-2 pl-2 ml-1 mr-md-3">
+<div v-if="role === 'doctor' || role === 'patient'">
+<vs-dropdown vs-trigger-click left class="cursor-pointer pr-2 pl-2 ml-1 mr-md-3">
+        <a class="text-white-dark user-image" href="#">
+          <img :src="currentUser.imageName" alt="User" />
+        </a>
+        <vs-dropdown-menu class="topbar-dd">
+          <vs-dropdown-item @click="renderProfile">
+            <vs-icon icon="person_outline" class="mr-1"></vs-icon>My Profile
+          </vs-dropdown-item>
+          <hr class="mb-1" />
+          <vs-dropdown-item @click="logout">
+            <vs-icon icon="logout" class="mr-1"></vs-icon>Logout
+          </vs-dropdown-item>
+        </vs-dropdown-menu>
+      </vs-dropdown>
+      </div>
+
+
+      <div v-else>
+<vs-dropdown vs-trigger-click left class="cursor-pointer pr-2 pl-2 ml-1 mr-md-3">
         <a class="text-white-dark user-image" href="#">
           <img src="@/assets/images/users/houssem.jpg" alt="User" />
         </a>
@@ -72,11 +91,28 @@
           </vs-dropdown-item>
         </vs-dropdown-menu>
       </vs-dropdown>
+      </div>
+      
+      <!-- <vs-dropdown vs-trigger-click left class="cursor-pointer pr-2 pl-2 ml-1 mr-md-3">
+        <a class="text-white-dark user-image" href="#">
+          <img :src="currentUser.imageName" alt="User" />
+        </a>
+        <vs-dropdown-menu class="topbar-dd">
+          <vs-dropdown-item @click="renderProfile">
+            <vs-icon icon="person_outline" class="mr-1"></vs-icon>My Profile
+          </vs-dropdown-item>
+          <hr class="mb-1" />
+          <vs-dropdown-item @click="logout">
+            <vs-icon icon="logout" class="mr-1"></vs-icon>Logout
+          </vs-dropdown-item>
+        </vs-dropdown-menu>
+      </vs-dropdown> -->
     </vs-navbar>
   </header>
 </template>
 
 <script>
+import UserService from '../../services/user.service'
 export default {
   name: "Navbar",
   props: {
@@ -95,6 +131,8 @@ export default {
     indexActive: 0,
     showToggle: false,
     search: "",
+    currentUser: null,
+    role: null,
   }),
 
   methods: {
@@ -108,8 +146,52 @@ export default {
       this.$store.commit("IS_SIDEBAR_ACTIVE", true);
     },
     renderProfile() {
-      this.$router.push("profile");
+      this.$router.push("/patient/profile");
     },
   },
-};
+    beforeMount() {
+    if(localStorage.getItem('role') === 'patient') {
+      this.role = 'patient'
+      UserService.getPatientBoard().then(
+      (response) => {
+        this.currentUser = response;
+      },
+      (error) => {
+        this.content =
+          (error.currentUser && error.response.data) ||
+          error.message ||
+          error.toString();
+      }
+    );
+    } if(localStorage.getItem('role') === 'doctor') {
+this.role = 'patient'
+      UserService.getDoctorBoard().then(
+        (response) => {
+          this.currentUser = response;
+        },
+        (error) => {
+          this.content =
+            (error.currentUser && error.response.data) ||
+            error.message ||
+            error.toString();
+        }
+      );
+    }
+    if(localStorage.getItem('role') === 'admin') {
+      this.role = 'admin'
+      UserService.getAdminBoard().then(
+      (response) => {
+        this.currentUser = response;
+      },
+      (error) => {
+        this.content =
+          (error.currentUser && error.response.data) ||
+          error.message ||
+          error.toString();
+      }
+    );
+    }
+    }
+}
+
 </script>

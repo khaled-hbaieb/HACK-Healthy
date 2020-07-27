@@ -5,6 +5,7 @@ const path = require("path");
 const upload = require("./multer");
 const cloudinary = require("./cloudinary");
 const fs = require("fs");
+const nodemailer = require('nodemailer')
 require("dotenv").config();
 
 const app = express();
