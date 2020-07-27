@@ -19,8 +19,7 @@ app.use(bodyParser.json());
 
 let URI = process.env.URI;
 const mongoose = require("mongoose");
-const { join } = require("path");
-const { json } = require("body-parser");
+
 mongoose.connect(URI, {
   useNewUrlParser: true,
   useCreateIndex: true,
@@ -42,9 +41,9 @@ app.use("/api/clinics", routes.clinicRoutes);
 
 app.use("/api/clinicX/rooms", routes.roomRoutes);
 
-app.use("api/users/clinicX/history", routes.historyRoutes);
+app.use("/api/users/clinicX/history", routes.historyRoutes);
 
-app.use("api/users/clinicX/currentPatients", routes.currentPatientsRoutes);
+app.use("/api/users/clinicX/currentPatients", routes.currentPatientsRoutes);
 
 app.use("/api/appointments", routes.appointmentsRoutes);
 

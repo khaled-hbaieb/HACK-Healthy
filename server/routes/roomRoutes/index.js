@@ -11,6 +11,14 @@ router.post("/", async (req, res) => {
     res.send(error);
   }
 });
+router.post("/createRooms", async (req, res) => {
+  try {
+    let rooms = await services.roomService.createRooms(req.body);
+    res.send(rooms);
+  } catch (error) {
+    res.send(error);
+  }
+});
 router.post("/assignRoom", async (req, res) => {
   try {
     let roomNumber = req.body.roomNumber;
