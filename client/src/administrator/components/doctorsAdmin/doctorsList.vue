@@ -13,7 +13,12 @@
               type="button"
               class="btn btn-info d-block d-lg-block"
             >
-              <vs-icon icon="add_circle_outline" id="doctor-icon" round></vs-icon>Create New Doctor
+              <vs-icon
+                icon="add_circle_outline"
+                id="doctor-icon"
+                round
+              ></vs-icon
+              >Create New Doctor
             </vs-button>
           </div>
         </vs-col>
@@ -40,8 +45,9 @@
             id="search-doctor-button"
             color="dark"
             type="border"
-            @click="searchDoctors({fullName:searchCriteria})"
-          >Search</vs-button>
+            @click="searchDoctors({ fullName: searchCriteria })"
+            >Search</vs-button
+          >
         </vs-col>
         <vs-col v-if="!withSpeciality" vs-lg="2">
           <vs-button
@@ -50,18 +56,22 @@
             color="dark"
             type="border"
             @click="filterSpeciality"
-          >Filter By Speciality</vs-button>
+            >Filter By Speciality</vs-button
+          >
         </vs-col>
         <vs-col v-if="withSpeciality" vs-lg="5">
           <vs-select
             placeholder="Select The Speciality"
             v-model="searchCriteria"
             id="speciality-select"
-            @change="searchDoctors({speciality:searchCriteria})"
+            @change="searchDoctors({ speciality: searchCriteria })"
           >
-            <vs-select-item @click="searchDoctors({})" text="Search All"></vs-select-item>
             <vs-select-item
-              v-for="(oneSpeciality,index) in specialities"
+              @click="searchDoctors({})"
+              text="Search All"
+            ></vs-select-item>
+            <vs-select-item
+              v-for="(oneSpeciality, index) in specialities"
               :text="oneSpeciality"
               :value="oneSpeciality"
               :key="index"
@@ -75,7 +85,8 @@
             color="dark"
             type="border"
             @click="filterName"
-          >Filter By Name</vs-button>
+            >Filter By Name</vs-button
+          >
         </vs-col>
       </vs-row>
     </vs-card>
@@ -99,6 +110,7 @@
                   alt="user"
                   class="img-circle img-responsive"
                 />
+              </a>
             </vs-col>
             <vs-col vs-xs="6" vs-sm="4" vs-lg="8">
               <vs-col vs-lg="5">
@@ -187,7 +199,7 @@ export default {
       this.$router.push("/administrator/doctors/DoctorMoreInfos");
     },
   },
-  beforeMount: async function () {
+  beforeMount: async function() {
     let doctors = await axios.get(`/api/users/clinicX/doctors`);
     this.doctors = doctors.data;
   },
