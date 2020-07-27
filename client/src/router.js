@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
-
+// ./authentication/Login.vue
 Vue.use(Router);
 
 export default new Router({
@@ -9,7 +9,7 @@ export default new Router({
     {
       path: "/",
       index: 1,
-      component: () => import("./authentication/Login.vue"),
+      component: () => import("./doctor/components/post/Post.vue"),
     },
     {
       path: "/administrator",
