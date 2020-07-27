@@ -7,7 +7,11 @@
       :title="logotitle"
     />
     <!---Sidebar-->
-    <SideBar parent=".main-wrapper" :sidebarLinks="sidebarLinks" />
+    <SideBar
+      parent=".main-wrapper"
+      :sideBarColor="sideBarColor"
+      :sidebarLinks="sidebarLinks"
+    />
     <!---Page Container-->
     <div class="main-container-fluid">
       <router-view></router-view>
@@ -28,7 +32,8 @@ export default {
     SideBar,
   },
   data: () => ({
-    topbarColor: "#3D89FF",
+    topbarColor: "#2F65FF",
+    sideBarColor: "dark",
     logotitle: "Ibn Rochd Clinic",
     sidebarLinks: sidebarLinks,
     currentUser: null,
