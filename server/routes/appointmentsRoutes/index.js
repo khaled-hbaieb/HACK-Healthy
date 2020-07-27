@@ -42,5 +42,15 @@ router.put("/updateAppointment", async (req, res) => {
     res.send(error);
   }
 });
+router.post("/cancelAppointment", async (req, res) => {
+  try {
+    var appointment = await services.appointmentsService.cancelAppointment(
+      req.body
+    );
+    res.send(appointment);
+  } catch (error) {
+    res.send(error);
+  }
+});
 
 module.exports = router;

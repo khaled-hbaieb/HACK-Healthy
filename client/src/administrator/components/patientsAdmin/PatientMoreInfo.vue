@@ -15,18 +15,18 @@
         <vs-col class="col-md-4 col-xs-12">
           <vs-card class="card">
             <div class="user-bg">
-              <img width="100%" alt="user" src />
+              <img width="100%" alt="user" :src="patient.imageName" />
             </div>
             <div class="user-btm-box">
               <!-- .row -->
               <vs-row class="row text-center m-t-10">
                 <vs-col class="col-md-6 b-r">
                   <strong>Name</strong>
-                  <p>Jonathan Doe</p>
+                  <p>{{patient.fullName}}</p>
                 </vs-col>
                 <div class="col-md-6">
                   <strong>Occupation</strong>
-                  <p>Engineer</p>
+                  <p>{{patient.job}}</p>
                 </div>
               </vs-row>
               <!-- /.row -->
@@ -35,11 +35,11 @@
               <vs-row class="row text-center m-t-10">
                 <vs-col class="col-md-6 b-r">
                   <strong>Email ID</strong>
-                  <p>jondoe@gmail.com</p>
+                  <p>{{patient.email}}</p>
                 </vs-col>
                 <vs-col class="col-md-6">
                   <strong>Phone</strong>
-                  <p>24</p>
+                  <p>{{patient.phoneNumber}}</p>
                 </vs-col>
               </vs-row>
               <!-- /.row -->
@@ -48,15 +48,12 @@
               <vs-row class="row text-center m-t-10">
                 <vs-col class="col-md-12">
                   <strong>Address</strong>
-                  <p>
-                    E104, Dharti-2, Chandlodia Ahmedabad
-                    <br />Gujarat, India.
-                  </p>
+                  <p>{{patient.address}}</p>
                 </vs-col>
               </vs-row>
               <hr />
               <!-- /.row -->
-              <vs-row class="row">
+              <!-- <vs-row class="row">
                 <vs-col class="col-md-4 col-sm-4 text-center">
                   <p class="text-purple">
                     <i class="ti-facebook"></i>
@@ -75,57 +72,46 @@
                   </p>
                   <h1>140</h1>
                 </div>
-              </vs-row>
+              </vs-row>-->
             </div>
           </vs-card>
         </vs-col>
         <div class="col-md-8 col-xs-12">
-          <div class="card">
+          <vs-card>
+            <h5>Personal Information:</h5>
             <div class="row">
               <div class="col-md-3 col-xs-6 b-r">
                 <strong>Full Name</strong>
                 <br />
-                <p class="text-muted">Johnathan Deo</p>
+                <p class="text-muted">{{patient.fullName}}</p>
               </div>
               <div class="col-md-3 col-xs-6 b-r">
                 <strong>Mobile</strong>
                 <br />
-                <p class="text-muted">(123) 456 7890</p>
+                <p class="text-muted">{{patient.phoneNumber}}</p>
               </div>
               <div class="col-md-3 col-xs-6 b-r">
                 <strong>Email</strong>
                 <br />
-                <p class="text-muted">john@admin.com</p>
-              </div>
-              <div class="col-md-3 col-xs-6">
-                <strong>Disease</strong>
-                <br />
-                <p class="text-muted">Fever</p>
+                <p class="text-muted">{{patient.email}}</p>
               </div>
             </div>
             <hr />
-            <p class="m-t-30">
-              Donec pede justo, fringilla vel, aliquet nec, vulputate eget,
-              arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae,
-              justo. Nullam dictum felis eu pede mollis pretium. Integer
-              tincidunt.Cras dapibus. Vivamus elementum semper nisi. Aenean
-              vulputate eleifend tellus. Aenean leo ligula, porttitor eu,
-              consequat vitae, eleifend ac, enim.
-            </p>
-            <p>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. It has
-              survived not only five centuries
-            </p>
-            <p>
-              It was popularised in the 1960s with the release of Letraset
-              sheets containing Lorem Ipsum passages, and more recently with
-              desktop publishing software like Aldus PageMaker including
-              versions of Lorem Ipsum.
-            </p>
-          </div>
+            <h5>History:</h5>
+            <hr />
+            <div class="row">
+              <div class="col-md-3 col-xs-6 b-r">
+                <strong>Room :</strong>
+                <br />
+                <p class="text-muted">{{history.roomNumber}}</p>
+              </div>
+              <div class="col-md-3 col-xs-6 b-r">
+                <strong>illness</strong>
+                <br />
+                <p class="text-muted">{{history.illness}}</p>
+              </div>
+            </div>
+          </vs-card>
         </div>
       </vs-row>
     </div>
@@ -133,15 +119,27 @@
 </template>
 ​
 <script>
+import axios from "axios";
 export default {
   name: "patientsMoreInfos",
-  props: ["patient"],
+  props: ["name"],
   data: () => {
-    return {};
+    return {
+      patient: "",
+      history: "",
+    };
   },
-  mounted() {
-    // console.log(props);
-    // console.log(patient);
+  beforeMount: async function () {
+    let user = window.location.pathname.slice(24);
+    let patient = await axios.post(`/api/users/clinicX/patients`, {
+      CIN: user,
+    });
+    this.patient = patient.data[0];
+    let history = await axios.post(`/api/users/clinicX/history`, {
+      patientCIN: user,
+    });
+    this.history = history.data[0];
+    console.log(this.history);
   },
 };
 </script>

@@ -36,7 +36,7 @@
         <vs-card vs-xs="12" vs-sm="12" vs-lg="12" id="profile" actionable class="cardx">
           <div slot="media">
             <img
-              @click="rendershowPatientInfo"
+              @click="rendershowPatientInfo(patient.CIN)"
               id="patient-profile-image"
               :src="patient.imageName"
               alt="user"
@@ -52,9 +52,12 @@
         </vs-card>
       </vs-col>
     </vs-row>
+    <router-link :to="{ name: 'PatientMoreInfos', params: { } }"></router-link>
+    <!-- <patientMoreInfo :name="patient.fullName" /> -->
   </div>
 </template>
 <script>
+// import patientMoreInfo from "./PatientMoreInfo.vue";
 import axios from "axios";
 export default {
   name: "patientsList",
@@ -69,14 +72,12 @@ export default {
     renderCreatePatient() {
       this.$router.push("/administrator/patients/createAPatient");
     },
-    rendershowPatientInfo() {
-      this.$router.push("/administrator/patients/PatientMoreInfos");
+    rendershowPatientInfo(arg) {
+      this.$router.push(`/administrator/patients/${arg}`);
     },
   },
   beforeMount: async function () {
-    let patients = await axios.post(
-      `/api/users/clinicX/patients`
-    );
+    let patients = await axios.post(`/api/users/clinicX/patients`);
     this.patients = patients.data;
   },
 };

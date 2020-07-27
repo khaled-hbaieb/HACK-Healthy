@@ -9,14 +9,10 @@
           <vs-card>
             <form>
               <label for="patientCIN">Your CIN:</label>
-              <vs-input
-                name="patientCIN"
-                id="patient-CIN"
-                v-model="patientCIN"
-                disabled
-              ></vs-input>
+              <vs-input name="patientCIN" id="patient-CIN" v-model="patientCIN" disabled></vs-input>
               <label for="Speciality">Speciality:</label>
               <vs-select
+                placeholder="Choose The Speciality"
                 name="Speciality"
                 autocomplete
                 v-model="spec"
@@ -29,15 +25,14 @@
                   :value="speciality"
                 ></vs-select-item>
               </vs-select>
-              <label v-if="doctorsList.length !== 0" for="DoctorName"
-                >Doctor Name:</label
-              >
+              <label v-if="doctorsList.length !== 0" for="DoctorName">Doctor Name:</label>
               <vs-select
+                placeholder="Choose The Doctor"
+                v-model="doctorName"
                 @change="inputChange"
                 v-if="doctorsList.length !== 0"
                 name="DoctorName"
                 autocomplete
-                v-model="doctorName"
               >
                 <vs-select-item
                   v-for="(doctor, index) in doctorsList"
@@ -49,14 +44,36 @@
             </form>
           </vs-card>
         </vs-row>
-        <vs-row>
-          <vs-col>
-            <vs-card>
-              Hellooo
-            </vs-card>
-          </vs-col>
-        </vs-row>
+        <vs-col v-if="isChosen">
+          <vs-card>
+            <label for="date">Please Choose The Date:</label>
+            <vs-input @change="change" v-model="date" type="date" name="date"></vs-input>
+          </vs-card>
+        </vs-col>
+        <vs-col v-if="isChosen && date !== ''">
+          <vs-card>
+            <label for="time">Please Choose The Hour:</label>
+            <vs-select placeholder="Choose The Hour" v-model="time" name="time">
+              <vs-select-item
+                v-for="(appoint, index) in availableAppointments"
+                :key="index"
+                :value="appoint"
+                :text="appoint+' H'"
+              ></vs-select-item>
+            </vs-select>
+          </vs-card>
+        </vs-col>
+        <vs-col v-if="isChosen && time !== ''">
+          <vs-card>
+            <label for="cause">Please Type In Your Cause:</label>
+            <vs-input v-model="cause" name="cause" placeholder="Type The Cause"></vs-input>
+          </vs-card>
+        </vs-col>
+        <vs-col vs-lg="2">
+          <vs-button v-if="cause !== ''" color="primary" @click="makeAppoint">Submit</vs-button>
+        </vs-col>
       </vs-col>
+
       <vs-col v-if="isChosen" vs-lg="8">
         <vs-card>
           <FullCalendar :options="calendarOptions"></FullCalendar>
@@ -64,10 +81,27 @@
         <vs-popup :title="Title" color="black" :active.sync="popupActivo">
           <vs-col v-for="(appointment, index) in appointments" :key="index">
             <vs-card>
-              Appointment N°: {{ index + 1 }}
-              <br />
-              Time: {{ appointment.time }}
-              <br />
+              <vs-row>
+                <vs-col>
+                  <p
+                    v-if="appointment.patientCIN == patientCIN"
+                  >Your Appointment Is Appointment N°: {{ index + 1 }}</p>
+                  <p v-else>Appointment N°: {{ index + 1 }}</p>
+
+                  <br />
+                  Time: {{ appointment.time }}
+                  <br />
+                  <br />
+                  <p v-if="appointment.patientCIN == patientCIN">Cause: {{ appointment.cause }}</p>
+                  <br />
+                </vs-col>
+              </vs-row>
+              <vs-row>
+                <vs-button
+                  v-if="appointment.patientCIN == patientCIN"
+                  @click="cancelAppoint(appointment)"
+                >Cancel Appointment</vs-button>
+              </vs-row>
             </vs-card>
           </vs-col>
         </vs-popup>
@@ -95,14 +129,19 @@ export default {
         weekends: true,
         titleColor: "red",
       },
+      patientCIN: "14404510",
+      doctorCIN: "",
+      date: "",
+      time: "",
+      cause: "",
       appointments: [],
       spec: "",
       popupActivo: false,
-      popupActivo2: false,
-      patientCIN: "14404510",
+      isChosen: false,
       doctorsList: [],
       Title: "",
-      isChosen: false,
+      availableAppointments: [],
+      nonAvailable: [],
       doctorName: "",
       specialities: [
         "ALLERGY & IMMUNOLOGY",
@@ -129,7 +168,40 @@ export default {
     };
   },
   methods: {
-    handleDateClick: function(arg) {
+    async cancelAppoint(appoint) {
+      axios.post("/api/appointments/cancelAppointment", { _id: appoint._id });
+      this.inputChange();
+      this.popupActivo = false;
+    },
+    async makeAppoint() {
+      await axios.post("/api/appointments/createAppointment", {
+        doctorCIN: this.doctorCIN,
+        doctorName: this.doctorName,
+        patientCIN: this.patientCIN,
+        time: this.time,
+        date: this.date,
+        cause: this.cause,
+        state: false,
+      });
+      this.inputChange();
+    },
+    change() {
+      this.nonAvailable = [];
+      this.availableAppointments = [];
+      this.time = "";
+      this.cause = "";
+      for (let i = 0; i < this.calendarOptions.events.length; i++) {
+        if (this.calendarOptions.events[i].date === this.date) {
+          this.nonAvailable.push(this.calendarOptions.events[i].time);
+        }
+      }
+      for (let i = 8; i <= 18; i++) {
+        if (!this.nonAvailable.includes(i.toString()) && i !== 12) {
+          this.availableAppointments.push(i.toString());
+        }
+      }
+    },
+    handleDateClick(arg) {
       this.appointments = [];
       for (let i = 0; i < this.calendarOptions.events.length; i++) {
         if (this.calendarOptions.events[i].date === arg.dateStr) {
@@ -140,33 +212,54 @@ export default {
       this.popupActivo = true;
     },
     async inputChange() {
+      this.calendarOptions.events = [];
       let doctor = await axios.post(
-        `/api/users/clinicX/doctors`,
+        `/api/users/clinicX/doctors/searchDoctors`,
         {
           fullName: this.doctorName,
         }
       );
-      let appoints = await axios.post(
-        `/api/appointments/appointment`,
-        {
-          doctorCIN: doctor.data.CIN,
-        }
-      );
+      this.doctorCIN = doctor.data[0].CIN;
+      let appoints = await axios.post(`/api/appointments/appointment`, {
+        doctorCIN: doctor.data[0].CIN,
+        state: false,
+      });
       this.calendarOptions.events = appoints.data;
-      for (let i = 0; i < appoints.data.length; i++) {
-        appoints.data[i].title = `Appointment At ${appoints.data[i].time}`;
+      for (let i = 0; i < this.calendarOptions.events.length; i++) {
+        if (this.calendarOptions.events[i].patientCIN === this.patientCIN) {
+          this.calendarOptions.events[
+            i
+          ].title = `Your Appointment At ${this.calendarOptions.events[i].time}`;
+        } else {
+          this.calendarOptions.events[
+            i
+          ].title = `Appointment At ${this.calendarOptions.events[i].time}`;
+        }
       }
-      console.log(this.calendarOptions.events);
+      this.date = "";
+      this.time = "";
+      this.cause = "";
+      this.nonAvailable = [];
+      this.availableAppointments = [];
       this.isChosen = true;
     },
-    getDoctors: async function() {
+    getDoctors: async function () {
       let doctors = await axios.post(
-        `/api/users/clinicX/doctors/`,
+        `/api/users/clinicX/doctors/searchDoctors`,
         {
           speciality: this.spec,
         }
       );
       this.doctorsList = doctors.data;
+      if (this.doctorsList.length === 0) {
+        this.date = "";
+        this.time = "";
+        this.cause = "";
+        this.nonAvailable = [];
+        this.availableAppointments = [];
+        this.isChosen = false;
+        this.doctorName = "";
+      }
     },
   },
 };
