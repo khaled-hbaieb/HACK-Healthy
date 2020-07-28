@@ -275,7 +275,7 @@ export default {
       return this.$store.state.auth.status.loggedIn;
     },
     backEndUrl() {
-      return `https://hackhealthy.herokuapp.com/upload-images`;
+      return `http://localhost:3000/upload-images`;
     },
   },
   mounted() {},

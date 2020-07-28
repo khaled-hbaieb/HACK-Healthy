@@ -1,101 +1,88 @@
 <template>
-  <center>
-    <div class="align-self-center">
-      
-      <vs-row class="row page-titles" id="container">
-        <vs-col class="align-self-center" vs-lg="8" vs-xs="12">
-          <vs-card vs-lg="10" vs-xs="12" id="vsCard">
-            <form
-              class="form-horizontal form-material"
-              id="loginform"
-              action="index.html"
-            >
-              <h3 class="text-center m-b-20">Sign In</h3>
-              <vs-col vs-lg="12">
-                <vs-input
-                  type="text"
-                  required
-                  placeholder="Email"
-                  v-model="email"
-                />
-              </vs-col>
-              <vs-col vs-lg="12">
-                <vs-input
-                  type="password"
-                  required
-                  placeholder="Password"
-                  v-model="password"
-                />
-              </vs-col>
-              <div>
-                <p>I'am a:</p>
-                <vs-button
-                  color="primary"
-                  id="btnUser"
-                  type="border"
-                  @click="doctor"
-                  >Doctor</vs-button
-                >
-                <vs-button
-                  color="primary"
-                  type="border"
-                  id="btnUser"
-                  @click="administrator"
-                  >Administrator</vs-button
-                >
-                <vs-button
-                  color="primary"
-                  type="border"
-                  id="btnUser"
-                  @click="patient"
-                  >Patient</vs-button
-                >
-              </div>
-              <vs-col class="col-md-12">
-                <div class="d-flex no-block align-items-center">
-                  <div class="custom-control custom-checkbox">
-                    <vs-input
-                      type="checkbox"
-                      class="custom-control-input"
-                      id="customCheck1"
-                    />
-                    
-                  </div>
-                </div>
-              </vs-col>
-              <vs-col class="col-xs-12 p-b-20">
-                <vs-button
-                  id="btn-login"
-                  class="btn btn-block btn-lg btn-info btn-rounded"
-                  @click="handleLogin"
-                  >Log In</vs-button
-                >
-              </vs-col>
-            </form>
-            <form class="form-horizontal" id="recoverform">
-              <vs-col class="col-xs-12">
-                <h3>Recover Password</h3>
-                <p class="text-muted">
-                  Enter your Email and instructions will be sent to you!
-                </p>
-              </vs-col>
-              <vs-col class="col-xs-12">
-                <vs-input type="text" required placeholder="Email" />
-              </vs-col>
-              <vs-col class="col-xs-12">
-                <vs-button
-                  class="btn btn-primary btn-lg btn-block text-uppercase waves-effect waves-light"
-                  type="submit"
-                  id="btn-reset"
-                  >Reset</vs-button
-                >
-              </vs-col>
-            </form>
-          </vs-card>
-        </vs-col>
-      </vs-row>
-    </div>
-  </center>
+  <vs-col id="login-page-container" vs-lg="6">
+    <vs-card vs-lg="12" vs-xs="12">
+      <center>
+        <h3 class="text-center m-b-20">Sign In</h3>
+        <br />
+        <vs-input
+          class="login-page-inputs"
+          type="text"
+          required
+          placeholder="Email"
+          v-model="email"
+        />
+        <vs-input
+          class="login-page-inputs"
+          type="password"
+          required
+          placeholder="Password"
+          v-model="password"
+        />
+        <vs-button
+          class="login-page-buttons"
+          color="primary"
+          type="border"
+          @click="doctor"
+          >Doctor</vs-button
+        >
+        <vs-button
+          class="login-page-buttons"
+          color="primary"
+          type="border"
+          @click="administrator"
+          >Administrator</vs-button
+        >
+        <vs-button
+          class="login-page-buttons"
+          color="primary"
+          type="border"
+          @click="patient"
+          >Patient</vs-button
+        >
+        <br />
+        <vs-button
+          id="btn-login"
+          class="login-page-buttons"
+          @click="handleLogin"
+          >Log In</vs-button
+        >
+        <h3>Recover Password</h3>
+        <p class="text-muted">
+          Enter your Email and instructions will be sent to you!
+        </p>
+        <vs-input
+          class="login-page-inputs"
+          type="text"
+          required
+          placeholder="Email"
+          v-model="recoveryEmail"
+        />
+        <vs-input
+          v-if="
+            recoveryEmail.includes('@') &&
+              recoveryEmail.includes('.') &&
+              recoveryEmail.length > '8'
+          "
+          class="login-page-inputs"
+          type="number"
+          required
+          placeholder="CIN"
+          v-model="recoveryCIN"
+        />
+        <vs-input
+          v-if="recoveryCIN.length === 8"
+          class="login-page-inputs"
+          type="number"
+          required
+          placeholder="Phone Number"
+          v-model="recoveryPhone"
+        />
+        <vs-button v-if="recoveryPhone.length === 8" class="login-page-buttons"
+          >Reset</vs-button
+        >
+      </center>
+    </vs-card>
+  </vs-col>
 </template>
 <script>
 import doctor from "../models/doctor";
@@ -109,6 +96,9 @@ export default {
       loading: false,
       email: "",
       password: "",
+      recoveryEmail: "",
+      recoveryCIN: "",
+      recoveryPhone: "",
     };
   },
   computed: {
@@ -159,17 +149,14 @@ export default {
 };
 </script>
 <style scoped>
-
-#btnUser {
-  margin-left: 1%;
+#login-page-container {
+  margin-left: 22% !important;
+  margin-top: 15% !important;
 }
-#btn-login, #btn-reset {
-  width: 18%;
+.login-page-inputs {
+  margin-bottom: 10px;
 }
-#container {
-  /* margin-left: 18%; */
-  padding-left: 18%;
-  padding-top: 10%;
-  
+.login-page-buttons {
+  margin-bottom: 10px;
 }
 </style>
