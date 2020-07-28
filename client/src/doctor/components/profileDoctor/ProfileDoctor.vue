@@ -68,7 +68,7 @@
             <vs-row class="row text-center m-t-10">
               <div class="col-md-12">
                 <strong>Address</strong>
-                <p>{{currentUser.address}}</p>
+                <p>{{currentUser}}</p>
               </div>
             </vs-row>
             <!-- /.row -->
