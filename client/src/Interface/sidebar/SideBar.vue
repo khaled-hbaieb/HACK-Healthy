@@ -4,7 +4,7 @@
       default-index="1"
       :parent="parent"
       :hiddenBackground="doNotClose"
-      color="primary"
+      :color="sideBarColor"
       class="sidebarx"
       spacer
       v-model="isSidebarActive"
@@ -12,14 +12,18 @@
     >
       <div class="header-sidebar text-center" slot="header">
         <div v-if="(role==='patient' ||role === 'doctor')">
+<div @click='showProfile'>
 
         <vs-avatar
           size="70px"
           :src="currentUser.imageName "
+           @click="showProfile"
         />
+</div>
         <h4>{{currentUser.fullName}}</h4>
         <small>{{ currentUser.email}}</small>
         </div>
+        
         <div v-else>
  <vs-avatar
           size="70px"
@@ -48,6 +52,9 @@ import UserService from '../../services/user.service'
 export default {
   name: "SideBar",
   props: {
+    sideBarColor: {
+      type: String,
+    },
     parent: {
       type: String,
     },
@@ -56,6 +63,7 @@ export default {
       type: [String, Number],
     },
   },
+  
   data: () => ({
     doNotClose: false,
     windowWidth: window.innerWidth,
@@ -63,6 +71,12 @@ export default {
     currentUser: null,
     role: null,
   }),
+  // methods: {
+  //   showProfile() {
+  //     console.log('clicked')
+  //     this.$router.push('/profileDoc')
+  //   }
+  // },
   computed: {
     //This is for mobile trigger
     isSidebarActive: {
@@ -73,6 +87,12 @@ export default {
         this.$store.commit("IS_SIDEBAR_ACTIVE", val);
       },
     },
+  },
+   methods: {
+    showProfile() {
+      console.log('clicked')
+      this.$router.push('/profileDoc')
+    }
   },
   beforeMount() {
     if (localStorage.role === "administrator") {
@@ -208,6 +228,11 @@ export default {
           url: "/patient/forum",
           name: "Forum",
           icon: "forum",
+        },
+        {
+          url: "/patient/emergency",
+          name: "S.O.S Call",
+          icon: "alarm",
         },
       ];
     }

@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
-
+// ./authentication/Login.vue
 Vue.use(Router);
 
 export default new Router({
@@ -70,7 +70,7 @@ export default new Router({
                 ),
             },
             {
-              path: "PatientMoreInfos",
+              path: ":CIN",
               name: "PatientMoreInfos",
               index: 3,
               component: () =>
@@ -105,6 +105,15 @@ export default new Router({
                   "./administrator/components/createDoctor/createDoctor.vue"
                 ),
             },
+            {
+              path: "DoctorMoreInfos",
+              name: "DoctorMoreInfos",
+              index: 3,
+              component: () =>
+                import(
+                  "./administrator/components/doctorsAdmin/doctorMoreInfo.vue"
+                ),
+            },
           ],
         },
         {
@@ -128,6 +137,13 @@ export default new Router({
       name: "doctor",
       component: () => import("./Interface/AdminInterface.vue"),
       children: [
+        {
+          path: "profile",
+          name: "profileDoc",
+          index: 7,
+          component: () =>
+            import("./doctor/components/profileDoctor/ProfileDoctor.vue"),
+        },
         {
           path: "appointments",
           name: "appointments",
@@ -208,13 +224,14 @@ export default new Router({
       name: "patient",
       index: 4,
       component: () => import("./Interface/AdminInterface.vue"),
-      
+
       children: [
         {
-          path:'profile',
-          name:'profile',
-          index:7,
-          component: () => import('./patient/components/profilePatient/ProfilePatient.vue')
+          path: "profile",
+          name: "profile",
+          index: 7,
+          component: () =>
+            import("./patient/components/profilePatient/ProfilePatient.vue"),
         },
         {
           path: "makeAppointment",
@@ -289,8 +306,6 @@ export default new Router({
             },
           ],
         },
-        
-        
       ],
     },
   ],

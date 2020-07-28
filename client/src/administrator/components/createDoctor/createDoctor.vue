@@ -6,7 +6,7 @@
           <h4 id="t1" class="text-themecolor">Add A Doctor</h4>
 
           <h6 id="t2" class="text-themecolor">
-            <a href="/doctors">Doctors</a> > Doctor
+            <a href="/administrator/doctors">Doctors</a> > Doctor
           </h6>
         </vs-card>
       </vs-col>
@@ -60,8 +60,9 @@
                 <div class="centerx">
                   <vs-upload
                     automatic
-                    action="http://localhost:8080/"
-                    @on-success="successUpload"
+                    :action="backEndUrl"
+                    fileName="image"
+                    @on-success="onFileUploaded"
                   />
                 </div>
               </div>
@@ -70,8 +71,9 @@
                 <div class="centerx">
                   <vs-upload
                     automatic
-                    action="http://localhost:8080/"
-                    @on-success="successUpload"
+                    :action="backEndUrl"
+                    fileName="image"
+                    @on-success="onFileUploaded"
                   />
                 </div>
               </div>
@@ -201,17 +203,12 @@
               placeholder="Your LinkedIN URL"
             />
             <div id="buttons-doctor-creation">
-              <vs-button
-                type="submit"
-                class="btn btn-inverse waves-effect waves-light"
-                >Cancel</vs-button
-              >
+              <vs-button type="submit" class="btn btn-inverse waves-effect waves-light">Cancel</vs-button>
               <vs-button
                 type="submit"
                 class="btn btn-info waves-effect waves-light m-r-10"
                 @click="handleRegisterDoc"
-                >Submit</vs-button
-              >
+              >Submit</vs-button>
             </div>
           </form>
         </vs-card>
@@ -240,6 +237,7 @@ export default {
       pwd: "",
       cpwd: "",
       address: "",
+      imageName: "",
       educationBackground: "",
       CIN: "",
       specialities: [
@@ -271,6 +269,9 @@ export default {
     loggedIn() {
       return this.$store.state.auth.status.loggedIn;
     },
+    backEndUrl() {
+      return `http://localhost:3000/upload-images`;
+    },
   },
   mounted() {},
   validations: {
@@ -280,6 +281,10 @@ export default {
     gender: {},
   },
   methods: {
+    onFileUploaded(event) {
+      this.imageName = event.target.response;
+      console.log(this.imageName);
+    },
     successUpload() {
       this.$vs.notify({
         color: "success",
@@ -301,7 +306,8 @@ export default {
         this.yearsOfExperience,
         this.educationBackground,
         this.address,
-        this.CIN
+        this.CIN,
+        this.imageName
       );
       this.$store.dispatch("auth/register", { user, role: "doctor" }).then(
         () => {

@@ -5,15 +5,22 @@ const services = require("../../services");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-router.post("/", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
-    var Doctors = await services.doctorService.findDoctors(req.body);
+    var Doctors = await services.doctorService.findDoctors();
     res.send(Doctors);
   } catch (error) {
     res.send(error);
   }
 });
-
+router.post("/searchDoctors", async (req, res) => {
+  try {
+    var Doctors = await services.doctorService.searchDoctors(req.body);
+    res.send(Doctors);
+  } catch (error) {
+    res.send(error);
+  }
+});
 router.post("/createdoctor", async (req, res) => {
   try {
     let newDoc = await services.doctorService.createDoctor(req.body);
@@ -23,9 +30,13 @@ router.post("/createdoctor", async (req, res) => {
   }
 });
 
-router.post("/updateDoctor", async (req, res) => {
+router.put("/updateDoctor/:CIN", async (req, res) => {
+  let filter = req.body.filter
+  let payload = req.body.payload
+  console.log('filterRoute' ,filter)
+  console.log('payload route', payload)
   try {
-    var newDoctor = await services.doctorService.updateDoctor(req.body);
+    var newDoctor = await services.doctorService.updateDoctor(filter, payload);
     res.send(newDoctor);
   } catch (error) {
     res.send(error);

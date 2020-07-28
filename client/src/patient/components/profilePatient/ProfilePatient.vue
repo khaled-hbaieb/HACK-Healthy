@@ -86,6 +86,7 @@
                 <vs-input label="Full Name" placeholder="Johnathan Doe" />
               </div>
             </div>
+            
             <div class="form-group">
               <div class="col-md-12">
                 <vs-input
@@ -105,30 +106,26 @@
                 </vs-select>
               </div>
             </div>
+            
             <div class="form-group">
               <div class="col-md-12">
-                <vs-input type="password" value="password" label="Password" />
+                <vs-input type="text" v-model="user.phoneNumber" placeholder="123 456 7890" label="Phone Number" />
               </div>
             </div>
             <div class="form-group">
               <div class="col-md-12">
-                <vs-input type="text" placeholder="123 456 7890" label="Phone Number" />
+                <vs-input type="text" placeholder="Occupation" v-model="user.occupation" label="Occupation" />
               </div>
             </div>
             <div class="form-group">
               <div class="col-md-12">
-                <vs-input type="text" placeholder="Occupation" label="Occupation" />
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-md-12">
-                <vs-input type="text" placeholder="Date of Birth" label="Date of Birth" />
+                <vs-input type="text" placeholder="Date of Birth" v-model="user.dateOfBirth" label="Date of Birth" />
               </div>
             </div>
 
             <div class="form-group">
               <div class="col-sm-12">
-                <button class="btn btn-success">Update Profile</button>
+                <button class="btn btn-success" @click="updateProfile" >Update Profile</button>
               </div>
             </div>
           </form>
@@ -139,13 +136,29 @@
 </template>
 <script>
 import UserService from "../../../services/user.service";
+import axios from 'axios'
 
 export default {
   name: "profile",
   data: () => {
     return {
       currentUser: null,
+      user :{
+        phoneNumber:'',
+        occupation: '',
+        dateOfBirth: '',
+
+      },
+
     };
+  },
+  methods: {
+async updateProfile() {
+    console.log('clicked')
+let user = await axios.put(`/api/users/clinicX/patients/updatePatient/${this.currentUser.CIN}`,{filter:{CIN: this.currentUser.CIN}, payload:this.user})
+
+this.currentUser = user.data
+}
   },
   beforeMount() {
     UserService.getPatientBoard().then(
