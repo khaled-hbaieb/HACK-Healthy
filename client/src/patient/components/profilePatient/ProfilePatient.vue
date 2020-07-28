@@ -86,6 +86,7 @@
                 <vs-input label="Full Name" placeholder="Johnathan Doe" />
               </div>
             </div>
+            
             <div class="form-group">
               <div class="col-md-12">
                 <vs-input
@@ -105,24 +106,20 @@
                 </vs-select>
               </div>
             </div>
+            
             <div class="form-group">
               <div class="col-md-12">
-                <vs-input v-model="password" type="password" value="password" label="Password" />
+                <vs-input type="text" v-model="user.phoneNumber" placeholder="123 456 7890" label="Phone Number" />
               </div>
             </div>
             <div class="form-group">
               <div class="col-md-12">
-                <vs-input type="text" v-model="phoneNumber" placeholder="123 456 7890" label="Phone Number" />
+                <vs-input type="text" placeholder="Occupation" v-model="user.occupation" label="Occupation" />
               </div>
             </div>
             <div class="form-group">
               <div class="col-md-12">
-                <vs-input type="text" placeholder="Occupation" v-model="occupation" label="Occupation" />
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-md-12">
-                <vs-input type="text" placeholder="Date of Birth" v-model="dateOfBirth" label="Date of Birth" />
+                <vs-input type="text" placeholder="Date of Birth" v-model="user.dateOfBirth" label="Date of Birth" />
               </div>
             </div>
 
@@ -146,17 +143,19 @@ export default {
   data: () => {
     return {
       currentUser: null,
-      password: '',
-      phoneNumber:'',
-      occupation: '',
-      dateOfBirth: '',
+      user :{
+        phoneNumber:'',
+        occupation: '',
+        dateOfBirth: '',
+
+      },
 
     };
   },
   methods: {
 async updateProfile() {
     console.log('clicked')
-let user = await axios.post(`/api/users/clinicX/patients/updatePatient`,this.currentUser)
+let user = await axios.put(`/api/users/clinicX/patients/updatePatient/${this.currentUser.CIN}`,{filter:{CIN: this.currentUser.CIN}, payload:this.user})
 
 this.currentUser = user.data
 }

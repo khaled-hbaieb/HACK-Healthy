@@ -30,9 +30,13 @@ router.post("/createdoctor", async (req, res) => {
   }
 });
 
-router.post("/updateDoctor", async (req, res) => {
+router.put("/updateDoctor/:CIN", async (req, res) => {
+  let filter = req.body.filter
+  let payload = req.body.payload
+  console.log('filterRoute' ,filter)
+  console.log('payload route', payload)
   try {
-    var newDoctor = await services.doctorService.updateDoctor(req.body);
+    var newDoctor = await services.doctorService.updateDoctor(filter, payload);
     res.send(newDoctor);
   } catch (error) {
     res.send(error);

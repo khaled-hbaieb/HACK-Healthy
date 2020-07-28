@@ -19,7 +19,10 @@ module.exports = {
     console.log(doctor)
     return Doctors.create(doctor);
   },
-  async updateDoctor(doctor) {
-    return Doctors.updateOne({ CIN: doctor.CIN }, doctor.doctor);
+  async updateDoctor(filter, payload) {
+    console.log('filter',filter)
+    console.log('payload', payload)
+    return Doctors.updateOne(filter, payload)
+    .catch(err => console.log(err));
   },
 };
