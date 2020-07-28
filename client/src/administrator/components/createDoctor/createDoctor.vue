@@ -203,12 +203,17 @@
               placeholder="Your LinkedIN URL"
             />
             <div id="buttons-doctor-creation">
-              <vs-button type="submit" class="btn btn-inverse waves-effect waves-light">Cancel</vs-button>
+              <vs-button
+                type="submit"
+                class="btn btn-inverse waves-effect waves-light"
+                >Cancel</vs-button
+              >
               <vs-button
                 type="submit"
                 class="btn btn-info waves-effect waves-light m-r-10"
                 @click="handleRegisterDoc"
-              >Submit</vs-button>
+                >Submit</vs-button
+              >
             </div>
           </form>
         </vs-card>
