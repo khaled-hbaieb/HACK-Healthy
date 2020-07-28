@@ -106,7 +106,7 @@ export default new Router({
                 ),
             },
             {
-              path: "DoctorMoreInfos",
+              path: ":CIN",
               name: "DoctorMoreInfos",
               index: 3,
               component: () =>
@@ -137,6 +137,13 @@ export default new Router({
       name: "doctor",
       component: () => import("./Interface/AdminInterface.vue"),
       children: [
+        {
+          path: "profile",
+          name: "profileDoc",
+          index: 7,
+          component: () =>
+            import("./doctor/components/profileDoctor/ProfileDoctor.vue"),
+        },
         {
           path: "appointments",
           name: "appointments",

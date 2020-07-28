@@ -23,9 +23,11 @@ router.post("/createpatient", async (req, res) => {
   }
 });
 
-router.post("/updatePatient", async (req, res) => {
+router.put("/updatePatient/:CIN", async (req, res) => {
+  let filter = req.body.filter
+  let payload = req.body.payload
   try {
-    var newPatient = await services.patientService.updatePatient(req.body);
+    var newPatient = await services.patientService.updatePatient(filter, payload);
     res.send(newPatient);
   } catch (error) {
     res.send(error);
@@ -33,8 +35,9 @@ router.post("/updatePatient", async (req, res) => {
 });
 
 router.post("/checkPatient", async (req, res) => {
+
   try {
-    var Patients = await services.patientService.findPatients(req.body);
+    var Patients = await services.patientService.findPatients(req.body );
     res.send(Patients);
   } catch (err) {
     res.send(err);
@@ -43,7 +46,6 @@ router.post("/checkPatient", async (req, res) => {
 
 router.post("/checkLogin", (req, res) => {
   Patient.findOne({ email: req.body.email }, (err, user) => {
-    console.log(user);
     if (err) {
       return res.status(500).json({
         title: "server error",

@@ -348,7 +348,6 @@ export default {
       });
     },
     handleRegister() {
-      console.log(this.image);
       let user;
       user = new Patient(
         this.email,
