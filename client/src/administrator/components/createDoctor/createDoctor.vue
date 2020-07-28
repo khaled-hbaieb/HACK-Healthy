@@ -288,7 +288,6 @@ export default {
   methods: {
     onFileUploaded(event) {
       this.imageName = event.target.response;
-      console.log(this.imageName);
     },
     successUpload() {
       this.$vs.notify({
@@ -316,7 +315,6 @@ export default {
       );
       this.$store.dispatch("auth/register", { user, role: "doctor" }).then(
         () => {
-          console.log("entered doc creation");
           this.successful = true;
         },
         (error) => {

@@ -44,7 +44,6 @@ export default {
       patientCIN: this.patientCIN,
     });
     this.appoints = appoints.data;
-    console.log(this.appoints);
   },
 };
 </script>

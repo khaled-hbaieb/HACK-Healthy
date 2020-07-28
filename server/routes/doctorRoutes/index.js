@@ -39,10 +39,8 @@ router.post("/createdoctor", async (req, res) => {
 });
 
 router.put("/updateDoctor/:CIN", async (req, res) => {
-  let filter = req.body.filter
-  let payload = req.body.payload
-  console.log('filterRoute' ,filter)
-  console.log('payload route', payload)
+  let filter = req.body.filter;
+  let payload = req.body.payload;
   try {
     var newDoctor = await services.doctorService.updateDoctor(filter, payload);
     res.send(newDoctor);
@@ -80,7 +78,7 @@ router.post("/checkLogin", (req, res) => {
 });
 router.post("/checkDoctor", async (req, res) => {
   try {
-    var Doctors = await services.doctorService.findDoctors(req.body);
+    var Doctors = await services.doctorService.findDoctor(req.body);
     res.send(Doctors);
   } catch (err) {
     res.send(err);

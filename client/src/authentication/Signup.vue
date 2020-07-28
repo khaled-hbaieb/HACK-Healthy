@@ -90,12 +90,10 @@ export default {
       };
       axios.post(`https://hackhealthy.herokuapp.com/signup`, newUser).then(
         (res) => {
-          console.log(res);
           this.error = "";
           this.$router.push("/Login");
         },
         (err) => {
-          console.log(err.response);
           this.error = err.response.data.error;
         }
       );
