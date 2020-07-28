@@ -12,8 +12,11 @@ module.exports = {
     console.log(patient);
     return Patients.create(patient);
   },
-  async updatePatient(patient) {
-    return Patients.updateOne({ CIN: patient.CIN }, patient.patient);
+  async updatePatient(filter, payload) {
+    
+    return Patients.updateOne(filter, payload)
+    .catch( err => console.log(err))
+
   },
 
   async checkPatient(patient) {

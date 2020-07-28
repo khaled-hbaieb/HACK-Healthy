@@ -23,7 +23,6 @@
 import Navbar from "./header/Navbar.vue";
 import SideBar from "./sidebar/SideBar.vue";
 import sidebarLinks from "./sidebar/sidebarlinks.js";
-// import UserService from '../services/user.service'
 
 export default {
   name: "Interface",
@@ -36,49 +35,9 @@ export default {
     sideBarColor: "dark",
     logotitle: "Ibn Rochd Clinic",
     sidebarLinks: sidebarLinks,
-    currentUser: null,
+  
   }),
   methods: {},
-    // beforeMount() {
-    // if(localStorage.getItem('role') === 'patient') {
-    //   UserService.getPatientBoard().then(
-    //   (response) => {
-    //     this.currentUser = response;
-    //   },
-    //   (error) => {
-    //     this.content =
-    //       (error.currentUser && error.response.data) ||
-    //       error.message ||
-    //       error.toString();
-    //   }
-    // );
-    // } if(localStorage.getItem('role') === doctor) {
 
-    //   UserService.getDoctorBoard().then(
-    //     (response) => {
-    //       this.currentUser = response;
-    //     },
-    //     (error) => {
-    //       this.content =
-    //         (error.currentUser && error.response.data) ||
-    //         error.message ||
-    //         error.toString();
-    //     }
-    //   );
-    // }
-    // if(localStorage.getItem('role') === admin) {
-    //   UserService.getAdminBoard().then(
-    //   (response) => {
-    //     this.currentUser = response;
-    //   },
-    //   (error) => {
-    //     this.content =
-    //       (error.currentUser && error.response.data) ||
-    //       error.message ||
-    //       error.toString();
-    //   }
-    // );
-    // }
-    // }
 };
 </script>

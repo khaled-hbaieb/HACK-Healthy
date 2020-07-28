@@ -9,7 +9,7 @@ export default new Router({
     {
       path: "/",
       index: 1,
-      component: () => import("./authentication/Login.vue"),
+      component: () => import("./doctor/components/post/Post.vue"),
     },
     {
       path: "/administrator",
@@ -137,6 +137,13 @@ export default new Router({
       name: "doctor",
       component: () => import("./Interface/AdminInterface.vue"),
       children: [
+        {
+          path: "profile",
+          name: "profileDoc",
+          index: 7,
+          component: () =>
+            import("./doctor/components/profileDoctor/ProfileDoctor.vue"),
+        },
         {
           path: "appointments",
           name: "appointments",
