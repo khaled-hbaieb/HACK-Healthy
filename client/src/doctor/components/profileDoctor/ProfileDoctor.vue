@@ -164,7 +164,6 @@ this.currentUser = user.data
     UserService.getDoctorBoard().then(
       (response) => {
         this.currentUser = response;
-        console.log(currentUser)
       },
       (error) => {
         this.content =

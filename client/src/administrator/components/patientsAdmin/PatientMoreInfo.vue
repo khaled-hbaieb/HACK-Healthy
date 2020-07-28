@@ -150,7 +150,6 @@ export default {
       patientCIN: user,
     });
     this.history = history.data[0];
-    console.log(this.history);
   },
 };
 </script>

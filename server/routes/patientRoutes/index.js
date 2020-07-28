@@ -46,7 +46,6 @@ router.post("/checkPatient", async (req, res) => {
 
 router.post("/checkLogin", (req, res) => {
   Patient.findOne({ email: req.body.email }, (err, user) => {
-    console.log(user);
     if (err) {
       return res.status(500).json({
         title: "server error",
