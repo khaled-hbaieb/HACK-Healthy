@@ -316,7 +316,7 @@ export default {
       return this.$store.state.auth.status.loggedIn;
     },
     backEndUrl() {
-      return `https://hackhealthy.herokuapp.com/upload-images`;
+      return `http://localhost:3000/upload-images`;
     },
   },
 
@@ -348,7 +348,6 @@ export default {
       });
     },
     handleRegister() {
-      console.log(this.image);
       let user;
       user = new Patient(
         this.email,

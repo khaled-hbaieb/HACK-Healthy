@@ -12,19 +12,17 @@ class UserService {
   }
 
   async getAdministratorBoard() {
-    let user = await axios.get(API_URL + "administrators/checkAdministrator", {
+    let user = await axios.post(API_URL + "administrators/checkAdministrator", {
       _id: authHeader().token,
     });
-    return user.data [0]
+    return user.data[0];
   }
 
-  
-
   async getDoctorBoard() {
-    let user = await axios.get(API_URL + "doctors/checkDoctor", {
+    let user = await axios.post(API_URL + "doctors/checkDoctor", {
       _id: authHeader().token,
     });
-    return user.data [0]
+    return user.data[0];
   }
 }
 
