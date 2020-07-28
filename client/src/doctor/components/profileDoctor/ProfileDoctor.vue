@@ -68,7 +68,7 @@
             <vs-row class="row text-center m-t-10">
               <div class="col-md-12">
                 <strong>Address</strong>
-                <p>{{currentUser}}</p>
+                <p>{{currentUser.address}}</p>
               </div>
             </vs-row>
             <!-- /.row -->
@@ -138,7 +138,6 @@
 <script>
 import UserService from "../../../services/user.service";
 import axios from 'axios'
-
 export default {
   name: "profileDoc",
   data: () => {
@@ -150,7 +149,6 @@ export default {
         phoneNumber:'',
         dateOfBirth:'',
         address:'',
-
       },
     };
   },
@@ -164,7 +162,6 @@ this.currentUser = user.data
     UserService.getDoctorBoard().then(
       (response) => {
         this.currentUser = response;
-        console.log(currentUser)
       },
       (error) => {
         this.content =

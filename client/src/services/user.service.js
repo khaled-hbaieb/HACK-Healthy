@@ -15,16 +15,14 @@ class UserService {
     let user = await axios.post(API_URL + "administrators/checkAdministrator", {
       _id: authHeader().token,
     });
-    return user.data [0]
+    return user.data[0];
   }
-
-  
 
   async getDoctorBoard() {
     let user = await axios.post(API_URL + "doctors/checkDoctor", {
       _id: authHeader().token,
     });
-    return user.data [0]
+    return user.data[0];
   }
 }
 

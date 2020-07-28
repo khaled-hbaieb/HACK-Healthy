@@ -4,7 +4,11 @@
     style="background-image:url(../assets/images/background/login-register.jpg);"
   >
     <vs-card class="login-box">
-      <form class="form-horizontal form-material" id="loginform" action="index.html">
+      <form
+        class="form-horizontal form-material"
+        id="loginform"
+        action="index.html"
+      >
         <h3 class="text-center m-b-20">Sign Up</h3>
         <div id="inputs">
           <div class="form-group">
@@ -24,14 +28,22 @@
           </div>
           <div class="form-group">
             <div class="col-xs-12">
-              <vs-input type="password" required placeholder="Confirm Password" />
+              <vs-input
+                type="password"
+                required
+                placeholder="Confirm Password"
+              />
             </div>
           </div>
         </div>
         <div class="form-group row">
           <div class="col-md-12">
             <div class="custom-control custom-checkbox">
-              <vs-input type="checkbox" class="custom-control-input" id="customCheck1" />
+              <vs-input
+                type="checkbox"
+                class="custom-control-input"
+                id="customCheck1"
+              />
               <label class="custom-control-label" for="customCheck1">
                 I agree to all
                 <a href="javascript:void(0)">Terms</a>
@@ -76,14 +88,12 @@ export default {
         email: this.email,
         password: this.password,
       };
-      axios.post(`http://localhost:3000/signup`, newUser).then(
+      axios.post(`https://hackhealthy.herokuapp.com/signup`, newUser).then(
         (res) => {
-          console.log(res);
           this.error = "";
           this.$router.push("/Login");
         },
         (err) => {
-          console.log(err.response);
           this.error = err.response.data.error;
         }
       );

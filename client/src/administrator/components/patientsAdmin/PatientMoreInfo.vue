@@ -52,31 +52,10 @@
                 </vs-col>
               </vs-row>
               <hr />
-              <!-- /.row -->
-              <!-- <vs-row class="row">
-                <vs-col class="col-md-4 col-sm-4 text-center">
-                  <p class="text-purple">
-                    <i class="ti-facebook"></i>
-                  </p>
-                  <h1>258</h1>
-                </vs-col>
-                <div class="col-md-4 col-sm-4 text-center">
-                  <p class="text-info">
-                    <i class="ti-twitter"></i>
-                  </p>
-                  <h1>125</h1>
-                </div>
-                <div class="col-md-4 col-sm-4 text-center">
-                  <p class="text-danger">
-                    <i class="ti-google"></i>
-                  </p>
-                  <h1>140</h1>
-                </div>
-              </vs-row>-->
             </div>
           </vs-card>
         </vs-col>
-        <div class="col-md-8 col-xs-12">
+        <vs-col class="col-md-8 col-xs-12">
           <vs-card>
             <h5>Personal Information:</h5>
             <div class="row">
@@ -96,7 +75,8 @@
                 <p class="text-muted">{{patient.email}}</p>
               </div>
             </div>
-            <hr />
+          </vs-card>
+          <vs-card>
             <h5>History:</h5>
             <hr />
             <div class="row">
@@ -106,13 +86,44 @@
                 <p class="text-muted">{{history.roomNumber}}</p>
               </div>
               <div class="col-md-3 col-xs-6 b-r">
-                <strong>illness</strong>
+                <strong>illness:</strong>
+                <br />
+                <p class="text-muted">{{history.illness}}</p>
+              </div>
+              <div class="col-md-3 col-xs-6 b-r">
+                <strong>Drugs :</strong>
+                <br />
+                <p class="text-muted">{{history.drugs}}</p>
+              </div>
+              <div class="col-md-3 col-xs-6 b-r">
+                <strong>entry Date :</strong>
+                <br />
+                <p class="text-muted">{{history.entryDate}}</p>
+              </div>
+               <div class="col-md-3 col-xs-6 b-r">
+                <strong>Exit Date :</strong>
+                <br />
+                <p class="text-muted">{{history.exitDate}}</p>
+              </div>
+            </div>
+          </vs-card>
+           <vs-card>
+            <h5>Records:</h5>
+            <hr />
+            <div class="row">
+              <div class="col-md-3 col-xs-6 b-r">
+                <strong>Tests :</strong>
+                <br />
+                <p class="text-muted">{{history.roomNumber}}</p>
+              </div>
+              <div class="col-md-3 col-xs-6 b-r">
+                <strong>Operation:</strong>
                 <br />
                 <p class="text-muted">{{history.illness}}</p>
               </div>
             </div>
           </vs-card>
-        </div>
+        </vs-col>
       </vs-row>
     </div>
   </div>
@@ -139,7 +150,6 @@ export default {
       patientCIN: user,
     });
     this.history = history.data[0];
-    console.log(this.history);
   },
 };
 </script>
