@@ -4,20 +4,27 @@ import authHeader from "./auth-header";
 const API_URL = `/api/users/clinicX/`;
 
 class UserService {
-  getPublicContent() {
-    return axios.get(API_URL);
+  async getPatientBoard() {
+    let user = await axios.post(API_URL + "patients/checkPatient", {
+      _id: authHeader().token,
+    });
+    return user.data[0];
   }
 
-  getPatientBoard() {
-    return axios.get(API_URL + "patients", { headers: authHeader() });
+  async getAdministratorBoard() {
+    let user = await axios.get(API_URL + "administrators/checkAdministrator", {
+      _id: authHeader().token,
+    });
+    return user.data [0]
   }
 
-  getAdministratorBoard() {
-    return axios.get(API_URL + "administrators", { headers: authHeader() });
-  }
+  
 
-  getDoctorBoard() {
-    return axios.get(API_URL + "doctors", { headers: authHeader() });
+  async getDoctorBoard() {
+    let user = await axios.get(API_URL + "doctors/checkDoctor", {
+      _id: authHeader().token,
+    });
+    return user.data [0]
   }
 }
 

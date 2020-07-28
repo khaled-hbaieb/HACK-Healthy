@@ -13,4 +13,7 @@ module.exports = {
   async updatePatient(filter, payload) {
     return Appointments.updateOne(filter, payload);
   },
+  cancelAppointment(appoint) {
+    return Appointments.deleteOne(appoint);
+  },
 };

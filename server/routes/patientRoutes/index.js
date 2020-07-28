@@ -34,7 +34,7 @@ router.post("/updatePatient", async (req, res) => {
 
 router.post("/checkPatient", async (req, res) => {
   try {
-    var Patients = await services.patientService.checkPatient(req.body);
+    var Patients = await services.patientService.findPatients(req.body);
     res.send(Patients);
   } catch (err) {
     res.send(err);
@@ -43,11 +43,13 @@ router.post("/checkPatient", async (req, res) => {
 
 router.post("/checkLogin", (req, res) => {
   Patient.findOne({ email: req.body.email }, (err, user) => {
-    if (err)
+    console.log(user);
+    if (err) {
       return res.status(500).json({
         title: "server error",
         error: err,
       });
+    }
     if (!user) {
       return res.status(401).json({
         title: "user not found",
@@ -64,6 +66,7 @@ router.post("/checkLogin", (req, res) => {
     return res.status(200).json({
       title: "login success",
       token: token,
+      user: user,
     });
   });
 });
