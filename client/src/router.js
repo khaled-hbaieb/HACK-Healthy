@@ -9,7 +9,7 @@ export default new Router({
     {
       path: "/",
       index: 1,
-      component: () => import("./doctor/components/post/Post.vue"),
+      component: () => import("./authentication/Login.vue"),
     },
     {
       path: "/administrator",
@@ -106,7 +106,7 @@ export default new Router({
                 ),
             },
             {
-              path: "DoctorMoreInfos",
+              path: ":CIN",
               name: "DoctorMoreInfos",
               index: 3,
               component: () =>
@@ -217,13 +217,14 @@ export default new Router({
       name: "patient",
       index: 4,
       component: () => import("./Interface/AdminInterface.vue"),
-      
+
       children: [
         {
-          path:'profile',
-          name:'profile',
-          index:7,
-          component: () => import('./patient/components/profilePatient/ProfilePatient.vue')
+          path: "profile",
+          name: "profile",
+          index: 7,
+          component: () =>
+            import("./patient/components/profilePatient/ProfilePatient.vue"),
         },
         {
           path: "makeAppointment",
@@ -298,8 +299,6 @@ export default new Router({
             },
           ],
         },
-        
-        
       ],
     },
   ],

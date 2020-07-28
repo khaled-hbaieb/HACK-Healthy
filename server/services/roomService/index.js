@@ -7,4 +7,7 @@ module.exports = {
   async updateRoom(filter, payload) {
     return Rooms.updateOne(filter, payload);
   },
+  async createRooms(rooms) {
+    return Rooms.create(rooms);
+  },
 };

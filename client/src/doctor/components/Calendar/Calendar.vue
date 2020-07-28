@@ -70,17 +70,14 @@ export default {
     },
   },
   beforeMount: async function() {
-    let appoints = await axios.post(
-      `/api/appointments/appointment`,
-      {
-        doctorCIN: 14404510,
-        state: false,
-      }
-    );
+    let appoints = await axios.post(`/api/appointments/appointment`, {
+      doctorCIN: 20202000,
+    });
     for (let i = 0; i < appoints.data.length; i++) {
       appoints.data[i].title = `Appointment At ${appoints.data[i].time}`;
     }
     this.calendarOptions.events = appoints.data;
+    console.log(this.calendarOptions.events);
   },
 };
 </script>

@@ -4,7 +4,7 @@
       default-index="1"
       :parent="parent"
       :hiddenBackground="doNotClose"
-      color="primary"
+      :color="sideBarColor"
       class="sidebarx"
       spacer
       v-model="isSidebarActive"
@@ -48,6 +48,9 @@ import UserService from '../../services/user.service'
 export default {
   name: "SideBar",
   props: {
+    sideBarColor: {
+      type: String,
+    },
     parent: {
       type: String,
     },
@@ -208,6 +211,11 @@ export default {
           url: "/patient/forum",
           name: "Forum",
           icon: "forum",
+        },
+        {
+          url: "/patient/emergency",
+          name: "S.O.S Call",
+          icon: "alarm",
         },
       ];
     }

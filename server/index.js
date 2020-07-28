@@ -19,8 +19,7 @@ app.use(bodyParser.json());
 
 let URI = process.env.URI;
 const mongoose = require("mongoose");
-const { join } = require("path");
-const { json } = require("body-parser");
+
 mongoose.connect(URI, {
   useNewUrlParser: true,
   useCreateIndex: true,
