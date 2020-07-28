@@ -9,7 +9,7 @@ export default new Router({
     {
       path: "/",
       index: 1,
-      component: () => import("./authentication/Login.vue"),
+      component: () => import("./doctor/components/post/Post.vue"),
     },
     {
       path: "/administrator",
