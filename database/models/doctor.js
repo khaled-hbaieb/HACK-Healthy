@@ -41,7 +41,7 @@ const doctorSchema = new Schema({
   createdAt: {
     type: String,
   },
-  image: {
+  imageName: {
     type: String,
   },
 });

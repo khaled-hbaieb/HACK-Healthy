@@ -50,12 +50,15 @@ router.post("/updateAdministrator", async (req, res) => {
 
 router.post("/checkLogin", (req, res) => {
   Administrator.findOne({ email: req.body.email }, (err, user) => {
-    if (err)
-      return res.status(500).json({
-        title: "server error",
-        error: err,
-      });
+    console.log('user not error',user)
+    if (err) {return res.status(500).json({
+      title: "server error",
+      error: err,
+    });}
+      
+      console.log('useeeeer',user)
     if (!user) {
+      console.log('khaled not found')
       return res.status(401).json({
         title: "user not found",
         error: "invalid credentials",
@@ -74,6 +77,15 @@ router.post("/checkLogin", (req, res) => {
       token: token,
     });
   });
+});
+
+router.post("/checkAdministrator", async (req, res) => {
+  try {
+    var Administrators = await services.administratorService.findAdministrators(req.body);
+    res.send(Administrators);
+  } catch (err) {
+    res.send(err);
+  }
 });
 
 module.exports = router;
