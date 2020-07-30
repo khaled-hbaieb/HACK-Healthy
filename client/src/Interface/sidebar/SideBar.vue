@@ -229,7 +229,7 @@ export default {
   methods: {
     showProfile() {
       console.log("clicked");
-      this.$router.push("/profileDoc");
+      this.$router.push(`/${localStorage.role}/profile`);
     },
     handleWindowResize(event) {
       this.windowWidth = event.currentTarget.innerWidth;

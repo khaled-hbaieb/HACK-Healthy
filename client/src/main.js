@@ -22,6 +22,7 @@ Vue.config.productionTip = false;
 Vue.config.devtools = true;
 
 Vue.use(Vuesax, {
+
   theme: {
     colors: {
       primary: "#fb9678",

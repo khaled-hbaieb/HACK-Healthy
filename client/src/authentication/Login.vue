@@ -4,52 +4,50 @@
       <center>
         <h3 class="text-center m-b-20">Sign In</h3>
         <br />
-        <vs-input
-          class="login-page-inputs"
-          type="text"
-          required
-          placeholder="Email"
-          v-model="email"
-        />
-        <vs-input
-          class="login-page-inputs"
-          type="password"
-          required
-          placeholder="Password"
-          v-model="password"
-        />
-        <vs-button
-          class="login-page-buttons"
-          color="primary"
-          type="border"
-          @click="doctor"
-          >Doctor</vs-button
-        >
-        <vs-button
-          class="login-page-buttons"
-          color="primary"
-          type="border"
-          @click="administrator"
-          >Administrator</vs-button
-        >
-        <vs-button
-          class="login-page-buttons"
-          color="primary"
-          type="border"
-          @click="patient"
-          >Patient</vs-button
-        >
-        <br />
-        <vs-button
-          id="btn-login"
-          class="login-page-buttons"
-          @click="handleLogin"
-          >Log In</vs-button
-        >
+        <ValidationProvider rules="required|email" v-slot="{ errors }">
+          <span>
+            <vs-input
+              
+              class="login-page-inputs"
+              type="text"
+              required
+              label-placeholder="E-mail"
+              v-model="email"
+            />
+          </span>
+        </ValidationProvider>
+
+        <ValidationProvider rules="required" v-slot="{ errors }">
+          <vs-input
+            dark
+            class="login-page-inputs"
+            type="password"
+            required
+            label-placeholder="Password"
+            v-model="password"
+          />
+          <span>{{ errors[0] }}</span>
+        </ValidationProvider>
+
+        <div>
+          <vs-button class="login-page-buttons" color="primary" type="border" @click="doctor">Doctor</vs-button>
+          <vs-button
+            class="login-page-buttons"
+            color="primary"
+            type="border"
+            @click="administrator"
+          >Administrator</vs-button>
+          <vs-button
+            class="login-page-buttons"
+            color="primary"
+            type="border"
+            @click="patient"
+          >Patient</vs-button>
+          <br />
+          <vs-button id="btn-login" class="login-page-buttons" @click="handleLogin">Log In</vs-button>
+        </div>
         <h3>Recover Password</h3>
-        <p class="text-muted">
-          Enter your Email and instructions will be sent to you!
-        </p>
+        <p class="text-muted">Enter your Email and instructions will be sent to you!</p>
         <vs-input
           class="login-page-inputs"
           type="text"
@@ -77,9 +75,7 @@
           placeholder="Phone Number"
           v-model="recoveryPhone"
         />
-        <vs-button v-if="recoveryPhone.length === 8" class="login-page-buttons"
-          >Reset</vs-button
-        >
+        <vs-button v-if="recoveryPhone.length === 8" class="login-page-buttons">Reset</vs-button>
       </center>
     </vs-card>
   </vs-col>
@@ -88,7 +84,17 @@
 import doctor from "../models/doctor";
 import administrator from "../models/administrator";
 import patient from "../models/patient";
+import { ValidationProvider, extend } from "vee-validate";
+import { required, email } from "vee-validate/dist/rules";
+extend("email", email);
+extend("required", {
+  ...required,
+  message: "This field is required",
+});
 export default {
+  components: {
+    ValidationProvider,
+  },
   name: "Login",
   data() {
     return {
