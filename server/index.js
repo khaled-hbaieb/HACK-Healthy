@@ -5,6 +5,7 @@ const path = require("path");
 const upload = require("./multer");
 const cloudinary = require("./cloudinary");
 const fs = require("fs");
+const exphbs = require("express-handlebars");
 const nodemailer = require("nodemailer");
 require("dotenv").config();
 
@@ -16,6 +17,9 @@ app.use(express.static("uploads"));
 app.use(express.static("client/dist"));
 
 app.use(bodyParser.json());
+
+app.engine("handlebars", exphbs());
+app.set("view engine", "handlebars");
 
 let URI = process.env.URI;
 const mongoose = require("mongoose");
@@ -44,7 +48,7 @@ app.use("/api/clinicX/rooms", routes.roomRoutes);
 app.use("/api/users/clinicX/history", routes.historyRoutes);
 
 app.use("/api/users/clinicX/record", routes.recordRoutes);
- 
+
 app.use("/api/users/clinicX/currentPatients", routes.currentPatientsRoutes);
 
 app.use("/api/appointments", routes.appointmentsRoutes);
@@ -108,6 +112,61 @@ app.use("/upload-images", upload.array("image"), async (req, res) => {
     });
   }
 });
+
+/**
+ *
+ */
+
+app.post("/send", (req, res) => {
+  console.log(req.body);
+  // let password = getPassword();
+  let mailToSend = `Your demand for resetting your password is accepted. \n This Is Your new password:`;
+  const output = `
+  <p>You have a new contact request</p>
+  <h3>Contact Details</h3>
+  <ul>  
+  
+  <li>Email: ${req.body.email}</li>
+  <li>CIN: ${req.body.CIN}</li>
+  <li>Phone: ${req.body.phone}</li>
+  </ul>
+  <h3>Message</h3>
+  <p>${mailToSend}</p>
+  `;
+  let mailOptions = {
+    from: '"Hack Healthy" hackhealthyclinic@gmail.com', // sender address
+    to: `${req.body.email}`, // list of receivers
+    subject: "Password reset", // Subject line
+    html: output, // html body
+  };
+
+  // create reusable transporter object using the default SMTP transport
+  let transporter = nodemailer.createTransport({
+    service: "gmail",
+    // port: 587,
+    // secure: false, // true for 465, false for other ports
+    auth: {
+      user: process.env.USER, // generated ethereal user
+      pass: process.env.PASS, // generated ethereal password
+    },
+    tls: {
+      rejectUnauthorized: false,
+    },
+  });
+
+  // setup email data with unicode symbols
+
+  // send mail with defined transport object
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      return console.log(error);
+    }
+  });
+});
+
+/**
+ *
+ */
 
 app.get("*", (req, res) => {
   let dirPath = path.join(__dirname, "../client/dist/index.html");
