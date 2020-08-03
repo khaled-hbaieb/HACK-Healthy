@@ -3,11 +3,14 @@
     <vs-row class="row">
       <vs-col class="col-sm-12">
         <vs-card id="header-titles" class="card">
-          <h4 id="t1" class="text-themecolor">Add A Patient</h4>
-
-          <h6 id="t2" class="text-themecolor">
-            <a href="/administrator/patients">Patients</a> > Patient
-          </h6>
+          <vs-col vs-lg="10">
+            <h4 class="text-themecolor">Add A Patient</h4>
+          </vs-col>
+          <vs-col vs-lg="2">
+            <h6 class="text-themecolor">
+              <a href="/administrator/patients">Patients</a> > Patient
+            </h6>
+          </vs-col>
         </vs-card>
       </vs-col>
     </vs-row>
@@ -17,14 +20,16 @@
         <vs-card class="card">
           <h5 class="card-title">Basic Informations</h5>
           <form class="form-material form-horizontal">
-            <label class="col-md-12" for="example-text">Name</label>
+            <label class="col-md-12" for="fullName">Name</label>
             <vs-input
               class="doctor-form-inputs-doctor-creation"
               type="text"
               id="example-text"
-              name="example-text"
+              name="fullName"
               placeholder="Enter your Full Name"
               v-model="fullName"
+              :success="fullName !== ''"
+              success-text="Thank You For Typing your Full Name"
             />
             <label class="col-md-12" for="bdate">Date of Birth</label>
             <vs-input
@@ -33,10 +38,13 @@
               type="date"
               id="bdate"
               name="bdate"
+              :success="dateOfBirth !== ''"
+              success-text="Thank You For Entering Your Date Of Birth"
             />
-            <label class="col-sm-12">Gender</label>
+            <label class="col-sm-12" for="gender">Gender</label>
             <vs-select
               placeholder="Select Your Gender"
+              name="gender"
               :success="gender === 'Male' || gender === 'Female'"
               success-text="Thank You For Selecting Your Gender"
               v-model="gender"
@@ -45,40 +53,46 @@
               <vs-select-item text="Male" value="Male"></vs-select-item>
               <vs-select-item text="Female" value="Female"></vs-select-item>
             </vs-select>
-            <label class="col-sm-12">Profile Image</label>
+            <label class="col-sm-12" for="image">Profile Image</label>
             <div class="centerx">
               <vs-upload
                 automatic
+                name="image"
                 :action="backEndUrl"
                 fileName="image"
                 @on-success="onFileUploaded"
               />
             </div>
-            {{ CIN }}
-            <label class="col-md-12" for="special">CIN</label>
+            <label class="col-md-12" for="CIN">CIN</label>
             <vs-input
               class="doctor-form-inputs-doctor-creation"
               type="number"
               id="url"
-              name="url"
+              name="CIN"
               placeholder="Your CIN"
+              :success="CIN.length === 8"
+              success-text="Thank You For Entering Your CIN"
               v-model="CIN"
             />
-            <label class="col-md-12" for="special">Job</label>
+            <label class="col-md-12" for="job">Job</label>
             <vs-input
               class="doctor-form-inputs-doctor-creation"
               type="text"
               id="url"
-              name="url"
+              name="job"
+              :success="job !== '' "
+              success-text="Thank You For Entering Your Job"
               placeholder="Your Job"
               v-model="job"
             />
-            <label class="col-md-12" for="special">address</label>
+            <label class="col-md-12" for="address">address</label>
             <vs-input
               class="doctor-form-inputs-doctor-creation"
               type="text"
               id="url"
-              name="url"
+              name="address"
+              :success="address !== '' "
+              success-text="Thank You For Entering Your Address"
               placeholder="Your CIN"
               v-model="address"
             />
@@ -91,23 +105,27 @@
         <vs-card class="card">
           <h5 class="card-title">Patient's Account Information</h5>
           <form class="form-material form-horizontal">
-            <label class="col-md-12" for="example-email">Email</label>
+            <label class="col-md-12" for="email">Email</label>
             <vs-input
               class="doctor-form-inputs-doctor-creation"
               type="email"
               id="example-email"
-              name="example-email"
+              name="email"
+              :success="email.length > 8 && email.includes('.') && email.includes('@')"
+              success-text="Thank You For Entering Your Email"
               placeholder="enter your email"
               v-model="email"
             />
-            <label class="col-md-12" for="example-phone">Phone</label>
+            <label class="col-md-12" for="phone">Phone</label>
             <vs-input
               class="doctor-form-inputs-doctor-creation"
               type="text"
               id="example-phone"
-              name="example-phone"
+              name="phone"
               placeholder="enter your phone"
-              data-mask="(999) 999-9999"
+              :success="phoneNumber.length === 8 "
+              success-text="Thank You For Entering Your Phone Number"
+              data-mask="(+216) 99 999 999"
               v-model="phoneNumber"
             />
             <label class="col-md-12" for="password">Password</label>
@@ -153,18 +171,20 @@
               type="text"
               id="example-email"
               name="example-email"
+              :success="fatherName !== ''"
+              success-text="Thank You For Entering Your Father's Name"
               placeholder="Father Name"
               v-model="fatherName"
             />
-            <label class="col-md-12" for="example-email"
-              >Father Phone Number</label
-            >
+            <label class="col-md-12" for="example-email">Father Phone Number</label>
             <vs-input
               class="doctor-form-inputs-doctor-creation"
               type="number"
               id="example-email"
               name="example-email"
               placeholder="Father Name"
+              :success="fatherNumber.length === 8"
+              success-text="Thank You For Entering Your Father's Phone Number"
               v-model="fatherNumber"
             />
             <label class="col-md-12" for="example-email">Mother Name</label>
@@ -174,17 +194,19 @@
               id="example-email"
               name="example-email"
               placeholder="Mother Name"
+              :success="motherName !== ''"
+              success-text="Thank You For Entering Your Mother's Name"
               v-model="motherName"
             />
-            <label class="col-md-12" for="example-email"
-              >Mother Phone Number</label
-            >
+            <label class="col-md-12" for="example-email">Mother Phone Number</label>
             <vs-input
               class="doctor-form-inputs-doctor-creation"
               type="number"
               id="example-email"
               name="example-email"
               placeholder="Mother Name"
+              :success="motherNumber.length === 8"
+              success-text="Thank You For Entering Your Mother's Phone Number"
               v-model="motherNumber"
             />
             <label class="col-md-12" for="example-phone">Date Of Birth</label>
@@ -219,6 +241,9 @@
               :type="input.type"
               :name="input.name"
               :placeholder="input.placeholder"
+              v-model="allergy[index]"
+              :success="allergy[index] !== ''"
+              success-text="Thank You For Entering Your Allergy"
             />
             <vs-button
               color="dark"
@@ -226,8 +251,7 @@
               icon="add"
               id="allergy-button"
               @click="addAllergyInput"
-              >Add Allergy Input</vs-button
-            >
+            >Add Allergy Input</vs-button>
             <br />
             <br />
             <br />
@@ -238,6 +262,9 @@
               :id="input.id"
               :type="input.type"
               :name="input.name"
+              v-model="vaccination[index]"
+              :success="vaccination[index] !== ''"
+              success-text="Thank You For Entering Your Vaccination"
               :placeholder="input.placeholder"
             />
             <vs-button
@@ -246,21 +273,15 @@
               icon="add"
               id="vaccination-button"
               @click="addVaccinationInput"
-              >Add Vaccination Input</vs-button
-            >
+            >Add Vaccination Input</vs-button>
           </form>
           <div id="button-admin-patient-container">
-            <vs-button
-              type="submit"
-              class="btn btn-inverse waves-effect waves-light"
-              >Cancel</vs-button
-            >
+            <vs-button type="submit" class="btn btn-inverse waves-effect waves-light">Cancel</vs-button>
             <vs-button
               type="submit"
               class="btn btn-info waves-effect waves-light m-r-10"
               @click="handleRegister"
-              >Submit</vs-button
-            >
+            >Submit</vs-button>
           </div>
         </vs-card>
       </vs-col>
@@ -275,6 +296,8 @@ export default {
   name: "createDoctor",
   data: () => {
     return {
+      allergy: [""],
+      vaccination: [""],
       fullName: "",
       CIN: "",
       fatherName: "",
@@ -338,6 +361,7 @@ export default {
         name: "allergies",
         placeholder: "Enter The Allergy",
       });
+      this.allergy.push("");
     },
     addVaccinationInput() {
       this.vaccinationInputs.push({
@@ -346,6 +370,7 @@ export default {
         name: "vaccinations",
         placeholder: "Enter The Vaccination",
       });
+      this.vaccination.push("");
     },
     handleRegister() {
       let user;
@@ -373,6 +398,19 @@ export default {
           this.successful = false;
         }
       );
+      let record = {
+        patientCIN: this.CIN,
+        dateOfBirth: this.dateOfBirth,
+        bloodType: this.bloodType,
+        allergies: JSON.stringify(this.allergy),
+        vaccinations: JSON.stringify(this.vaccination),
+        fatherName: this.fatherName,
+        fatherNumber: this.fatherNumber,
+        motherName: this.motherName,
+        motherNumber: this.motherNumber,
+        createdAt: new Date(),
+      };
+      axios.post("/api/users/clinicX/record/createRecord", record);
     },
   },
 };
@@ -434,15 +472,5 @@ input::-webkit-inner-spin-button {
 }
 #header-titles {
   justify-content: space-around !important;
-}
-#t1,
-#t2 {
-  width: 49%;
-}
-#t2 {
-  float: right;
-  text-align: right;
-  margin-top: 0%;
-  position: relative !important;
 }
 </style>

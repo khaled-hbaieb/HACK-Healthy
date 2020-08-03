@@ -5,7 +5,7 @@ const path = require("path");
 const upload = require("./multer");
 const cloudinary = require("./cloudinary");
 const fs = require("fs");
-const nodemailer = require('nodemailer')
+const nodemailer = require("nodemailer");
 require("dotenv").config();
 
 const app = express();
@@ -43,6 +43,8 @@ app.use("/api/clinicX/rooms", routes.roomRoutes);
 
 app.use("/api/users/clinicX/history", routes.historyRoutes);
 
+app.use("/api/users/clinicX/record", routes.recordRoutes);
+ 
 app.use("/api/users/clinicX/currentPatients", routes.currentPatientsRoutes);
 
 app.use("/api/appointments", routes.appointmentsRoutes);

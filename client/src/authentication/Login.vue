@@ -18,38 +18,18 @@
           placeholder="Password"
           v-model="password"
         />
-        <vs-button
-          class="login-page-buttons"
-          color="primary"
-          type="border"
-          @click="doctor"
-          >Doctor</vs-button
-        >
+        <vs-button class="login-page-buttons" color="primary" type="border" @click="doctor">Doctor</vs-button>
         <vs-button
           class="login-page-buttons"
           color="primary"
           type="border"
           @click="administrator"
-          >Administrator</vs-button
-        >
-        <vs-button
-          class="login-page-buttons"
-          color="primary"
-          type="border"
-          @click="patient"
-          >Patient</vs-button
-        >
+        >Administrator</vs-button>
+        <vs-button class="login-page-buttons" color="primary" type="border" @click="patient">Patient</vs-button>
         <br />
-        <vs-button
-          id="btn-login"
-          class="login-page-buttons"
-          @click="handleLogin"
-          >Log In</vs-button
-        >
+        <vs-button id="btn-login" class="login-page-buttons" @click="handleLogin">Log In</vs-button>
         <h3>Recover Password</h3>
-        <p class="text-muted">
-          Enter your Email and instructions will be sent to you!
-        </p>
+        <p class="text-muted">Enter your Email and instructions will be sent to you!</p>
         <vs-input
           class="login-page-inputs"
           type="text"
@@ -77,9 +57,7 @@
           placeholder="Phone Number"
           v-model="recoveryPhone"
         />
-        <vs-button v-if="recoveryPhone.length === 8" class="login-page-buttons"
-          >Reset</vs-button
-        >
+        <vs-button v-if="recoveryPhone.length === 8" class="login-page-buttons">Reset</vs-button>
       </center>
     </vs-card>
   </vs-col>
@@ -133,7 +111,7 @@ export default {
       if (this.email && this.password) {
         this.$store.dispatch("auth/login", user).then(
           () => {
-            this.$router.push(`/${this.role}`);
+            this.$router.push(`/${this.role}/profile`);
           },
           (error) => {
             this.loading = false;
