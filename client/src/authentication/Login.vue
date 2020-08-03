@@ -158,7 +158,7 @@ export default {
       if (this.email && this.password) {
         this.$store.dispatch("auth/login", user).then(
           () => {
-            this.$router.push(`/${this.role}`);
+            this.$router.push(`/${this.role}/profile`);
           },
           (error) => {
             this.loading = false;
