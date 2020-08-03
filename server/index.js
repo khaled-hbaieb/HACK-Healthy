@@ -7,6 +7,7 @@ const cloudinary = require("./cloudinary");
 const fs = require("fs");
 const exphbs = require("express-handlebars");
 const nodemailer = require("nodemailer");
+const crypto = require('crypto')
 require("dotenv").config();
 
 const app = express();
@@ -118,9 +119,15 @@ app.use("/upload-images", upload.array("image"), async (req, res) => {
  */
 
 app.post("/send", (req, res) => {
-  console.log(req.body);
-  // let password = getPassword();
-  let mailToSend = `Your demand for resetting your password is accepted. \n This Is Your new password:`;
+  const newPassword = crypto.scryptSync(
+    req.body.email + String.fromCharCode(Math.ceil(65 * Math.random()) + 27),
+    "salt",
+    8
+  );
+  let mailToSend = `Your demand for resetting your password is accepted. \r This Is Your new password: ${newPassword.toString(
+    "base64"
+  )}`;
+  
   const output = `
   <p>You have a new contact request</p>
   <h3>Contact Details</h3>
