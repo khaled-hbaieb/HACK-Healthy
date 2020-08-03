@@ -56,6 +56,7 @@
             </div>
             {{ CIN }}
             <label class="col-md-12" for="special">CIN</label>
+           
             <vs-input
               class="doctor-form-inputs-doctor-creation"
               type="number"
@@ -64,6 +65,7 @@
               placeholder="Your CIN"
               v-model="CIN"
             />
+            
             <label class="col-md-12" for="special">Job</label>
             <vs-input
               class="doctor-form-inputs-doctor-creation"
@@ -99,6 +101,7 @@
               name="example-email"
               placeholder="enter your email"
               v-model="email"
+              required
             />
             <label class="col-md-12" for="example-phone">Phone</label>
             <vs-input
@@ -109,6 +112,7 @@
               placeholder="enter your phone"
               data-mask="(999) 999-9999"
               v-model="phoneNumber"
+              required
             />
             <label class="col-md-12" for="password">Password</label>
             <vs-input
@@ -118,7 +122,9 @@
               name="password"
               v-model="password"
               placeholder="enter your password"
+              required
             />
+            <div>
             <label class="col-md-12" for="cpwd">Confirm Password</label>
             <vs-input
               class="doctor-form-inputs-doctor-creation"
@@ -127,7 +133,12 @@
               name="cpwd"
               placeholder="confirm your password"
               v-model="cpwd"
+              required
             />
+             <slot v-if="validPassword" #message-success>
+               Password match
+             </slot>
+            </div>
           </form>
         </vs-card>
       </vs-col>
@@ -269,8 +280,22 @@
 </template>
 
 <script>
+import { extend } from 'vee-validate';
+import { required, email, min, max } from 'vee-validate/dist/rules';
+import { ValidationProvider } from 'vee-validate';
 import axios from "axios";
 import Patient from "../../../models/patient";
+extend('required', {
+  ...required,
+  message: 'This field is required'
+});
+ 
+// Add the email rule
+extend('email', {
+  ...email,
+  message: 'This field must be a valid email'
+});
+
 export default {
   name: "createDoctor",
   data: () => {
