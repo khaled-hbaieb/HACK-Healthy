@@ -147,7 +147,6 @@
 <script>
 import UserService from "../../../services/user.service";
 import axios from "axios";
-
 export default {
   name: "profileDoc",
   data: () => {
