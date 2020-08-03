@@ -5,7 +5,6 @@ const user = localStorage.getItem("token");
 const initialState = user
   ? { status: { loggedIn: true }, user }
   : { status: { loggedIn: false }, user: null };
-console.log("user", user);
 export const auth = {
   namespaced: true,
   state: initialState,
@@ -44,15 +43,12 @@ export const auth = {
   mutations: {
     loginSuccess(state, user) {
       state.status.loggedIn = true;
-      console.log("mutation ", user);
       state.user = user;
       axios
         .post("/api/users/clinicX/patients/checkPatient", {
           _id: jwt(user.token).userId,
         })
-        .then(function(response) {
-          console.log("headers", response.headers);
-        });
+        
     },
     loginFailure(state) {
       state.status.loggedIn = false;

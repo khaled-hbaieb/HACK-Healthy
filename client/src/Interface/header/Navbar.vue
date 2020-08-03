@@ -167,7 +167,7 @@ export default {
       );
     }
     if (localStorage.getItem("role") === "doctor") {
-      this.role = "patient";
+      this.role = "doctor";
       UserService.getDoctorBoard().then(
         (response) => {
           this.currentUser = response;

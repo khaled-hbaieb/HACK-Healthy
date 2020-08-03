@@ -138,7 +138,6 @@
 <script>
 import UserService from "../../../services/user.service";
 import axios from 'axios'
-
 export default {
   name: "profileDoc",
   data: () => {
@@ -150,7 +149,6 @@ export default {
         phoneNumber:'',
         dateOfBirth:'',
         address:'',
-
       },
     };
   },
@@ -164,7 +162,6 @@ this.currentUser = user.data
     UserService.getDoctorBoard().then(
       (response) => {
         this.currentUser = response;
-        console.log(currentUser)
       },
       (error) => {
         this.content =

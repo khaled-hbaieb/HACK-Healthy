@@ -106,7 +106,7 @@ export default new Router({
                 ),
             },
             {
-              path: "DoctorMoreInfos",
+              path: ":CIN",
               name: "DoctorMoreInfos",
               index: 3,
               component: () =>
