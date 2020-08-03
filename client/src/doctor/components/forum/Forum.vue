@@ -16,7 +16,11 @@
             </h6>
             <span class="py-2 d-inline">{{post.description}}</span>
           </div>
-          <vs-button color="primary" type="border">Read More</vs-button>
+          <!-- <router-link @click.native="post" to="./doctor/components/post/Post.vue">
+          
+          </router-link> -->
+          <vs-button color="primary" type="border"  @click='changeView'>Read More</vs-button>
+          
         </vs-card>
       </vs-col>
     </vs-row>
@@ -24,7 +28,7 @@
 </template>
 <script>
 export default {
-  name: "Forum",
+  name: "forum",
   data: () => {
     return {
       postList: {
@@ -65,6 +69,12 @@ export default {
       },
     };
   },
+  methods:{
+    changeView(){
+      // console.log("esta")
+       this.$router.push('post');
+    }
+  }
 };
 </script>
 <style >

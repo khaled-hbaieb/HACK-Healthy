@@ -51,6 +51,8 @@ app.use("/api/pics", routes.multerRoutes);
 
 app.use("/api/cloud", routes.cloudinaryRoutes);
 
+app.use("/api/comments",routes.commentsRoutes)
+
 var http = require("http");
 var AccessToken = require("twilio").jwt.AccessToken;
 var VideoGrant = AccessToken.VideoGrant;

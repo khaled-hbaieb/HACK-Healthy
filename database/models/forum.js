@@ -8,11 +8,8 @@ const forumPostSchema = new Schema({
   title: {
     type: String,
   },
-  description: {
-    type: String,
-  },
-  image: {
-    type: String,
+  content: {
+    type:String,
   },
   views: {
     type: Number,
@@ -20,6 +17,7 @@ const forumPostSchema = new Schema({
   createdAt: {
     type: String,
   },
+
 });
 
 module.exports = mongoose.model("Forum", forumPostSchema);
