@@ -55,7 +55,7 @@
           class="cursor-pointer pr-2 pl-2 ml-1 mr-md-3"
         >
           <a class="text-white-dark user-image" href="#">
-            <img :src="currentUser.imageName" alt="User" />
+            <img v-if="ready" :src="currentUser.imageName" alt="User" />
           </a>
           <vs-dropdown-menu class="topbar-dd">
             <vs-dropdown-item @click="renderProfile">
@@ -129,6 +129,7 @@ export default {
     search: "",
     currentUser: null,
     role: null,
+    ready: false,
   }),
 
   methods: {
@@ -157,6 +158,7 @@ export default {
       UserService.getPatientBoard().then(
         (response) => {
           this.currentUser = response;
+          this.ready = true;
         },
         (error) => {
           this.content =
@@ -171,6 +173,7 @@ export default {
       UserService.getDoctorBoard().then(
         (response) => {
           this.currentUser = response;
+          this.ready = true;
         },
         (error) => {
           this.content =
@@ -185,6 +188,7 @@ export default {
       UserService.getAdminBoard().then(
         (response) => {
           this.currentUser = response;
+          this.ready = true;
         },
         (error) => {
           this.content =

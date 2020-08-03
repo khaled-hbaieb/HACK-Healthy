@@ -9,4 +9,5 @@ module.exports = {
   currentPatientsRoutes: require("./currentPatientsRoutes"),
   historyRoutes: require("./historyRoutes"),
   appointmentsRoutes: require("./appointmentsRoutes"),
+  recordRoutes: require("./recordRoutes"),
 };
