@@ -122,6 +122,7 @@
                 @click="sendEmail"
                 >Reset</vs-button
               >
+              <vs-button @click="getBack">Back</vs-button>
             </div>
           </center>
         </vs-card>
@@ -175,6 +176,11 @@ export default {
     },
   },
   methods: {
+    getBack() {
+      console.log(this.showRecover)
+      this.showRecover = false
+      console.log(this.showRecover)
+    },
     handleLogin() {
       let user;
       this.loading = true;
