@@ -32,28 +32,13 @@
           <span>{{ errors[0] }}</span>
         </ValidationProvider>
 
+<vs-select icon="account_circle" placeholder="Select Your Role" v-model="userRole">
+          <vs-select-item text="Patient" value="patient"></vs-select-item>
+          <vs-select-item text="Doctor" value="doctor"></vs-select-item>
+          <vs-select-item text="Administrator" value="administrator"></vs-select-item>
+        </vs-select>
         <div>
-          <vs-button
-            class="login-page-buttons"
-            color="primary"
-            type="border"
-            @click="doctor"
-            >Doctor</vs-button
-          >
-          <vs-button
-            class="login-page-buttons"
-            color="primary"
-            type="border"
-            @click="administrator"
-            >Administrator</vs-button
-          >
-          <vs-button
-            class="login-page-buttons"
-            color="primary"
-            type="border"
-            @click="patient"
-            >Patient</vs-button
-          >
+         
           <br />
           <vs-button
             id="btn-login"
@@ -145,6 +130,8 @@ export default {
       recoveryCIN: "",
       recoveryPhone: "",
       hasVisiblePassword: false,
+      userRole: '',
+
     };
   },
   computed: {
@@ -153,36 +140,31 @@ export default {
     },
   },
   methods: {
-    doctor() {
-      this.role = "doctor";
-    },
-    patient() {
-      this.role = "patient";
-    },
-    administrator() {
-      this.role = "administrator";
-    },
+   
     handleLogin() {
       let user;
       this.loading = true;
 
-      if (this.role === "doctor") {
+      if (this.userRole === "doctor") {
+        console.log('doc')
         user = new doctor(this.email, this.password);
       }
-      if (this.role === "administrator") {
+      if (this.userRole === "administrator") {
         user = new administrator(this.email, this.password);
+        console.log('admi')
       }
-      if (this.role === "patient") {
+      if (this.userRole === "patient") {
+        console.log('pat')
         user = new patient(this.email, this.password);
       }
-      user.role = this.role;
+      user.role = this.userRole;
       if (this.email && this.password) {
         this.$store.dispatch("auth/login", user).then(
           () => {
             if (this.role !== "administrator") {
-              this.$router.push(`/${this.role}/profile`);
+              this.$router.push(`/${this.userRole}/profile`);
             } else {
-              this.$router.push(`/${this.role}`);
+              this.$router.push(`/${this.userRole}`);
             }
           },
           (error) => {
