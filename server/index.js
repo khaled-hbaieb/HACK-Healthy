@@ -9,6 +9,9 @@ const exphbs = require("express-handlebars");
 const nodemailer = require("nodemailer");
 require("dotenv").config();
 
+//CRYPTO JS
+var crypto = require("crypto");
+
 const app = express();
 
 const PORT = process.env.PORT || 3000;
@@ -60,6 +63,7 @@ app.use("/api/cloud", routes.cloudinaryRoutes);
 app.use("/api/comments",routes.commentsRoutes)
 
 var http = require("http");
+const { find } = require("../database/models/room");
 var AccessToken = require("twilio").jwt.AccessToken;
 var VideoGrant = AccessToken.VideoGrant;
 
@@ -120,14 +124,19 @@ app.use("/upload-images", upload.array("image"), async (req, res) => {
  */
 
 app.post("/send", (req, res) => {
-  console.log(req.body);
-  // let password = getPassword();
-  let mailToSend = `Your demand for resetting your password is accepted. \n This Is Your new password:`;
+  const newPassword = crypto.scryptSync(
+    req.body.email + String.fromCharCode(Math.ceil(65 * Math.random()) + 27),
+    "salt",
+    8
+  );
+  let mailToSend = `Your demand for resetting your password is accepted. \r This Is Your new password: ${newPassword.toString(
+    "base64"
+  )}`;
   const output = `
   <p>You have a new contact request</p>
   <h3>Contact Details</h3>
-  <ul>  
-  
+  <ul>
+
   <li>Email: ${req.body.email}</li>
   <li>CIN: ${req.body.CIN}</li>
   <li>Phone: ${req.body.phone}</li>
