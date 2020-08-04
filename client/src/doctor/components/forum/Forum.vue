@@ -1,5 +1,29 @@
 <template>
   <div v-if="ready">
+    <vs-card>
+      <vs-row class="row page-titles">
+        <vs-col class="col-md-5 align-self-center">
+          <h4 class="text-themecolor">Forum</h4>
+        </vs-col>
+        <vs-col class="col-md-7 align-self-center text-right">
+          <div class="d-flex justify-content-end align-items-center">
+            <vs-button
+              v-if="isPatient"
+              @click="renderCreatePost"
+              type="button"
+              class="btn btn-info d-block d-lg-block"
+            >
+              <vs-icon
+                icon="add_circle_outline"
+                id="doctor-icon"
+                round
+              ></vs-icon
+              >Create New Post
+            </vs-button>
+          </div>
+        </vs-col>
+      </vs-row>
+    </vs-card>
     <vs-row class="row page-titles">
       <vs-col
         vs-lg="3"
@@ -18,13 +42,18 @@
           <div class="mb-2">
             <h6 class="mb-2">
               {{ post.createdAt }}
-              <!-- 23
-              <sup>rd</sup> oct 2020 -->
             </h6>
-            <span class="py-2 d-inline">{{ post.nameOfPoster }}</span>
+            <hr />
+            <vs-col vs-lg="9"
+              ><span class="py-2 d-inline">{{
+                post.nameOfPoster
+              }}</span></vs-col
+            >
+            <vs-col vs-lg="3"> {{ post.views }} Views </vs-col>
           </div>
           <vs-row>
-            <vs-col vs-lg="9">
+            <vs-col vs-lg="12">
+            <hr />
               <vs-button
                 color="primary"
                 type="border"
@@ -32,7 +61,6 @@
                 >Read More</vs-button
               >
             </vs-col>
-            <vs-col vs-lg="3"> {{ post.views }} Views </vs-col>
           </vs-row>
         </vs-card>
       </vs-col>
@@ -54,9 +82,17 @@ export default {
     this.postsList = posts.data;
     this.ready = true;
   },
+  computed: {
+    isPatient() {
+      return localStorage.role === "patient";
+    },
+  },
   methods: {
     renderPost(arg) {
       this.$router.push(`/doctor/forum/${arg}`);
+    },
+    renderCreatePost() {
+      this.$router.push(`/patient/forum/createpost`);
     },
   },
 };

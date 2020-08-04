@@ -25,18 +25,23 @@
       </vs-col>
       <vs-col vs-lg="6">
         <vs-row v-if="this.comments.length > 0">
-          <vs-card>
+          <vs-card id="forum-post-comments-container">
             <vs-col v-for="(comment, index) in comments" :key="index">
-              <h6 v-if="comment.roleOfSender === 'doctor'">
-                Doctor
-                <strong>{{ comment.nameOfCommenter }}</strong>
-              </h6>
-              <h6 v-else>
-                <strong>{{ comment.nameOfCommenter }}</strong>
-              </h6>
-              <br />
-              <h6>{{ comment.text }}</h6>
-              <hr />
+              <vs-col vs-lg="8">
+                <h6 v-if="comment.roleOfSender === 'doctor'">
+                  Doctor
+                  <strong>{{ comment.nameOfCommenter }}</strong>
+                </h6>
+                <h6 v-else>
+                  <strong>{{ comment.nameOfCommenter }}</strong>
+                </h6>
+                <br />
+                <h6>{{ comment.text }}</h6>
+                <hr />
+              </vs-col>
+              <vs-col vs-lg="4">
+                {{ comment.createdAt.slice(0, 10) }}
+              </vs-col>
             </vs-col>
           </vs-card>
         </vs-row>
@@ -91,22 +96,30 @@ export default {
   },
   methods: {
     async addComment() {
-      await axios.post("/api/comments/createComment", {
-        idOfPost: this.post._id,
-        nameOfCommenter: this.post.nameOfPoster,
-        text: this.comment,
-        roleOfSender: localStorage.role,
-      });
-      let comments = await axios.post("/api/comments/findComments", {
-        idOfPost: this.post._id,
-      });
-      this.comments = comments.data;
-      this.comment = "";
+      if (this.comment !== "") {
+        await axios.post("/api/comments/createComment", {
+          idOfPost: this.post._id,
+          nameOfCommenter: this.post.nameOfPoster,
+          text: this.comment,
+          roleOfSender: localStorage.role,
+          createdAt: new Date(),
+        });
+        let comments = await axios.post("/api/comments/findComments", {
+          idOfPost: this.post._id,
+        });
+        this.comments = comments.data;
+        this.comment = "";
+      }
     },
   },
 };
 </script>
 <style>
+#forum-post-comments-container {
+  height: 480px !important;
+  scroll-behavior: smooth;
+  overflow: scroll;
+}
 #reply {
   width: 500px;
 }

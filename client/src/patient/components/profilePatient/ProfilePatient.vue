@@ -258,7 +258,7 @@ export default {
   },
   computed: {
     backEndUrl() {
-      return `https://hackhealthy.herokuapp.com/upload-images`;
+      return `http://localhost:3000/upload-images`;
     },
   },
   methods: {
