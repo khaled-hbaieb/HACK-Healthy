@@ -88,7 +88,6 @@
             </div>
 
             <div class="d-flex justify-content-start mb-4">
-
               <div class="img_cont_msg">
                 <img class="rounded-circle user_img_msg" />
               </div>
@@ -97,12 +96,10 @@
               </div>
             </div>
             <div class="d-flex justify-content-end mb-4">
-
               <div class="msg_cotainer_send">
                 <!-- <span class="msg_time_send">8:55 AM, Today</span> -->
               </div>
               <div class="img_cont_msg">
-
                 <img class="rounded-circle user_img_msg" />
               </div>
             </div>
@@ -142,6 +139,7 @@
 </template>
 <script>
 import $ from "jquery";
+import UserService from "../../../services/auth.service";
 import {
   connect,
   // createLocalTracks,
@@ -226,12 +224,13 @@ export default {
         },
       },
       currentRoom: "",
+      currentUser: null,
     };
   },
   methods: {
     // Generate access token
     async getAccessToken() {
-      let token = await axios.get(`/token`);
+      let token = await axios.get(`/token?identity=${this.currentUser.fullName}`);
       return token.data;
     },
     dispatchLog(message) {
@@ -330,6 +329,17 @@ export default {
     },
   },
   beforeMount: function() {
+    UserService.getPatientBoard().then(
+      async (response) => {
+        this.currentUser = response;
+      },
+      (error) => {
+        this.content =
+          (error.currentUser && error.response.data) ||
+          error.message ||
+          error.toString();
+      }
+    );
     this.currentRoom = this.roomsList.General;
   },
 };
