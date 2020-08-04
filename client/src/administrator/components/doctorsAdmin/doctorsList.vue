@@ -206,7 +206,7 @@ export default {
 }
 #doctor-profile-image {
   width: 100% !important;
-  height: 100% !important;
+  height: 180px !important;
   border-radius: 100%;
   background-color: transparent;
 }

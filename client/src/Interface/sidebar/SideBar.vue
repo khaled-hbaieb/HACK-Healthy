@@ -12,7 +12,7 @@
     >
       <div class="header-sidebar text-center" slot="header">
         <div v-if="role === 'patient' || role === 'doctor'">
-          <div>
+          <div @click="showProfile">
             <vs-avatar
               size="70px"
               :src="currentUser.imageName"
@@ -70,7 +70,6 @@ export default {
     currentUser: null,
     role: null,
   }),
-
   computed: {
     //This is for mobile trigger
     isSidebarActive: {
@@ -127,7 +126,6 @@ export default {
       this.role = "doctor";
       UserService.getDoctorBoard().then(
         (response) => {
-          console.log(response);
           this.currentUser = response;
         },
         (error) => {
@@ -229,7 +227,6 @@ export default {
   watch: {},
   methods: {
     showProfile() {
-      console.log("clicked");
       this.$router.push("/profileDoc");
     },
     handleWindowResize(event) {

@@ -54,7 +54,6 @@
                 @on-success="onFileUploaded"
               />
             </div>
-            {{ CIN }}
             <label class="col-md-12" for="special">CIN</label>
             <vs-input
               class="doctor-form-inputs-doctor-creation"
@@ -348,7 +347,6 @@ export default {
       });
     },
     handleRegister() {
-      console.log(this.image);
       let user;
       user = new Patient(
         this.email,

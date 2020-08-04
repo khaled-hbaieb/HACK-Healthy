@@ -115,7 +115,6 @@ export default {
   },
   beforeMount: async function () {
     let user = window.location.pathname.slice(23);
-    console.log(user);
     let doctor = await axios.post(`/api/users/clinicX/doctors/getDoctor`, {
       CIN: user,
     });
