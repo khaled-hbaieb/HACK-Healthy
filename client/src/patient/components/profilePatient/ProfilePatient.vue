@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="ready">
     <vs-row class="row">
       <vs-col class="col-sm-12">
         <vs-card id="header-titles" class="card">
@@ -15,7 +15,7 @@
       </vs-col>
     </vs-row>
     <vs-row>
-      <vs-col v-if="ready" vs-lg="6">
+      <vs-col vs-lg="6">
         <vs-card>
           <vs-row>
             <vs-col vs-lg="6">
@@ -134,13 +134,21 @@
                 @on-success="onFileUploaded"
               /></div
           ></vs-col>
+
           <vs-row>
-            <vs-col vs-lg="9">
+            <vs-col vs-lg="7">
               <vs-button class="patient-profile-buttons" @click="cancelEdit"
                 >Cancel Edit</vs-button
               >
             </vs-col>
-            <vs-col vs-lg="3">
+
+            <vs-col vs-lg="5">
+              <vs-button
+                id="delete"
+                class="patient-profile-buttons"
+                @click="deletePicture"
+                >Delete Picture</vs-button
+              >
               <vs-button class="patient-profile-buttons" @click="updateProfile"
                 >Update Profile</vs-button
               >
@@ -250,28 +258,24 @@ export default {
   },
   computed: {
     backEndUrl() {
-      return `https://hackhealthy.herokuapp.com/upload-images`;
+      return `http://localhost:3000/upload-images`;
     },
   },
   methods: {
+    async deletePicture() {
+      await axios.put("/api/users/clinicX/patients/updatePatient", {
+        filter: { CIN: this.user.CIN },
+        payload: { imageName: "" },
+      });
+      UserService.getPatientBoard().then((response) => {
+        this.currentUser = response;
+        this.user = this.currentUser;
+        this.user.password = "";
+      });
+    },
     onFileUploaded(event) {
-      let str = "";
-      for (let i = 0; i < event.target.response.length; i++) {
-        if (
-          event.target.response[i - 3] +
-            event.target.response[i - 2] +
-            event.target.response[i - 1] +
-            event.target.response[i] ===
-          "http"
-        ) {
-          str += event.target.response[i] + "s";
-        } else {
-          str += event.target.response[i];
-        }
-      }
-      console.log(str);
-      this.imageName = str;
-      this.user.imageName = str;
+      this.imageName = event.target.response;
+      this.user.imageName = this.imageName;
     },
     successUpload() {
       this.$vs.notify({
@@ -293,10 +297,10 @@ export default {
       if (this.user.password === "") {
         delete this.user.password;
       }
-      let user = await axios.put(
-        `/api/users/clinicX/patients/updatePatient/${this.currentUser.CIN}`,
-        { filter: { CIN: this.currentUser.CIN }, payload: this.user }
-      );
+      let user = await axios.put(`/api/users/clinicX/patients/updatePatient`, {
+        filter: { CIN: this.currentUser.CIN },
+        payload: this.user,
+      });
       UserService.getPatientBoard().then((response) => {
         this.currentUser = response;
         this.user = this.currentUser;
@@ -341,6 +345,9 @@ export default {
 </script>
 
 <style>
+#delete {
+  margin-right: 8px;
+}
 #patient-profile-image {
   height: 100%;
   width: 80%;

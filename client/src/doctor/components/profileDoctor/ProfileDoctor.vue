@@ -1,147 +1,240 @@
 <template>
-  <div>
-    <div>
-      <vs-card>
-        <div class="row page-titles">
-          <vs-col class="col-md-5 align-self-center">
-            <h4 class="text-themecolor">Profile</h4>
+  <div v-if="ready">
+    <vs-row class="row">
+      <vs-col class="col-sm-12">
+        <vs-card id="header-titles" class="card">
+          <vs-col vs-lg="11">
+            <h4 class="text-themecolor">My Profile</h4>
           </vs-col>
-          <vs-col class="col-md-7 align-self-center text-right">
-            <div class="d-flex justify-content-end align-items-center">
-              <ol class="breadcrumb">
-                <li class="breadcrumb-item">
-                  <a href="javascript:void(0)">Home</a>
-                </li>
-                <li class="breadcrumb-item active">Doctor Profile</li>
-              </ol>
-            </div>
+          <vs-col vs-lg="1">
+            <h6 class="text-themecolor">
+              <a href="/doctor">Home</a> > Profile
+            </h6>
           </vs-col>
-        </div>
-      </vs-card>
+        </vs-card>
+      </vs-col>
+    </vs-row>
+    <vs-row>
       <vs-col vs-lg="6">
         <vs-card>
-          <div class="user-bg">
-            <img
-              width="80%"
-              id="image"
-              alt="user"
-              :src="currentUser.imageName"
-            />
-          </div>
-          <div class="card-body">
-            <!-- .row -->
-            <div class="row text-center m-t-10">
-              <div class="col-md-6 b-r">
-                <strong>Full-Name</strong>
-                <p>{{ currentUser.fullName }}</p>
-              </div>
-              <div class="col-md-6">
-                <strong>Speciality</strong>
-                <p>{{ currentUser.speciality }}</p>
-              </div>
-            </div>
-            <hr />
-            <!-- /.row -->
-            <!-- .row -->
-            <div class="row text-center m-t-10">
-              <div class="col-md-6 b-r">
-                <strong>Email ID</strong>
-                <p>{{ currentUser.email }}</p>
-              </div>
-              <div class="col-md-6">
-                <strong>Phone</strong>
-                <p>{{ currentUser.phoneNumber }}</p>
-              </div>
-            </div>
-            <!-- /.row -->
-            <hr />
-            <!-- .row -->
-
-            <!-- .row -->
-            <vs-row class="row text-center m-t-10">
-              <vs-col class="col-md-6 b-r">
-                <strong>Gender</strong>
-                <p>{{ currentUser.gender }}</p>
-              </vs-col>
-              <vs-col class="col-md-6">
-                <strong>Date of Birth</strong>
-                <p>{{ currentUser.DateOfBirth }}</p>
-              </vs-col>
-            </vs-row>
-            <hr />
-            <vs-row class="row text-center m-t-10">
-              <div class="col-md-12">
-                <strong>Address</strong>
-                <p>{{ currentUser.address }}</p>
-              </div>
-            </vs-row>
-            <vs-button @click="edit = true">Edit Profile</vs-button>
-            <br />
-          </div>
+          <vs-row>
+            <vs-col vs-lg="6">
+              <img
+                v-if="currentUser.imageName !== ''"
+                id="patient-profile-image"
+                alt="user"
+                :src="currentUser.imageName"
+              />
+              <img
+                v-else
+                id="patient-profile-image"
+                alt="user"
+                src="@/assets/images/logo/patient.jpg"
+              />
+            </vs-col>
+            <vs-col vs-lg="6">
+              <strong>Full-Name</strong>
+              <p>{{ currentUser.fullName }}</p>
+              <strong>Occupation</strong>
+              <p>{{ currentUser.job }}</p>
+              <hr />
+              <strong>Email ID</strong>
+              <p>{{ currentUser.email }}</p>
+              <strong>Phone</strong>
+              <p>{{ currentUser.phoneNumber }}</p>
+              <hr />
+            </vs-col>
+          </vs-row>
+          <vs-row>
+            <vs-col>
+              <strong>Gender</strong>
+              <p>{{ currentUser.gender }}</p>
+            </vs-col>
+            <vs-col>
+              <strong>Date of Birth</strong>
+              <p>{{ currentUser.dateOfBirth }}</p>
+            </vs-col>
+            <vs-col>
+              <strong>Address</strong>
+              <p>{{ currentUser.address }}</p>
+            </vs-col>
+          </vs-row>
+          <hr />
+          <vs-button @click="edit = true">Edit Profile</vs-button>
+          <br />
         </vs-card>
       </vs-col>
       <vs-col v-if="edit" vs-lg="6">
-        <vs-card class="card-body">
+        <vs-card>
           <h2>Update Info</h2>
           <hr />
-          <form class="form-horizontal form-material">
-            <div class="form-group">
-              <div class="col-md-12">
-                <vs-input
-                  v-model="user.fullName"
-                  label="Full Name"
-                  placeholder="Johnathan Doe"
-                />
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-md-12">
-                <vs-input
-                  type="email"
-                  label="Email"
-                  name="example-email"
-                  id="example-email"
-                  v-model="user.email"
-                />
-              </div>
-            </div>
+          <vs-col vs-lg="4">
+            <vs-row>
+              <vs-input
+                maxlength="25"
+                v-model="user.fullName"
+                label="Full Name"
+              />
+            </vs-row>
+            <vs-row>
+              <vs-input
+                maxlength="25"
+                v-model="user.email"
+                type="email"
+                label="Email"
+                name="example-email"
+                id="example-email"
+              />
+            </vs-row>
+            <vs-row>
+              <vs-input
+                icon="dns"
+                v-on:icon-click="showPassowrd"
+                :type="passwordType"
+                v-model="user.password"
+                label="Password"
+              />
+            </vs-row>
+          </vs-col>
+          <vs-col vs-lg="4">
+            <vs-row>
+              <vs-input
+                maxlength="8"
+                type="number"
+                v-model="user.phoneNumber"
+                label="Phone Number"
+              />
+            </vs-row>
+            <vs-row>
+              <vs-input
+                maxlength="20"
+                type="text"
+                v-model="user.job"
+                label="Job"
+              />
+            </vs-row>
+            <vs-row>
+              <vs-input
+                maxlength="5"
+                type="date"
+                v-model="user.dateOfBirth"
+                label="Date of Birth"
+              />
+            </vs-row>
+          </vs-col>
+          <vs-col vs-lg="4"
+            ><label class="col-sm-12" for="image">Profile Image</label>
+            <div class="centerx">
+              <vs-upload
+                automatic
+                limit="1"
+                name="image"
+                :action="backEndUrl"
+                fileName="image"
+                @on-success="onFileUploaded"
+              /></div
+          ></vs-col>
 
-            <div class="form-group">
-              <div class="col-md-12">
-                <vs-input
-                  type="text"
-                  v-model="user.phoneNumber"
-                  label="Phone Number"
-                />
-              </div>
-            </div>
+          <vs-row>
+            <vs-col vs-lg="7">
+              <vs-button class="patient-profile-buttons" @click="cancelEdit"
+                >Cancel Edit</vs-button
+              >
+            </vs-col>
 
-            <div class="form-group">
-              <div class="col-md-12">
-                <vs-input
-                  type="text"
-                  v-model="user.dateOfBirth"
-                  label="Date of Birth"
-                />
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-md-12">
-                <vs-input type="text" v-model="user.address" label="address" />
-              </div>
-            </div>
-
-            <div class="form-group">
-              <div class="col-sm-12">
-                <vs-button class="btn btn-success" @click="updateProfile">
-                  Update Profile
-                </vs-button>
-              </div>
-            </div>
-          </form>
+            <vs-col vs-lg="5">
+              <vs-button
+                id="delete"
+                class="patient-profile-buttons"
+                @click="deletePicture"
+                >Delete Picture</vs-button
+              >
+              <vs-button class="patient-profile-buttons" @click="updateProfile"
+                >Update Profile</vs-button
+              >
+            </vs-col>
+          </vs-row>
         </vs-card>
       </vs-col>
-    </div>
+    </vs-row>
+    <vs-row>
+      <vs-col vs-lg="6">
+        <vs-card v-if="ready">
+          <div>
+            <h4>My Record</h4>
+            <hr />
+            <strong>CIN</strong>
+            <p>{{ currentUserRecord.patientCIN }}</p>
+            <strong>Father's Name</strong>
+            <p>{{ currentUserRecord.fatherName }}</p>
+            <hr />
+            <strong>Father's Phone Number</strong>
+            <p>{{ currentUserRecord.fatherNumber }}</p>
+            <hr />
+            <strong>Mother's Name</strong>
+            <p>{{ currentUserRecord.motherName }}</p>
+            <hr />
+            <strong>Mother's Phone Number</strong>
+            <p>{{ currentUserRecord.motherNumber }}</p>
+            <strong>Blood Type</strong>
+            <p>{{ currentUserRecord.bloodType }}</p>
+            <strong>Allergies</strong>
+            <p
+              v-for="(allergy, index) in JSON.parse(
+                currentUserRecord.allergies
+              )"
+              :key="index"
+            >
+              {{ allergy }}
+            </p>
+            <strong>Vaccinations</strong>
+            <p
+              v-for="(vaccination, index) in JSON.parse(
+                currentUserRecord.vaccinations
+              )"
+              :key="index + 10"
+            >
+              {{ vaccination }}
+            </p>
+          </div>
+        </vs-card>
+      </vs-col>
+      <vs-col vs-lg="6">
+        <vs-card>
+          <div>
+            <h4>My History</h4>
+            <hr />
+            <div>
+              <vs-table max-items="8" pagination :data="history">
+                <template slot="thead">
+                  <vs-th>Entry Date</vs-th>
+                  <vs-th>Exit Date</vs-th>
+                  <vs-th>Room Number</vs-th>
+                  <vs-th>Illness</vs-th>
+                </template>
+
+                <template slot-scope="{ data }">
+                  <vs-tr :key="indextr" v-for="(tr, indextr) in data">
+                    <vs-td :data="data[indextr].entryDate">{{
+                      data[indextr].entryDate
+                    }}</vs-td>
+                    <vs-td :data="data[indextr].exitDate">{{
+                      data[indextr].exitDate
+                    }}</vs-td>
+                    <vs-td :data="data[indextr].roomNumber">{{
+                      data[indextr].roomNumber
+                    }}</vs-td>
+                    <vs-td :data="data[indextr].illness">{{
+                      data[indextr].illness
+                    }}</vs-td>
+                  </vs-tr>
+                </template>
+              </vs-table>
+            </div>
+          </div>
+        </vs-card>
+      </vs-col>
+    </vs-row>
   </div>
 </template>
 <script>
