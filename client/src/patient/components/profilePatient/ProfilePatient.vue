@@ -19,7 +19,18 @@
         <vs-card>
           <vs-row>
             <vs-col vs-lg="6">
-              <img id="patient-profile-image" alt="user" :src="currentUser.imageName" />
+              <img
+                v-if="currentUser.imageName !== ''"
+                id="patient-profile-image"
+                alt="user"
+                :src="currentUser.imageName"
+              />
+              <img
+                v-else
+                id="patient-profile-image"
+                alt="user"
+                src="@/assets/images/logo/patient.jpg"
+              />
             </vs-col>
             <vs-col vs-lg="6">
               <strong>Full-Name</strong>
@@ -57,9 +68,13 @@
         <vs-card>
           <h2>Update Info</h2>
           <hr />
-          <vs-col vs-lg="6">
+          <vs-col vs-lg="4">
             <vs-row>
-              <vs-input maxlength="25" v-model="user.fullName" label="Full Name" />
+              <vs-input
+                maxlength="25"
+                v-model="user.fullName"
+                label="Full Name"
+              />
             </vs-row>
             <vs-row>
               <vs-input
@@ -81,7 +96,7 @@
               />
             </vs-row>
           </vs-col>
-          <vs-col vs-lg="6">
+          <vs-col vs-lg="4">
             <vs-row>
               <vs-input
                 maxlength="8"
@@ -91,18 +106,44 @@
               />
             </vs-row>
             <vs-row>
-              <vs-input maxlength="20" type="text" v-model="user.job" label="Job" />
+              <vs-input
+                maxlength="20"
+                type="text"
+                v-model="user.job"
+                label="Job"
+              />
             </vs-row>
             <vs-row>
-              <vs-input maxlength="5" type="date" v-model="user.dateOfBirth" label="Date of Birth" />
+              <vs-input
+                maxlength="5"
+                type="date"
+                v-model="user.dateOfBirth"
+                label="Date of Birth"
+              />
             </vs-row>
           </vs-col>
+          <vs-col vs-lg="4"
+            ><label class="col-sm-12" for="image">Profile Image</label>
+            <div class="centerx">
+              <vs-upload
+                automatic
+                limit="1"
+                name="image"
+                :action="backEndUrl"
+                fileName="image"
+                @on-success="onFileUploaded"
+              /></div
+          ></vs-col>
           <vs-row>
             <vs-col vs-lg="9">
-              <vs-button class="patient-profile-buttons" @click="cancelEdit">Cancel Edit</vs-button>
+              <vs-button class="patient-profile-buttons" @click="cancelEdit"
+                >Cancel Edit</vs-button
+              >
             </vs-col>
             <vs-col vs-lg="3">
-              <vs-button class="patient-profile-buttons" @click="updateProfile">Update Profile</vs-button>
+              <vs-button class="patient-profile-buttons" @click="updateProfile"
+                >Update Profile</vs-button
+              >
             </vs-col>
           </vs-row>
         </vs-card>
@@ -131,14 +172,22 @@
             <p>{{ currentUserRecord.bloodType }}</p>
             <strong>Allergies</strong>
             <p
-              v-for="(allergy, index) in JSON.parse(currentUserRecord.allergies)"
+              v-for="(allergy, index) in JSON.parse(
+                currentUserRecord.allergies
+              )"
               :key="index"
-            >{{ allergy }}</p>
+            >
+              {{ allergy }}
+            </p>
             <strong>Vaccinations</strong>
             <p
-              v-for="(vaccination, index) in JSON.parse(currentUserRecord.vaccinations)"
-              :key="index+10"
-            >{{ vaccination }}</p>
+              v-for="(vaccination, index) in JSON.parse(
+                currentUserRecord.vaccinations
+              )"
+              :key="index + 10"
+            >
+              {{ vaccination }}
+            </p>
           </div>
         </vs-card>
       </vs-col>
@@ -156,12 +205,20 @@
                   <vs-th>Illness</vs-th>
                 </template>
 
-                <template slot-scope="{data}">
+                <template slot-scope="{ data }">
                   <vs-tr :key="indextr" v-for="(tr, indextr) in data">
-                    <vs-td :data="data[indextr].entryDate">{{data[indextr].entryDate}}</vs-td>
-                    <vs-td :data="data[indextr].exitDate">{{data[indextr].exitDate}}</vs-td>
-                    <vs-td :data="data[indextr].roomNumber">{{data[indextr].roomNumber}}</vs-td>
-                    <vs-td :data="data[indextr].illness">{{data[indextr].illness}}</vs-td>
+                    <vs-td :data="data[indextr].entryDate">{{
+                      data[indextr].entryDate
+                    }}</vs-td>
+                    <vs-td :data="data[indextr].exitDate">{{
+                      data[indextr].exitDate
+                    }}</vs-td>
+                    <vs-td :data="data[indextr].roomNumber">{{
+                      data[indextr].roomNumber
+                    }}</vs-td>
+                    <vs-td :data="data[indextr].illness">{{
+                      data[indextr].illness
+                    }}</vs-td>
                   </vs-tr>
                 </template>
               </vs-table>
@@ -188,9 +245,26 @@ export default {
       passwordType: "password",
       edit: false,
       ready: false,
+      imageName: "",
     };
   },
+  computed: {
+    backEndUrl() {
+      return `http://localhost:3000/upload-images`;
+    },
+  },
   methods: {
+    onFileUploaded(event) {
+      this.imageName = event.target.response;
+      this.user.imageName = this.imageName;
+    },
+    successUpload() {
+      this.$vs.notify({
+        color: "success",
+        title: "Upload Success",
+        text: this.name + " Uploaded The image Successfully!",
+      });
+    },
     showPassowrd() {
       if (this.isPassword) {
         this.passwordType = "text";
@@ -208,6 +282,7 @@ export default {
       UserService.getPatientBoard().then((response) => {
         this.currentUser = response;
         this.user = this.currentUser;
+        this.user.password = "";
         this.edit = false;
       });
     },
@@ -215,6 +290,7 @@ export default {
       UserService.getPatientBoard().then((response) => {
         this.currentUser = response;
         this.user = this.currentUser;
+        this.user.password = "";
         this.edit = false;
       });
     },
