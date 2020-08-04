@@ -11,22 +11,25 @@
       :click-not-close="doNotClose"
     >
       <div class="header-sidebar text-center" slot="header">
-        <div v-if="(role==='patient' ||role === 'doctor')">
-
-        <vs-avatar
-          size="70px"
-          :src="currentUser.imageName "
-        />
-        <h4>{{currentUser.fullName}}</h4>
-        <small>{{ currentUser.email}}</small>
+        <div v-if="role === 'patient' || role === 'doctor'">
+          <div @click="showProfile">
+            <vs-avatar
+              size="70px"
+              :src="currentUser.imageName"
+              @click="showProfile"
+            />
+          </div>
+          <h4>{{ currentUser.fullName }}</h4>
+          <small>{{ currentUser.email }}</small>
         </div>
+
         <div v-else>
- <vs-avatar
-          size="70px"
-          :src="require('@/assets/images/users/houssem.jpg')"
-        />
-        <h4>ADMIN</h4>
-        <small>ADMIN@gmail.com</small>
+          <vs-avatar
+            size="70px"
+            :src="require('@/assets/images/users/houssem.jpg')"
+          />
+          <h4>ADMIN</h4>
+          <small>ADMIN@gmail.com</small>
         </div>
       </div>
       <template v-for="(sidebarLink, index) in sidebarLinks">
@@ -44,7 +47,7 @@
 </template>
 
 <script>
-import UserService from '../../services/user.service'
+import UserService from "../../services/user.service";
 export default {
   name: "SideBar",
   props: {
@@ -59,6 +62,7 @@ export default {
       type: [String, Number],
     },
   },
+
   data: () => ({
     doNotClose: false,
     windowWidth: window.innerWidth,
@@ -79,18 +83,18 @@ export default {
   },
   beforeMount() {
     if (localStorage.role === "administrator") {
-      this.role='administrator'
+      this.role = "administrator";
       UserService.getAdministratorBoard().then(
-      (response) => {
-        this.currentUser = response;
-      },
-      (error) => {
-        this.content =
-          (error.currentUser && error.response.data) ||
-          error.message ||
-          error.toString();
-      }
-    );
+        (response) => {
+          this.currentUser = response;
+        },
+        (error) => {
+          this.content =
+            (error.currentUser && error.response.data) ||
+            error.message ||
+            error.toString();
+        }
+      );
       this.sidebarLinks = [
         {
           url: "/administrator/currentPatients",
@@ -119,7 +123,7 @@ export default {
         },
       ];
     } else if (localStorage.role === "doctor") {
-      this.role='doctor'
+      this.role = "doctor";
       UserService.getDoctorBoard().then(
         (response) => {
           this.currentUser = response;
@@ -169,18 +173,18 @@ export default {
         },
       ];
     } else {
-      this.role='patient'
+      this.role = "patient";
       UserService.getPatientBoard().then(
-      (response) => {
-        this.currentUser = response;
-      },
-      (error) => {
-        this.content =
-          (error.currentUser && error.response.data) ||
-          error.message ||
-          error.toString();
-      }
-    );
+        (response) => {
+          this.currentUser = response;
+        },
+        (error) => {
+          this.content =
+            (error.currentUser && error.response.data) ||
+            error.message ||
+            error.toString();
+        }
+      );
       this.sidebarLinks = [
         {
           url: "/patient/makeAppointment",
@@ -222,6 +226,9 @@ export default {
   },
   watch: {},
   methods: {
+    showProfile() {
+      this.$router.push("/profileDoc");
+    },
     handleWindowResize(event) {
       this.windowWidth = event.currentTarget.innerWidth;
       this.setSidebar();

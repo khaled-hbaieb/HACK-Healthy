@@ -43,6 +43,8 @@ app.use("/api/clinicX/rooms", routes.roomRoutes);
 
 app.use("/api/users/clinicX/history", routes.historyRoutes);
 
+app.use("/api/clinicX/bills", routes.billRoutes);
+
 app.use("/api/users/clinicX/currentPatients", routes.currentPatientsRoutes);
 
 app.use("/api/appointments", routes.appointmentsRoutes);

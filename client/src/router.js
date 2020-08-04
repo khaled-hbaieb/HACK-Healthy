@@ -138,6 +138,13 @@ export default new Router({
       component: () => import("./Interface/AdminInterface.vue"),
       children: [
         {
+          path: "profile",
+          name: "profileDoc",
+          index: 7,
+          component: () =>
+            import("./doctor/components/profileDoctor/ProfileDoctor.vue"),
+        },
+        {
           path: "appointments",
           name: "appointments",
           index: 1,
