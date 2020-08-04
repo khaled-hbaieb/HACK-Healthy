@@ -255,16 +255,22 @@ export default {
   },
   methods: {
     onFileUploaded(event) {
-      this.imageName = event.target.response;
       let str = "";
-      for (let i = 0; i < this.imageName.length; i++) {
-        if (this.imageName[i-3]+this.imageName[i-2]+this.imageName[i-1]+this.imageName[i] === 'http') {
-          str+=this.imageName[i]+'s'
+      for (let i = 0; i < event.target.response.length; i++) {
+        if (
+          event.target.response[i - 3] +
+            event.target.response[i - 2] +
+            event.target.response[i - 1] +
+            event.target.response[i] ===
+          "http"
+        ) {
+          str += event.target.response[i] + "s";
         } else {
-          str+=this.imageName[i]
+          str += event.target.response[i];
         }
       }
-      console.log(str)
+      console.log(str);
+      this.imageName = str;
       this.user.imageName = str;
     },
     successUpload() {
