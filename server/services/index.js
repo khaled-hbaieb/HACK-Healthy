@@ -9,4 +9,6 @@ module.exports = {
   cloudinaryService: require("./cloudinaryService"),
   historyService: require("./historyService"),
   appointmentsService: require("./appointmentsService"),
+  commentsService: require("./commentsService"),
+  recordService: require("./recordService"),
 };

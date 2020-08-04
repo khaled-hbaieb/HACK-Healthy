@@ -13,12 +13,7 @@
               type="button"
               class="btn btn-info d-block d-lg-block"
             >
-              <vs-icon
-                icon="add_circle_outline"
-                id="doctor-icon"
-                round
-              ></vs-icon
-              >Create New Doctor
+              <vs-icon icon="add_circle_outline" id="doctor-icon" round></vs-icon>Create New Doctor
             </vs-button>
           </div>
         </vs-col>
@@ -46,8 +41,7 @@
             color="dark"
             type="border"
             @click="searchDoctors({ fullName: searchCriteria })"
-            >Search</vs-button
-          >
+          >Search</vs-button>
         </vs-col>
         <vs-col v-if="!withSpeciality" vs-lg="2">
           <vs-button
@@ -56,8 +50,7 @@
             color="dark"
             type="border"
             @click="filterSpeciality"
-            >Filter By Speciality</vs-button
-          >
+          >Filter By Speciality</vs-button>
         </vs-col>
         <vs-col v-if="withSpeciality" vs-lg="5">
           <vs-select
@@ -66,10 +59,7 @@
             id="speciality-select"
             @change="searchDoctors({ speciality: searchCriteria })"
           >
-            <vs-select-item
-              @click="searchDoctors({})"
-              text="Search All"
-            ></vs-select-item>
+            <vs-select-item @click="searchDoctors({})" text="Search All"></vs-select-item>
             <vs-select-item
               v-for="(oneSpeciality, index) in specialities"
               :text="oneSpeciality"
@@ -85,8 +75,7 @@
             color="dark"
             type="border"
             @click="filterName"
-            >Filter By Name</vs-button
-          >
+          >Filter By Name</vs-button>
         </vs-col>
       </vs-row>
     </vs-card>
@@ -102,15 +91,13 @@
         <vs-card id="profile" class="card" vs-xs="12" vs-sm="12" vs-lg="12">
           <vs-row class="row">
             <vs-col vs-xs="6" vs-sm="8" vs-lg="4">
-              <a href="/doctors/doctor">
-                <img
-                  @click="rendershowDoctorInfo"
-                  id="doctor-profile-image"
-                  :src="doctor.imageName"
-                  alt="user"
-                  class="img-circle img-responsive"
-                />
-              </a>
+              <img
+                @click="rendershowDoctorInfo(doctor.CIN)"
+                id="doctor-profile-image"
+                :src="doctor.imageName"
+                alt="user"
+                class="img-circle img-responsive"
+              />
             </vs-col>
             <vs-col vs-xs="6" vs-sm="4" vs-lg="8">
               <vs-col vs-lg="5">
@@ -195,11 +182,11 @@ export default {
     renderCreateDoctor() {
       this.$router.push("/administrator/doctors/createDoctor");
     },
-    rendershowDoctorInfo() {
-      this.$router.push("/administrator/doctors/DoctorMoreInfos");
+    rendershowDoctorInfo(args) {
+      this.$router.push(`/administrator/doctors/${args}`);
     },
   },
-  beforeMount: async function() {
+  beforeMount: async function () {
     let doctors = await axios.get(`/api/users/clinicX/doctors`);
     this.doctors = doctors.data;
   },
@@ -219,7 +206,7 @@ export default {
 }
 #doctor-profile-image {
   width: 100% !important;
-  height: 100% !important;
+  height: 180px !important;
   border-radius: 100%;
   background-color: transparent;
 }

@@ -7,8 +7,16 @@ const jwt = require("jsonwebtoken");
 
 router.get("/", async (req, res) => {
   try {
-    var Doctors = await services.doctorService.findDoctors();
+    var Doctors = await services.doctorService.findDoctor();
     res.send(Doctors);
+  } catch (error) {
+    res.send(error);
+  }
+});
+router.post("/getDoctor", async (req, res) => {
+  try {
+    var Doctor = await services.doctorService.findDoctor(req.body);
+    res.send(Doctor);
   } catch (error) {
     res.send(error);
   }
@@ -30,9 +38,11 @@ router.post("/createdoctor", async (req, res) => {
   }
 });
 
-router.post("/updateDoctor", async (req, res) => {
+router.put("/updateDoctor/:CIN", async (req, res) => {
+  let filter = req.body.filter;
+  let payload = req.body.payload;
   try {
-    var newDoctor = await services.doctorService.updateDoctor(req.body);
+    var newDoctor = await services.doctorService.updateDoctor(filter, payload);
     res.send(newDoctor);
   } catch (error) {
     res.send(error);
@@ -68,12 +78,11 @@ router.post("/checkLogin", (req, res) => {
 });
 router.post("/checkDoctor", async (req, res) => {
   try {
-    var Doctors = await services.doctorService.findDoctors(req.body);
+    var Doctors = await services.doctorService.findDoctor(req.body);
     res.send(Doctors);
   } catch (err) {
     res.send(err);
   }
 });
-
 
 module.exports = router;

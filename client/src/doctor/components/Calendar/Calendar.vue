@@ -77,7 +77,6 @@ export default {
       appoints.data[i].title = `Appointment At ${appoints.data[i].time}`;
     }
     this.calendarOptions.events = appoints.data;
-    console.log(this.calendarOptions.events);
   },
 };
 </script>

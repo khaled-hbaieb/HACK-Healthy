@@ -232,7 +232,6 @@ export default {
     // Generate access token
     async getAccessToken() {
       let token = await axios.get(`/token?identity=${localStorage.username}`);
-      console.log(token.data);
       return token.data;
     },
     dispatchLog(message) {
@@ -281,7 +280,6 @@ export default {
           // VueThis.loading = false;
 
           // Attach the Tracks of all the remote Participants.
-          console.log(room.participants);
           room.participants.forEach(function(participant) {
             let previewContainer = document.getElementById("remoteTrack");
             VueThis.attachParticipantTracks(participant, previewContainer);
@@ -339,10 +337,10 @@ export default {
 <style>
 .chat {
   height: 50%;
-  border: 5px solid green;
+  /* border: 5px solid green; */
 }
 #all {
-  border: 5px solid red;
+  /* border: 5px solid red; */
   height: 100%;
 }
 .remote_video_container {
