@@ -4,48 +4,64 @@
       <center>
         <h3 class="text-center m-b-20">Sign In</h3>
         <br />
-        <vs-input
-          class="login-page-inputs"
-          type="text"
-          required
-          placeholder="Email"
-          v-model="email"
-        />
-        <vs-input
-          class="login-page-inputs"
-          type="password"
-          required
-          placeholder="Password"
-          v-model="password"
-        />
-        <vs-button
-          class="login-page-buttons"
-          color="primary"
-          type="border"
-          @click="doctor"
-          >Doctor</vs-button
-        >
-        <vs-button
-          class="login-page-buttons"
-          color="primary"
-          type="border"
-          @click="administrator"
-          >Administrator</vs-button
-        >
-        <vs-button
-          class="login-page-buttons"
-          color="primary"
-          type="border"
-          @click="patient"
-          >Patient</vs-button
-        >
-        <br />
-        <vs-button
-          id="btn-login"
-          class="login-page-buttons"
-          @click="handleLogin"
-          >Log In</vs-button
-        >
+        <label class="col-md-12" for="example-email">Email</label>
+        <ValidationProvider rules="required|email">
+          <span slot-scope="{ errors }">
+            <vs-input
+              icon="account_circle"
+              class="login-page-inputs"
+              required
+              placeholder="E-mail"
+              v-model="email"
+              type="email"
+            />
+            <p>{{ errors[0] }}</p>
+          </span>
+        </ValidationProvider>
+
+        <ValidationProvider rules="required" v-slot="{ errors }">
+          <vs-input
+            dark
+            class="login-page-inputs"
+            type="password"
+            required
+            label-placeholder="Password"
+            v-model="password"
+            icon="lock"
+          />
+          <span>{{ errors[0] }}</span>
+        </ValidationProvider>
+
+        <div>
+          <vs-button
+            class="login-page-buttons"
+            color="primary"
+            type="border"
+            @click="doctor"
+            >Doctor</vs-button
+          >
+          <vs-button
+            class="login-page-buttons"
+            color="primary"
+            type="border"
+            @click="administrator"
+            >Administrator</vs-button
+          >
+          <vs-button
+            class="login-page-buttons"
+            color="primary"
+            type="border"
+            @click="patient"
+            >Patient</vs-button
+          >
+          <br />
+          <vs-button
+            id="btn-login"
+            class="login-page-buttons"
+            @click="handleLogin"
+            >Log In</vs-button
+          >
+        </div>
         <h3>Recover Password</h3>
         <p class="text-muted">
           Enter your Email and instructions will be sent to you!
@@ -77,7 +93,10 @@
           placeholder="Phone Number"
           v-model="recoveryPhone"
         />
-        <vs-button v-if="recoveryPhone.length === 8" class="login-page-buttons"
+        <vs-button
+          v-if="recoveryPhone.length === 8"
+          class="login-page-buttons"
+          @click="sendEmail"
           >Reset</vs-button
         >
       </center>
@@ -88,7 +107,21 @@
 import doctor from "../models/doctor";
 import administrator from "../models/administrator";
 import patient from "../models/patient";
+import { ValidationProvider, extend } from "vee-validate";
+import { required, email } from "vee-validate/dist/rules";
+import axios from "axios";
+extend("email", {
+  ...email,
+  message: "This field must be a valid email",
+});
+extend("required", {
+  ...required,
+  message: "This field is required",
+});
 export default {
+  components: {
+    ValidationProvider,
+  },
   name: "Login",
   data() {
     return {
@@ -99,6 +132,7 @@ export default {
       recoveryEmail: "",
       recoveryCIN: "",
       recoveryPhone: "",
+      hasVisiblePassword: false,
     };
   },
   computed: {
@@ -133,7 +167,7 @@ export default {
       if (this.email && this.password) {
         this.$store.dispatch("auth/login", user).then(
           () => {
-            this.$router.push(`/${this.role}`);
+            this.$router.push(`/${this.role}/profile`);
           },
           (error) => {
             this.loading = false;
@@ -144,6 +178,13 @@ export default {
           }
         );
       }
+    },
+    async sendEmail() {
+      let data = await axios.post("/send", {
+        email: this.recoveryEmail,
+        CIN: this.recoveryCIN,
+        phone: this.recoveryPhone,
+      });
     },
   },
 };

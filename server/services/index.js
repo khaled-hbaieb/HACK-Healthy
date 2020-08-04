@@ -10,4 +10,6 @@ module.exports = {
   historyService: require("./historyService"),
   billService: require("./billService"),
   appointmentsService: require("./appointmentsService"),
+  commentsService: require("./commentsService"),
+  recordService: require("./recordService"),
 };

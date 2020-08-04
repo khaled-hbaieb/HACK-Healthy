@@ -140,32 +140,32 @@ export default new Router({
         {
           path: "profile",
           name: "profileDoc",
-          index: 7,
+          index: 1,
           component: () =>
             import("./doctor/components/profileDoctor/ProfileDoctor.vue"),
         },
         {
           path: "appointments",
           name: "appointments",
-          index: 1,
+          index: 2,
           component: () =>
             import("./doctor/components/appointments/Appointments.vue"),
         },
         {
           path: "calendar",
           name: "calendar",
-          index: 2,
+          index: 3,
           component: () => import("./doctor/components/Calendar/Calendar.vue"),
         },
         {
           path: "patients",
           name: "patients",
-          index: 3,
+          index: 4,
           component: () =>
             import("./administrator/components/patientsAdmin/patients.vue"),
           children: [
             {
-              path: "/patient",
+              path: "patient",
               name: "patient",
               index: 1,
               component: () =>
@@ -175,14 +175,19 @@ export default new Router({
         },
         {
           path: "forum",
-          name: "forum",
           index: 4,
-          component: () => import("./doctor/components/forum/Forum.vue"),
+          component: () => import("./doctor/components/forum/Forums.vue"),
           children: [
+            {
+              path: "/",
+              name: "forum",
+              index: 1,
+              component: () => import("./doctor/components/forum/Forum.vue"),
+            },
             {
               path: "post",
               name: "post",
-              index: 1,
+              index: 2,
               component: () => import("./doctor/components/post/Post.vue"),
             },
           ],
@@ -190,14 +195,14 @@ export default new Router({
         {
           path: "chatRoom",
           name: "chatRoom",
-          index: 5,
+          index: 6,
           component: () =>
             import("./doctor/components/chatDoctor/ChatView.vue"),
         },
         {
           path: "doctors",
           name: "doctors",
-          index: 6,
+          index: 7,
           component: () =>
             import("./administrator/components/doctorsAdmin/doctorsList.vue"),
           children: [
@@ -208,6 +213,7 @@ export default new Router({
                 import(
                   "./administrator/components/doctorProfile/DoctorProfile.vue"
                 ),
+                index:1
             },
           ],
         },
@@ -216,6 +222,7 @@ export default new Router({
           name: "assignBill",
           component: () =>
             import("./doctor/components/assignBill/AssignBill.vue"),
+            index:8
         },
       ],
     },
@@ -282,27 +289,6 @@ export default new Router({
               index: 1,
               component: () =>
                 import("./patient/components/oneHistory/oneHistory.vue"),
-            },
-          ],
-        },
-        {
-          path: "forum",
-          name: "forum",
-          index: 6,
-          component: () => import("./doctor/components/forum/Forum.vue"),
-          children: [
-            {
-              path: "post",
-              name: "post",
-              index: 1,
-              component: () => import("./doctor/components/post/Post.vue"),
-            },
-            {
-              path: "createPost",
-              name: "createPost",
-              index: 1,
-              component: () =>
-                import("./patient/components/createPost/createPost.vue"),
             },
           ],
         },

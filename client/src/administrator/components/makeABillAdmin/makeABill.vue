@@ -70,8 +70,9 @@
               v-model="exitDate"
             />
             <label class="col-md-12" for="tests">Tests</label>
-
+            <!-- <vs-input v-model=" testsInputs"> -->
             <vs-input
+            
               v-for="(input,index) in testsInputs"
               v-model="input.value"
               :key="index"
@@ -80,6 +81,7 @@
               class="make-bill-admin-inputs"
               placeholder="Enter your test"
             />
+            <!-- </vs-input> -->
             <vs-button
               color="dark"
               type="line"
