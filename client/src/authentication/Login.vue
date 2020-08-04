@@ -99,6 +99,7 @@
           @click="sendEmail"
           >Reset</vs-button
         >
+        
       </center>
     </vs-card>
   </vs-col>
@@ -199,7 +200,7 @@ export default {
       if (user.data.length > 0) {
         let data = await axios.post("/send", inputs);
       } else {
-        console.log('entered')
+        console.log("entered");
         let user = await axios.post(`api/users/clinicX/doctors/getDoctor`, {
           CIN: inputs.CIN,
           email: inputs.email,

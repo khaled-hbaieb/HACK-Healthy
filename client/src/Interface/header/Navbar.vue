@@ -147,7 +147,6 @@ export default {
   },
   beforeUpdate() {
     if (localStorage.getItem("role") === "patient") {
-      this.role = "patient";
       UserService.getPatientBoard().then(
         (response) => {
           this.currentUser = response;
@@ -162,7 +161,6 @@ export default {
       );
     }
     if (localStorage.getItem("role") === "doctor") {
-      this.role = "doctor";
       UserService.getDoctorBoard().then(
         (response) => {
           this.currentUser = response;
@@ -177,7 +175,6 @@ export default {
       );
     }
     if (localStorage.getItem("role") === "administrator") {
-      this.role = "administrator";
       UserService.getAdminBoard().then(
         (response) => {
           this.currentUser = response;
