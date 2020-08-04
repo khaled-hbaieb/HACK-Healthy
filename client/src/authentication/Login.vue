@@ -28,11 +28,12 @@
                   <vs-input
                     dark
                     class="login-page-inputs"
-                    type="password"
+                    :type="passwordType"
                     required
                     label-placeholder="Password"
                     v-model="password"
                     icon="lock"
+                    v-on:icon-click="showPassowrd"
                   />
                   <span>{{ errors[0] }}</span>
                 </ValidationProvider>
@@ -168,6 +169,8 @@ export default {
       hasVisiblePassword: false,
       userRole: "",
       showRecover: false,
+      passwordType: "password",
+      isPassword: true,
     };
   },
   computed: {
@@ -177,9 +180,9 @@ export default {
   },
   methods: {
     getBack() {
-      console.log(this.showRecover)
-      this.showRecover = false
-      console.log(this.showRecover)
+      console.log(this.showRecover);
+      this.showRecover = false;
+      console.log(this.showRecover);
     },
     handleLogin() {
       let user;
@@ -231,11 +234,15 @@ export default {
       $("#loginform").slideUp();
       $("#recoverform").fadeIn();
     },
-    // rec() {
-    //   if (this.showRecover === false) {
-    //     $("#recoverform").hide();
-    //   }
-    // },
+    showPassowrd() {
+      if (this.isPassword) {
+        this.passwordType = "text";
+        this.isPassword = !this.isPassword;
+      } else {
+        this.passwordType = "password";
+        this.isPassword = !this.isPassword;
+      }
+    },
   },
 };
 </script>
