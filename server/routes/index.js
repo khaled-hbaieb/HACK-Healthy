@@ -9,5 +9,6 @@ module.exports = {
   currentPatientsRoutes: require("./currentPatientsRoutes"),
   historyRoutes: require("./historyRoutes"),
   appointmentsRoutes: require("./appointmentsRoutes"),
-  commentsRoutes :require ("./commentsRoutes")
+  commentsRoutes :require ("./commentsRoutes"),
+  recordRoutes: require("./recordRoutes")
 };

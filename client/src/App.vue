@@ -17,4 +17,7 @@ export default {
   height: 100vh;
   width: 100vw;
 }
+::-webkit-scrollbar {
+  display: none !important;
+}
 </style>

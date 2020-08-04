@@ -1,5 +1,5 @@
 <template lang="html">
-  <div id="parentx">
+  <div v-if="ready" id="parentx">
     <vs-sidebar
       default-index="1"
       :parent="parent"
@@ -69,6 +69,7 @@ export default {
     sidebarLinks: [],
     currentUser: null,
     role: null,
+    ready: false,
   }),
   computed: {
     //This is for mobile trigger
@@ -88,6 +89,7 @@ export default {
       UserService.getAdministratorBoard().then(
         (response) => {
           this.currentUser = response;
+          this.ready = true;
         },
         (error) => {
           this.content =
@@ -128,6 +130,7 @@ export default {
       UserService.getDoctorBoard().then(
         (response) => {
           this.currentUser = response;
+          this.ready = true;
         },
         (error) => {
           this.content =
@@ -179,6 +182,7 @@ export default {
       UserService.getPatientBoard().then(
         (response) => {
           this.currentUser = response;
+          this.ready = true;
         },
         (error) => {
           this.content =
@@ -229,7 +233,8 @@ export default {
   watch: {},
   methods: {
     showProfile() {
-      this.$router.push("/profileDoc");
+      
+      this.$router.push(`/${localStorage.role}/profile`);
     },
     handleWindowResize(event) {
       this.windowWidth = event.currentTarget.innerWidth;
