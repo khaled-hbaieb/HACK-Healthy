@@ -53,7 +53,6 @@
               <vs-select-item text="Male" value="Male"></vs-select-item>
               <vs-select-item text="Female" value="Female"></vs-select-item>
             </vs-select>
-            
             <label class="col-md-12" for="CIN">CIN</label>
             <vs-input
               class="doctor-form-inputs-doctor-creation"

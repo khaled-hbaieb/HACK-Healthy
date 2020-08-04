@@ -50,7 +50,11 @@ app.use("/api/clinicX/rooms", routes.roomRoutes);
 
 app.use("/api/users/clinicX/history", routes.historyRoutes);
 
+
+app.use("/api/clinicX/bills", routes.billRoutes);
+
 app.use("/api/users/clinicX/record", routes.recordRoutes);
+
 
 app.use("/api/users/clinicX/currentPatients", routes.currentPatientsRoutes);
 

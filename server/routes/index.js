@@ -8,6 +8,7 @@ module.exports = {
   cloudinaryRoutes: require("./cloudinaryRoutes"),
   currentPatientsRoutes: require("./currentPatientsRoutes"),
   historyRoutes: require("./historyRoutes"),
+  billRoutes: require("./billRoutes"),
   appointmentsRoutes: require("./appointmentsRoutes"),
   commentsRoutes :require ("./commentsRoutes"),
   recordRoutes: require("./recordRoutes")
