@@ -250,7 +250,7 @@ export default {
   },
   computed: {
     backEndUrl() {
-      return `http://localhost:3000/upload-images`;
+      return `https://hackhealthy.herokuapp.com/upload-images`;
     },
   },
   methods: {
@@ -275,6 +275,9 @@ export default {
       }
     },
     async updateProfile() {
+      if(this.user.password === '') {
+        delete this.user.password
+      } 
       let user = await axios.put(
         `/api/users/clinicX/patients/updatePatient/${this.currentUser.CIN}`,
         { filter: { CIN: this.currentUser.CIN }, payload: this.user }
