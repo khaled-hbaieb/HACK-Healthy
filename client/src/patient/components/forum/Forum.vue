@@ -1,7 +1,28 @@
 <template>
   <div>
-
-    
+      <vs-row class="row">
+      <vs-col class="col-sm-12">
+        <vs-card id="header-titles" class="card">
+          <vs-col vs-lg="10">
+            
+            <vs-button
+             @click="renderCreatePost"
+             
+              type="button"
+              class="btn btn-info d-block d-lg-block"
+            >
+              <vs-icon
+                icon="add_circle_outline"
+                
+                round
+              ></vs-icon
+              >Add A New Post
+            </vs-button>
+          </vs-col>
+           
+        </vs-card>
+      </vs-col>
+    </vs-row>
     <vs-row class="row page-titles">
       <vs-col
         vs-lg="3"
@@ -78,9 +99,14 @@ export default {
   },
   methods: {
     renderPost() {
-      this.$router.push("/doctor/forum/post");
+      this.$router.push("/patient/forum/post");
     },
+    renderCreatePost(){
+  this.$router.push("/patient/forum/createPost");
+  }
   },
+  
+  
 };
 </script>
 <style>
