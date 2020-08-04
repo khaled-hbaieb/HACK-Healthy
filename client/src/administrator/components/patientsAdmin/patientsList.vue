@@ -7,8 +7,17 @@
         </vs-col>
         <vs-col class="col-md-7 align-self-center text-right">
           <div class="d-flex justify-content-end align-items-center">
-            <vs-button @click="renderCreatePatient" type="button" class="btn btn-info d-lg-block">
-              <vs-icon icon="add_circle_outline" id="patient-icon" round></vs-icon>Create New Patient
+            <vs-button
+              @click="renderCreatePatient"
+              type="button"
+              class="btn btn-info d-lg-block"
+            >
+              <vs-icon
+                icon="add_circle_outline"
+                id="patient-icon"
+                round
+              ></vs-icon
+              >Create New Patient
             </vs-button>
           </div>
         </vs-col>
@@ -27,18 +36,45 @@
           />
         </vs-col>
         <vs-col vs-sm="2" vs-xs="3" vs-lg="2">
-          <vs-button size="33px" id="search-patient-button" color="dark" type="border">Search</vs-button>
+          <vs-button
+            size="33px"
+            id="search-patient-button"
+            color="dark"
+            type="border"
+            >Search</vs-button
+          >
         </vs-col>
       </vs-row>
     </vs-card>
     <vs-row class="row el-element-overlay">
-      <vs-col v-for="(patient, index) in patients" :key="index" vs-xs="12" vs-sm="6" vs-lg="3">
-        <vs-card vs-xs="12" vs-sm="12" vs-lg="12" id="profile" actionable class="cardx">
+      <vs-col
+        v-for="(patient, index) in patients"
+        :key="index"
+        vs-xs="12"
+        vs-sm="6"
+        vs-lg="3"
+      >
+        <vs-card
+          vs-xs="12"
+          vs-sm="12"
+          vs-lg="12"
+          id="profile"
+          actionable
+          class="cardx"
+        >
           <div slot="media">
             <img
+              v-if="patient.imageName !== ''"
               @click="rendershowPatientInfo(patient.CIN)"
               id="patient-profile-image"
               :src="patient.imageName"
+              alt="user"
+            />
+            <img
+              v-else
+              @click="rendershowPatientInfo(patient.CIN)"
+              id="patient-profile-image"
+              src="@/assets/images/logo/patient.jpg"
               alt="user"
             />
           </div>
@@ -52,12 +88,9 @@
         </vs-card>
       </vs-col>
     </vs-row>
-    <router-link :to="{ name: 'PatientMoreInfos', params: { } }"></router-link>
-    <!-- <patientMoreInfo :name="patient.fullName" /> -->
   </div>
 </template>
 <script>
-// import patientMoreInfo from "./PatientMoreInfo.vue";
 import axios from "axios";
 export default {
   name: "patientsList",
@@ -76,7 +109,7 @@ export default {
       this.$router.push(`/administrator/patients/${arg}`);
     },
   },
-  beforeMount: async function () {
+  beforeMount: async function() {
     let patients = await axios.post(`/api/users/clinicX/patients`);
     this.patients = patients.data;
   },
