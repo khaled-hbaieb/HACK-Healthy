@@ -114,7 +114,7 @@ import axios from "axios";
 import FullCalendar from "@fullcalendar/vue";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
-
+import UserService from "../../../services/user.service";
 export default {
   components: {
     FullCalendar,
@@ -129,7 +129,8 @@ export default {
         weekends: true,
         titleColor: "red",
       },
-      patientCIN: "14404510",
+      patientCIN: '',
+      currentUser:null,
       doctorCIN: "",
       date: "",
       time: "",
@@ -261,6 +262,20 @@ export default {
         this.doctorName = "";
       }
     },
+  },
+  beforeMount() {
+    UserService.getPatientBoard().then(
+      async (response) => {
+        this.currentUser = response;
+        this.patientCIN = this.currentUser.CIN
+      },
+      (error) => {
+        this.content =
+          (error.currentUser && error.response.data) ||
+          error.message ||
+          error.toString();
+      }
+    );
   },
 };
 </script>

@@ -34,16 +34,32 @@
 </template>
 <script>
 import axios from "axios";
+import UserService from "../../../services/user.service";
 export default {
   data: () => ({
-    patientCIN: "14404510",
+    
+    currentUser:null,
     appoints: [],
   }),
-  beforeMount: async function() {
-    let appoints = await axios.post("/api/appointments/appointment", {
-      patientCIN: this.patientCIN,
-    });
-    this.appoints = appoints.data;
+  async beforeMount () {
+      UserService.getPatientBoard().then(
+      async (response) => {
+        this.currentUser = response;
+        
+        // console.log(this.currentUser)
+        let appoints = await axios.post("/api/appointments/appointment", {
+          patientCIN: this.currentUser.CIN,
+        });
+        this.appoints = appoints.data;
+      },
+      (error) => {
+        this.content =
+          (error.currentUser && error.response.data) ||
+          error.message ||
+          error.toString();
+      }
+    );
+    // console.log(this.appoints)
   },
 };
 </script>
