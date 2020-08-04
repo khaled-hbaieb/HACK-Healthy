@@ -30,6 +30,7 @@
           <vs-dropdown-item @click="lightMode">Light</vs-dropdown-item>
         </vs-dropdown-menu>
       </vs-dropdown>
+
       <vs-dropdown
         vs-trigger-click
         left
@@ -45,65 +46,57 @@
           <vs-dropdown-item>Here</vs-dropdown-item>
         </vs-dropdown-menu>
       </vs-dropdown>
-      <!---
-      Craete new dd
-      -->
-      <div v-if="role === 'doctor' || role === 'patient'">
+      <div>
         <vs-dropdown
           vs-trigger-click
           left
           class="cursor-pointer pr-2 pl-2 ml-1 mr-md-3"
         >
-          <a class="text-white-dark user-image" href="#">
-            <img v-if="ready" :src="currentUser.imageName" alt="User" />
+          <a
+            v-if="role === 'patient'"
+            class="text-white-dark user-image"
+            href="#"
+          >
+            <img
+              v-if="ready && currentUser.imageName !== ''"
+              :src="currentUser.imageName"
+              alt="User"
+            />
+            <img v-else src="@/assets/images/logo/patient.jpg" alt="User" />
+          </a>
+          <a
+            v-if="role === 'doctor'"
+            class="text-white-dark user-image"
+            href="#"
+          >
+            <img
+              v-if="ready && currentUser.imageName !== ''"
+              :src="currentUser.imageName"
+              alt="User"
+            />
+            <img v-else src="@/assets/images/logo/doctor.jpg" alt="User" />
+          </a>
+          <a
+            v-if="role === 'administrator'"
+            class="text-white-dark user-image"
+            href="#"
+          >
+            <img src="@/assets/images/logo/admin.jpg" alt="User" />
           </a>
           <vs-dropdown-menu class="topbar-dd">
-            <vs-dropdown-item @click="renderProfile">
+            <vs-dropdown-item
+              v-if="role !== 'administrator'"
+              @click="renderProfile"
+            >
               <vs-icon icon="person_outline" class="mr-1"></vs-icon>My Profile
             </vs-dropdown-item>
-            <hr class="mb-1" />
+            <hr v-if="role !== 'administrator'" class="mb-1" />
             <vs-dropdown-item @click="logout">
               <vs-icon icon="logout" class="mr-1"></vs-icon>Logout
             </vs-dropdown-item>
           </vs-dropdown-menu>
         </vs-dropdown>
       </div>
-
-      <div v-else>
-        <vs-dropdown
-          vs-trigger-click
-          left
-          class="cursor-pointer pr-2 pl-2 ml-1 mr-md-3"
-        >
-          <a class="text-white-dark user-image" href="#">
-            <img src="@/assets/images/users/houssem.jpg" alt="User" />
-          </a>
-          <vs-dropdown-menu class="topbar-dd">
-            <vs-dropdown-item @click="renderProfile">
-              <vs-icon icon="person_outline" class="mr-1"></vs-icon>My Profile
-            </vs-dropdown-item>
-            <hr class="mb-1" />
-            <vs-dropdown-item @click="logout">
-              <vs-icon icon="logout" class="mr-1"></vs-icon>Logout
-            </vs-dropdown-item>
-          </vs-dropdown-menu>
-        </vs-dropdown>
-      </div>
-
-      <!-- <vs-dropdown vs-trigger-click left class="cursor-pointer pr-2 pl-2 ml-1 mr-md-3">
-        <a class="text-white-dark user-image" href="#">
-          <img :src="currentUser.imageName" alt="User" />
-        </a>
-        <vs-dropdown-menu class="topbar-dd">
-          <vs-dropdown-item @click="renderProfile">
-            <vs-icon icon="person_outline" class="mr-1"></vs-icon>My Profile
-          </vs-dropdown-item>
-          <hr class="mb-1" />
-          <vs-dropdown-item @click="logout">
-            <vs-icon icon="logout" class="mr-1"></vs-icon>Logout
-          </vs-dropdown-item>
-        </vs-dropdown-menu>
-      </vs-dropdown> -->
     </vs-navbar>
   </header>
 </template>
@@ -152,6 +145,53 @@ export default {
       this.$router.push(`/${localStorage.role}/profile`);
     },
   },
+  beforeUpdate() {
+    if (localStorage.getItem("role") === "patient") {
+      this.role = "patient";
+      UserService.getPatientBoard().then(
+        (response) => {
+          this.currentUser = response;
+          this.ready = true;
+        },
+        (error) => {
+          this.content =
+            (error.currentUser && error.response.data) ||
+            error.message ||
+            error.toString();
+        }
+      );
+    }
+    if (localStorage.getItem("role") === "doctor") {
+      this.role = "doctor";
+      UserService.getDoctorBoard().then(
+        (response) => {
+          this.currentUser = response;
+          this.ready = true;
+        },
+        (error) => {
+          this.content =
+            (error.currentUser && error.response.data) ||
+            error.message ||
+            error.toString();
+        }
+      );
+    }
+    if (localStorage.getItem("role") === "administrator") {
+      this.role = "administrator";
+      UserService.getAdminBoard().then(
+        (response) => {
+          this.currentUser = response;
+          this.ready = true;
+        },
+        (error) => {
+          this.content =
+            (error.currentUser && error.response.data) ||
+            error.message ||
+            error.toString();
+        }
+      );
+    }
+  },
   beforeMount() {
     if (localStorage.getItem("role") === "patient") {
       this.role = "patient";
@@ -183,8 +223,8 @@ export default {
         }
       );
     }
-    if (localStorage.getItem("role") === "admin") {
-      this.role = "admin";
+    if (localStorage.getItem("role") === "administrator") {
+      this.role = "administrator";
       UserService.getAdminBoard().then(
         (response) => {
           this.currentUser = response;
