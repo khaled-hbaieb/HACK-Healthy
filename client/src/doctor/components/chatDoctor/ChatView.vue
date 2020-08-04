@@ -139,7 +139,7 @@
 </template>
 <script>
 import $ from "jquery";
-import UserService from "../../../services/auth.service";
+import UserService from "../../../services/user.service";
 import {
   connect,
   // createLocalTracks,
@@ -230,7 +230,9 @@ export default {
   methods: {
     // Generate access token
     async getAccessToken() {
-      let token = await axios.get(`/token?identity=${this.currentUser.fullName}`);
+      let token = await axios.get(
+        `/token?identity=${this.currentUser.fullName}`
+      );
       return token.data;
     },
     dispatchLog(message) {
@@ -329,7 +331,7 @@ export default {
     },
   },
   beforeMount: function() {
-    UserService.getPatientBoard().then(
+    UserService.getDoctorBoard().then(
       async (response) => {
         this.currentUser = response;
       },
