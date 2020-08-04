@@ -8,6 +8,8 @@ module.exports = {
   multerService: require("./multerService"),
   cloudinaryService: require("./cloudinaryService"),
   historyService: require("./historyService"),
+  billService: require("./billService"),
   appointmentsService: require("./appointmentsService"),
+  commentsService: require("./commentsService"),
   recordService: require("./recordService"),
 };

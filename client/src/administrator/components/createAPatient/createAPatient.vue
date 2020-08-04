@@ -53,16 +53,6 @@
               <vs-select-item text="Male" value="Male"></vs-select-item>
               <vs-select-item text="Female" value="Female"></vs-select-item>
             </vs-select>
-            <label class="col-sm-12" for="image">Profile Image</label>
-            <div class="centerx">
-              <vs-upload
-                automatic
-                name="image"
-                :action="backEndUrl"
-                fileName="image"
-                @on-success="onFileUploaded"
-              />
-            </div>
             <label class="col-md-12" for="CIN">CIN</label>
             <vs-input
               class="doctor-form-inputs-doctor-creation"
@@ -80,7 +70,7 @@
               type="text"
               id="url"
               name="job"
-              :success="job !== '' "
+              :success="job !== ''"
               success-text="Thank You For Entering Your Job"
               placeholder="Your Job"
               v-model="job"
@@ -91,7 +81,7 @@
               type="text"
               id="url"
               name="address"
-              :success="address !== '' "
+              :success="address !== ''"
               success-text="Thank You For Entering Your Address"
               placeholder="Your CIN"
               v-model="address"
@@ -111,7 +101,9 @@
               type="email"
               id="example-email"
               name="email"
-              :success="email.length > 8 && email.includes('.') && email.includes('@')"
+              :success="
+                email.length > 8 && email.includes('.') && email.includes('@')
+              "
               success-text="Thank You For Entering Your Email"
               placeholder="enter your email"
               v-model="email"
@@ -124,7 +116,7 @@
               id="example-phone"
               name="phone"
               placeholder="enter your phone"
-              :success="phoneNumber.length === 8 "
+              :success="phoneNumber.length === 8"
               success-text="Thank You For Entering Your Phone Number"
               data-mask="(+216) 99 999 999"
               v-model="phoneNumber"
@@ -141,19 +133,19 @@
               required
             />
             <div>
-            <label class="col-md-12" for="cpwd">Confirm Password</label>
-            <vs-input
-              class="doctor-form-inputs-doctor-creation"
-              type="password"
-              id="cpwd"
-              name="cpwd"
-              placeholder="confirm your password"
-              v-model="cpwd"
-              required
-            />
-             <slot v-if="validPassword" #message-success>
-               Password match
-             </slot>
+              <label class="col-md-12" for="cpwd">Confirm Password</label>
+              <vs-input
+                class="doctor-form-inputs-doctor-creation"
+                type="password"
+                id="cpwd"
+                name="cpwd"
+                placeholder="confirm your password"
+                v-model="cpwd"
+                required
+              />
+              <!-- <slot v-if="validPassword" #message-success>
+                Password match
+              </slot> -->
             </div>
           </form>
         </vs-card>
@@ -185,7 +177,9 @@
               placeholder="Father Name"
               v-model="fatherName"
             />
-            <label class="col-md-12" for="example-email">Father Phone Number</label>
+            <label class="col-md-12" for="example-email"
+              >Father Phone Number</label
+            >
             <vs-input
               class="doctor-form-inputs-doctor-creation"
               type="number"
@@ -207,7 +201,9 @@
               success-text="Thank You For Entering Your Mother's Name"
               v-model="motherName"
             />
-            <label class="col-md-12" for="example-email">Mother Phone Number</label>
+            <label class="col-md-12" for="example-email"
+              >Mother Phone Number</label
+            >
             <vs-input
               class="doctor-form-inputs-doctor-creation"
               type="number"
@@ -260,7 +256,8 @@
               icon="add"
               id="allergy-button"
               @click="addAllergyInput"
-            >Add Allergy Input</vs-button>
+              >Add Allergy Input</vs-button
+            >
             <br />
             <br />
             <br />
@@ -282,15 +279,21 @@
               icon="add"
               id="vaccination-button"
               @click="addVaccinationInput"
-            >Add Vaccination Input</vs-button>
+              >Add Vaccination Input</vs-button
+            >
           </form>
           <div id="button-admin-patient-container">
-            <vs-button type="submit" class="btn btn-inverse waves-effect waves-light">Cancel</vs-button>
+            <vs-button
+              type="submit"
+              class="btn btn-inverse waves-effect waves-light"
+              >Cancel</vs-button
+            >
             <vs-button
               type="submit"
               class="btn btn-info waves-effect waves-light m-r-10"
               @click="handleRegister"
-            >Submit</vs-button>
+              >Submit</vs-button
+            >
           </div>
         </vs-card>
       </vs-col>
@@ -299,20 +302,20 @@
 </template>
 
 <script>
-import { extend } from 'vee-validate';
-import { required, email, min, max } from 'vee-validate/dist/rules';
-import { ValidationProvider } from 'vee-validate';
+import { extend } from "vee-validate";
+import { required, email, min, max } from "vee-validate/dist/rules";
+import { ValidationProvider } from "vee-validate";
 import axios from "axios";
 import Patient from "../../../models/patient";
-extend('required', {
+extend("required", {
   ...required,
-  message: 'This field is required'
+  message: "This field is required",
 });
- 
+
 // Add the email rule
-extend('email', {
+extend("email", {
   ...email,
-  message: 'This field must be a valid email'
+  message: "This field must be a valid email",
 });
 
 export default {
@@ -335,7 +338,6 @@ export default {
       cpwd: "",
       job: "",
       address: "",
-      imageName: "",
       bloodType: "",
       bloodTypes: ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"],
       allergyInputs: [
@@ -361,22 +363,11 @@ export default {
     loggedIn() {
       return this.$store.state.auth.status.loggedIn;
     },
-    backEndUrl() {
-      return `http://localhost:3000/upload-images`;
-    },
+    
   },
 
   methods: {
-    onFileUploaded(event) {
-      this.imageName = event.target.response;
-    },
-    successUpload() {
-      this.$vs.notify({
-        color: "success",
-        title: "Upload Success",
-        text: this.name + " Uploaded The image Successfully!",
-      });
-    },
+    
     addAllergyInput() {
       this.allergyInputs.push({
         id: "allergy",
@@ -407,7 +398,7 @@ export default {
         this.phoneNumber,
         this.address,
         this.job,
-        this.imageName
+        ""
       );
       this.$store.dispatch("auth/register", { user, role: "patient" }).then(
         () => {
@@ -438,6 +429,7 @@ export default {
   },
 };
 </script>
+
 <style>
 ::-webkit-scrollbar {
   display: none;

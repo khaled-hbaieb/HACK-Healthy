@@ -11,6 +11,9 @@ const crypto = require('crypto')
 const axios = require('axios')
 require("dotenv").config();
 
+//CRYPTO JS
+var crypto = require("crypto");
+
 const app = express();
 
 const PORT = process.env.PORT || 3000;
@@ -49,7 +52,11 @@ app.use("/api/clinicX/rooms", routes.roomRoutes);
 
 app.use("/api/users/clinicX/history", routes.historyRoutes);
 
+
+app.use("/api/clinicX/bills", routes.billRoutes);
+
 app.use("/api/users/clinicX/record", routes.recordRoutes);
+
 
 app.use("/api/users/clinicX/currentPatients", routes.currentPatientsRoutes);
 
@@ -59,7 +66,10 @@ app.use("/api/pics", routes.multerRoutes);
 
 app.use("/api/cloud", routes.cloudinaryRoutes);
 
+app.use("/api/comments",routes.commentsRoutes)
+
 var http = require("http");
+const { find } = require("../database/models/room");
 var AccessToken = require("twilio").jwt.AccessToken;
 var VideoGrant = AccessToken.VideoGrant;
 
@@ -128,12 +138,11 @@ app.post("/send", (req, res) => {
   let mailToSend = `Your demand for resetting your password is accepted. \r This Is Your new password: ${newPassword.toString(
     "base64"
   )}`;
-  
   const output = `
   <p>You have a new contact request</p>
   <h3>Contact Details</h3>
-  <ul>  
-  
+  <ul>
+
   <li>Email: ${req.body.email}</li>
   <li>CIN: ${req.body.CIN}</li>
   <li>Phone: ${req.body.phone}</li>
