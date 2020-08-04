@@ -256,7 +256,16 @@ export default {
   methods: {
     onFileUploaded(event) {
       this.imageName = event.target.response;
-      this.user.imageName = this.imageName;
+      let str = "";
+      for (let i = 0; i < this.imageName.length; i++) {
+        if (this.imageName[i-3]+this.imageName[i-2]+this.imageName[i-1]+this.imageName[i] === 'http') {
+          str+=this.imageName[i]+'s'
+        } else {
+          str+=this.imageName[i]
+        }
+      }
+      console.log(str)
+      this.user.imageName = str;
     },
     successUpload() {
       this.$vs.notify({
@@ -275,9 +284,9 @@ export default {
       }
     },
     async updateProfile() {
-      if(this.user.password === '') {
-        delete this.user.password
-      } 
+      if (this.user.password === "") {
+        delete this.user.password;
+      }
       let user = await axios.put(
         `/api/users/clinicX/patients/updatePatient/${this.currentUser.CIN}`,
         { filter: { CIN: this.currentUser.CIN }, payload: this.user }
