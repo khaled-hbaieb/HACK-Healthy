@@ -99,6 +99,7 @@
           @click="sendEmail"
           >Reset</vs-button
         >
+        
       </center>
     </vs-card>
   </vs-col>
@@ -167,7 +168,11 @@ export default {
       if (this.email && this.password) {
         this.$store.dispatch("auth/login", user).then(
           () => {
-            this.$router.push(`/${this.role}/profile`);
+            if (this.role !== "administrator") {
+              this.$router.push(`/${this.role}/profile`);
+            } else {
+              this.$router.push(`/${this.role}`);
+            }
           },
           (error) => {
             this.loading = false;
@@ -180,11 +185,31 @@ export default {
       }
     },
     async sendEmail() {
-      let data = await axios.post("/send", {
+      let inputs = {
         email: this.recoveryEmail,
         CIN: this.recoveryCIN,
         phone: this.recoveryPhone,
+      };
+      let user = await axios.post(`api/users/clinicX/patients/checkPatient`, {
+        CIN: inputs.CIN,
+        email: inputs.email,
+        phoneNumber: inputs.phone,
       });
+      console.log(user);
+
+      if (user.data.length > 0) {
+        let data = await axios.post("/send", inputs);
+      } else {
+        console.log("entered");
+        let user = await axios.post(`api/users/clinicX/doctors/getDoctor`, {
+          CIN: inputs.CIN,
+          email: inputs.email,
+          phoneNumber: inputs.phone,
+        });
+        if (user.data.length > 0) {
+          let data = await axios.post("/send", inputs);
+        }
+      }
     },
   },
 };

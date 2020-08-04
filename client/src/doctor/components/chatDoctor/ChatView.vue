@@ -337,10 +337,10 @@ export default {
 <style>
 .chat {
   height: 50%;
-  border: 5px solid green;
+  /* border: 5px solid green; */
 }
 #all {
-  border: 5px solid red;
+  /* border: 5px solid red; */
   height: 100%;
 }
 .remote_video_container {

@@ -32,7 +32,7 @@
 </template>
 <script>
 export default {
-  name: "Forum",
+  name: "forum",
   data: () => {
     return {
       postList: {
