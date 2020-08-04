@@ -5,26 +5,21 @@
         <h3 class="text-center m-b-20">Sign In</h3>
         <br />
         <label class="col-md-12" for="example-email">Email</label>
-        <ValidationProvider rules="required|email" >
+        <ValidationProvider rules="required|email">
           <span slot-scope="{ errors }">
             <vs-input
               icon="account_circle"
               class="login-page-inputs"
-              
               required
               placeholder="E-mail"
               v-model="email"
               type="email"
             />
             <p>{{ errors[0] }}</p>
-            
           </span>
         </ValidationProvider>
 
         <ValidationProvider rules="required" v-slot="{ errors }">
-          <span>
-            <font-awesome-icon icon="lock"   />
-            </span><span>
           <vs-input
             dark
             class="login-page-inputs"
@@ -32,34 +27,45 @@
             required
             label-placeholder="Password"
             v-model="password"
-            
+            icon="lock"
           />
-
-          </span>
           <span>{{ errors[0] }}</span>
         </ValidationProvider>
 
-
-
         <div>
-          <vs-button class="login-page-buttons" color="primary" type="border" @click="doctor">Doctor</vs-button>
+          <vs-button
+            class="login-page-buttons"
+            color="primary"
+            type="border"
+            @click="doctor"
+            >Doctor</vs-button
+          >
           <vs-button
             class="login-page-buttons"
             color="primary"
             type="border"
             @click="administrator"
-          >Administrator</vs-button>
+            >Administrator</vs-button
+          >
           <vs-button
             class="login-page-buttons"
             color="primary"
             type="border"
             @click="patient"
-          >Patient</vs-button>
+            >Patient</vs-button
+          >
           <br />
-          <vs-button id="btn-login" class="login-page-buttons" @click="handleLogin">Log In</vs-button>
+          <vs-button
+            id="btn-login"
+            class="login-page-buttons"
+            @click="handleLogin"
+            >Log In</vs-button
+          >
         </div>
         <h3>Recover Password</h3>
-        <p class="text-muted">Enter your Email and instructions will be sent to you!</p>
+        <p class="text-muted">
+          Enter your Email and instructions will be sent to you!
+        </p>
         <vs-input
           class="login-page-inputs"
           type="text"
@@ -87,7 +93,12 @@
           placeholder="Phone Number"
           v-model="recoveryPhone"
         />
-        <vs-button v-if="recoveryPhone.length === 8" class="login-page-buttons" @click="sendEmail">Reset</vs-button>
+        <vs-button
+          v-if="recoveryPhone.length === 8"
+          class="login-page-buttons"
+          @click="sendEmail"
+          >Reset</vs-button
+        >
       </center>
     </vs-card>
   </vs-col>
@@ -98,10 +109,10 @@ import administrator from "../models/administrator";
 import patient from "../models/patient";
 import { ValidationProvider, extend } from "vee-validate";
 import { required, email } from "vee-validate/dist/rules";
-import axios from 'axios'
-extend('email', {
+import axios from "axios";
+extend("email", {
   ...email,
-  message: 'This field must be a valid email'
+  message: "This field must be a valid email",
 });
 extend("required", {
   ...required,
@@ -128,8 +139,6 @@ export default {
     loggedIn() {
       return this.$store.state.auth.status.loggedIn;
     },
-            
-      
   },
   methods: {
     doctor() {
@@ -158,7 +167,11 @@ export default {
       if (this.email && this.password) {
         this.$store.dispatch("auth/login", user).then(
           () => {
-            this.$router.push(`/${this.role}/profile`);
+            if (this.role !== "administrator") {
+              this.$router.push(`/${this.role}/profile`);
+            } else {
+              this.$router.push(`/${this.role}`);
+            }
           },
           (error) => {
             this.loading = false;
@@ -171,15 +184,32 @@ export default {
       }
     },
     async sendEmail() {
-      let data = await axios.post('/send', 
-      {
+      let inputs = {
         email: this.recoveryEmail,
         CIN: this.recoveryCIN,
         phone: this.recoveryPhone,
+      };
+      let user = await axios.post(`api/users/clinicX/patients/checkPatient`, {
+        CIN: inputs.CIN,
+        email: inputs.email,
+        phoneNumber: inputs.phone,
+      });
+      console.log(user);
 
+      if (user.data.length > 0) {
+        let data = await axios.post("/send", inputs);
+      } else {
+        console.log('entered')
+        let user = await axios.post(`api/users/clinicX/doctors/getDoctor`, {
+          CIN: inputs.CIN,
+          email: inputs.email,
+          phoneNumber: inputs.phone,
+        });
+        if (user.data.length > 0) {
+          let data = await axios.post("/send", inputs);
+        }
       }
-      )
-    }
+    },
   },
 };
 </script>

@@ -5,8 +5,10 @@ const path = require("path");
 const upload = require("./multer");
 const cloudinary = require("./cloudinary");
 const fs = require("fs");
-const exphbs = require('express-handlebars');
-const nodemailer = require('nodemailer')
+const exphbs = require("express-handlebars");
+const nodemailer = require("nodemailer");
+const crypto = require('crypto')
+const axios = require('axios')
 require("dotenv").config();
 
 const app = express();
@@ -18,8 +20,8 @@ app.use(express.static("client/dist"));
 
 app.use(bodyParser.json());
 
-app.engine('handlebars', exphbs());
-app.set('view engine', 'handlebars');
+app.engine("handlebars", exphbs());
+app.set("view engine", "handlebars");
 
 let URI = process.env.URI;
 const mongoose = require("mongoose");
@@ -48,7 +50,7 @@ app.use("/api/clinicX/rooms", routes.roomRoutes);
 app.use("/api/users/clinicX/history", routes.historyRoutes);
 
 app.use("/api/users/clinicX/record", routes.recordRoutes);
- 
+
 app.use("/api/users/clinicX/currentPatients", routes.currentPatientsRoutes);
 
 app.use("/api/appointments", routes.appointmentsRoutes);
@@ -113,71 +115,75 @@ app.use("/upload-images", upload.array("image"), async (req, res) => {
   }
 });
 
-
 /**
- * 
+ *
  */
 
-app.post('/send', (req, res) => {
-  console.log(req.body)
+app.post("/send", (req, res) => {
+  const newPassword = crypto.scryptSync(
+    req.body.email + String.fromCharCode(Math.ceil(65 * Math.random()) + 27),
+    "salt",
+    8
+  );
+  let mailToSend = `Your demand for resetting your password is accepted. \r This Is Your new password: ${newPassword.toString(
+    "base64"
+  )}`;
+  
   const output = `
-    <p>You have a new contact request</p>
-    <h3>Contact Details</h3>
-    <ul>  
-      
-      <li>Email: ${req.body.email}</li>
-      <li>CIN: ${req.body.CIN}</li>
-      <li>Phone: ${req.body.phone}</li>
-    </ul>
-    <h3>Message</h3>
-    <p>${req.body.message}</p>
+  <p>You have a new contact request</p>
+  <h3>Contact Details</h3>
+  <ul>  
+  
+  <li>Email: ${req.body.email}</li>
+  <li>CIN: ${req.body.CIN}</li>
+  <li>Phone: ${req.body.phone}</li>
+  </ul>
+  <h3>Message</h3>
+  <p>${mailToSend}</p>
   `;
+  let mailOptions = {
+    from: '"Hack Healthy" hackhealthyclinic@gmail.com', // sender address
+    to: `${req.body.email}`, // list of receivers
+    subject: "Password reset", // Subject line
+    html: output, // html body
+  };
 
   // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport({
-    service: 'gmail',
+    service: "gmail",
     // port: 587,
     // secure: false, // true for 465, false for other ports
     auth: {
-        user: 'hackhealthyclinic@gmail.com', // generated ethereal user
-        pass: 'hack-healthy1'  // generated ethereal password
+      user: process.env.USER, // generated ethereal user
+      pass: process.env.PASS, // generated ethereal password
     },
-    tls:{
-      rejectUnauthorized:false
-    }
+    tls: {
+      rejectUnauthorized: false,
+    },
   });
 
   // setup email data with unicode symbols
-  let mailOptions = {
-      from: '"Hack Healthy" hackhealthyclinic@gmail.com', // sender address
-      to: `${req.body.email}`, // list of receivers
-      subject: 'Password reset', // Subject line
-      text: 'your demand for resetting your password is under consideration /n we will respond to you as soon as possible', // plain text body
-      html: output // html body
-  };
 
   // send mail with defined transport object
   transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-          return console.log(error);
-      }
-      console.log('Message sent: %s', info.messageId);   
-      console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-
-      
+    if (error) {
+      return console.log(error);
+    }
   });
-  });
+  console.log('newPass', newPassword)
+  axios.put(
+    `/api/users/clinicX/patients/updatePatient/${req.body.CIN}`,
+    { filter: { CIN: req.body.CIN }, payload: newPassword }).catch(err => console.log(err))
+})
 
- /**
-  * 
-  */
+/**
+ *
+ */
 
 app.get("*", (req, res) => {
   let dirPath = path.join(__dirname, "../client/dist/index.html");
   res.sendFile(dirPath);
 });
-
-
 
 app.listen(PORT, (err) => {
   if (!err) {
