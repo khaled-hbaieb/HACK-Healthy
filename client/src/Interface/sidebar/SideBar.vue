@@ -339,6 +339,7 @@ export default {
           name: "Forum",
           icon: "forum",
         },
+        
         {
           url: "/doctor/assignBill",
           name: "Assign A Bill",

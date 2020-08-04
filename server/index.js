@@ -60,6 +60,8 @@ app.use("/api/pics", routes.multerRoutes);
 
 app.use("/api/cloud", routes.cloudinaryRoutes);
 
+app.use("/api/comments",routes.commentsRoutes)
+
 var http = require("http");
 const { find } = require("../database/models/room");
 var AccessToken = require("twilio").jwt.AccessToken;

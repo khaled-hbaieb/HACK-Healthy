@@ -60,8 +60,9 @@
               data-mask="99.99%"
             />
             <label class="col-md-12" for="tests">Tests</label>
-
+            <!-- <vs-input v-model=" testsInputs"> -->
             <vs-input
+            
               v-for="(input,index) in testsInputs"
               :key="index"
               :id="input.id"
@@ -70,6 +71,7 @@
               :class="input.class"
               :placeholder="input.placeholder"
             />
+            <!-- </vs-input> -->
             <vs-button
               color="dark"
               type="line"
