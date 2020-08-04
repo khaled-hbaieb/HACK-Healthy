@@ -23,6 +23,7 @@ module.exports = {
     return Doctors.create(doctor);
   },
   async updateDoctor(filter, payload) {
+    payload.password = bcrypt.hashSync(payload.password, 10);
     console.log('filter',filter)
     console.log('payload', payload)
     return Doctors.updateOne(filter, payload)

@@ -66,12 +66,23 @@
         <p class="text-muted">
           Enter your Email and instructions will be sent to you!
         </p>
+        <vs-select
+          class="login-page-inputs"
+          type="text"
+          required
+          placeholder="Select Your Role"
+          v-model="recoveryRole"
+        >
+          <vs-select-item text="Patient" value="Patient"></vs-select-item>
+          <vs-select-item text="Doctor" value="Doctor"></vs-select-item>
+        </vs-select>
         <vs-input
           class="login-page-inputs"
           type="text"
           required
           placeholder="Email"
           v-model="recoveryEmail"
+          v-if="recoveryRole !== ''"
         />
         <vs-input
           v-if="
@@ -126,6 +137,7 @@ export default {
   data() {
     return {
       role: "",
+      recoveryRole: "",
       loading: false,
       email: "",
       password: "",
@@ -188,27 +200,9 @@ export default {
         email: this.recoveryEmail,
         CIN: this.recoveryCIN,
         phone: this.recoveryPhone,
+        role: this.recoveryRole,
       };
-      let user = await axios.post(`api/users/clinicX/patients/checkPatient`, {
-        CIN: inputs.CIN,
-        email: inputs.email,
-        phoneNumber: inputs.phone,
-      });
-      console.log(user);
-
-      if (user.data.length > 0) {
-        let data = await axios.post("/send", inputs);
-      } else {
-        console.log('entered')
-        let user = await axios.post(`api/users/clinicX/doctors/getDoctor`, {
-          CIN: inputs.CIN,
-          email: inputs.email,
-          phoneNumber: inputs.phone,
-        });
-        if (user.data.length > 0) {
-          let data = await axios.post("/send", inputs);
-        }
-      }
+      let user = await axios.post(`/send`, inputs);
     },
   },
 };
