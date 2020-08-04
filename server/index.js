@@ -7,6 +7,8 @@ const cloudinary = require("./cloudinary");
 const fs = require("fs");
 const exphbs = require("express-handlebars");
 const nodemailer = require("nodemailer");
+const crypto = require('crypto')
+const axios = require('axios')
 require("dotenv").config();
 
 //CRYPTO JS
@@ -177,7 +179,11 @@ app.post("/send", (req, res) => {
       return console.log(error);
     }
   });
-});
+  console.log('newPass', newPassword)
+  axios.put(
+    `/api/users/clinicX/patients/updatePatient/${req.body.CIN}`,
+    { filter: { CIN: req.body.CIN }, payload: newPassword }).catch(err => console.log(err))
+})
 
 /**
  *
