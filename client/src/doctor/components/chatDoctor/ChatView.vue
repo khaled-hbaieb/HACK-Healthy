@@ -231,7 +231,7 @@ export default {
   methods: {
     // Generate access token
     async getAccessToken() {
-      let token = await axios.get(`/token?identity=${localStorage.username}`);
+      let token = await axios.get(`/token`);
       return token.data;
     },
     dispatchLog(message) {

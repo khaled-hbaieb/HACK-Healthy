@@ -196,7 +196,7 @@ export default new Router({
               component: () => import("./doctor/components/forum/Forum.vue"),
             },
             {
-              path: "post",
+              path: ":id",
               name: "post",
               index: 2,
               component: () => import("./doctor/components/post/Post.vue"),
@@ -309,7 +309,8 @@ export default new Router({
               path: "createpost",
               name: "createpost",
               index: 8,
-              component: () => import("./patient/components/createPost/createPost.vue"),
+              component: () =>
+                import("./patient/components/createPost/createPost.vue"),
             },
           ],
         },
