@@ -7,7 +7,6 @@ const cloudinary = require("./cloudinary");
 const fs = require("fs");
 const exphbs = require("express-handlebars");
 const nodemailer = require("nodemailer");
-const crypto = require('crypto')
 const axios = require('axios')
 require("dotenv").config();
 
