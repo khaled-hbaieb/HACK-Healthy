@@ -276,7 +276,7 @@ export default {
     },
     async updateProfile() {
       let user = await axios.put(
-        `/api/users/clinicX/patients/updatePatient/${this.currentUser.CIN}`,
+        `/api/users/clinicX/patients/updatePatient`,
         { filter: { CIN: this.currentUser.CIN }, payload: this.user }
       );
       UserService.getPatientBoard().then((response) => {
