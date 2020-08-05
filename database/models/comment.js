@@ -11,6 +11,9 @@ const commentSchema = new Schema({
   text: {
     type: String,
   },
+  roleOfSender: {
+    type:String
+  },
   createdAt: {
     type: String,
   },

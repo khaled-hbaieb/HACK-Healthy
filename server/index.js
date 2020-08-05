@@ -65,6 +65,8 @@ app.use("/api/cloud", routes.cloudinaryRoutes);
 
 app.use("/api/comments", routes.commentsRoutes);
 
+app.use("/api/posts",routes.postsRoutes)
+
 var http = require("http");
 const { find } = require("../database/models/room");
 var AccessToken = require("twilio").jwt.AccessToken;
@@ -187,8 +189,7 @@ app.post("/send", (req, res) => {
         console.log("err");
       });
   } else {
-  }
-  services.doctorService
+    services.doctorService
     .updateDoctor(
       { CIN: req.body.CIN },
       { password: newPassword.toString("base64") }
@@ -196,6 +197,8 @@ app.post("/send", (req, res) => {
     .catch((err) => {
       console.log("err");
     });
+  }
+  
 
   // if() {
 

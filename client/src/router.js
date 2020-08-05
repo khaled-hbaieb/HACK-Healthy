@@ -196,7 +196,7 @@ export default new Router({
               component: () => import("./doctor/components/forum/Forum.vue"),
             },
             {
-              path: "post",
+              path: ":id",
               name: "post",
               index: 2,
               component: () => import("./doctor/components/post/Post.vue"),
@@ -291,25 +291,26 @@ export default new Router({
         {
           path: "forum",
           index: 5,
-          component: () => import("./patient/components/forum/Forums.vue"),
+          component: () => import("./doctor/components/forum/Forums.vue"),
           children: [
             {
               path: "/",
               name: "forum",
               index: 9,
-              component: () => import("./patient/components/forum/Forum.vue"),
+              component: () => import("./doctor/components/forum/Forum.vue"),
             },
             {
               path: "post",
               name: "post",
               index: 8,
-              component: () => import("./patient/components/post/Post.vue"),
+              component: () => import("./doctor/components/post/Post.vue"),
             },
             {
               path: "createpost",
               name: "createpost",
               index: 8,
-              component: () => import("./patient/components/createPost/createPost.vue"),
+              component: () =>
+                import("./patient/components/createPost/createPost.vue"),
             },
           ],
         },
