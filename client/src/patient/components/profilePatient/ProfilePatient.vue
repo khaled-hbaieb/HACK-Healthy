@@ -294,13 +294,10 @@ export default {
       }
     },
     async updateProfile() {
-      if (this.user.password === "") {
-        delete this.user.password;
-      }
-      let user = await axios.put(`/api/users/clinicX/patients/updatePatient`, {
-        filter: { CIN: this.currentUser.CIN },
-        payload: this.user,
-      });
+      let user = await axios.put(
+        `/api/users/clinicX/patients/updatePatient`,
+        { filter: { CIN: this.currentUser.CIN }, payload: this.user }
+      );
       UserService.getPatientBoard().then((response) => {
         this.currentUser = response;
         this.user = this.currentUser;

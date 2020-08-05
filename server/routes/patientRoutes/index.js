@@ -25,12 +25,10 @@ router.post("/createpatient", async (req, res) => {
 
 router.put("/updatePatient", async (req, res) => {
   try {
-    let filter = req.body.filter;
-    let payload = req.body.payload;
-    var newPatient = await services.patientService.updatePatient(
-      filter,
-      payload
-    );
+    let filter = req.body.filter
+    let payload = req.body.payload
+    console.log(req.body)
+    var newPatient = await services.patientService.updatePatient(filter, payload);
     res.send(newPatient);
   } catch (error) {
     res.send(error);

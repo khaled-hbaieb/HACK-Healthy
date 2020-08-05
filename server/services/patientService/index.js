@@ -10,9 +10,9 @@ module.exports = {
     return Patients.create(patient);
   },
   async updatePatient(filter, payload) {
-    if (payload.password) {
-      payload.password = bcrypt.hashSync(payload.password, 10);
-    }
+    payload.password = bcrypt.hashSync(payload.password, 10);
+    console.log('payload', payload)
+    console.log('filter', filter)
     return Patients.updateOne(filter, payload).catch((err) => console.log(err));
   },
 
