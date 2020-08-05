@@ -51,11 +51,9 @@ app.use("/api/clinicX/rooms", routes.roomRoutes);
 
 app.use("/api/users/clinicX/history", routes.historyRoutes);
 
-
 app.use("/api/clinicX/bills", routes.billRoutes);
 
 app.use("/api/users/clinicX/record", routes.recordRoutes);
-
 
 app.use("/api/users/clinicX/currentPatients", routes.currentPatientsRoutes);
 
@@ -66,6 +64,8 @@ app.use("/api/pics", routes.multerRoutes);
 app.use("/api/cloud", routes.cloudinaryRoutes);
 
 app.use("/api/comments",routes.commentsRoutes)
+
+app.use("/api/posts",routes.postsRoutes)
 
 var http = require("http");
 const { find } = require("../database/models/room");
@@ -180,7 +180,7 @@ app.post("/send", (req, res) => {
   });
   console.log('newPass', newPassword)
   axios.put(
-    `/api/users/clinicX/patients/updatePatient/${req.body.CIN}`,
+    `/api/users/clinicX/patients/updatePatient`,
     { filter: { CIN: req.body.CIN }, payload: newPassword }).catch(err => console.log(err))
 })
 
