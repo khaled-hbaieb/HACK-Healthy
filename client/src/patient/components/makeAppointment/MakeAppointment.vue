@@ -114,7 +114,7 @@ import axios from "axios";
 import FullCalendar from "@fullcalendar/vue";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
-
+import UserService from "../../../services/user.service";
 export default {
   components: {
     FullCalendar,
@@ -129,7 +129,9 @@ export default {
         weekends: true,
         titleColor: "red",
       },
-      patientCIN: "14404510",
+      patientCIN: '',
+      patientName:'',
+      currentUser:null,
       doctorCIN: "",
       date: "",
       time: "",
@@ -175,11 +177,15 @@ export default {
     },
     async makeAppoint() {
       await axios.post("/api/appointments/createAppointment", {
-        doctorCIN: this.doctorCIN,
-        doctorName: this.doctorName,
         patientCIN: this.patientCIN,
+        patientName: this.patientName,
+         doctorName: this.doctorName,
+        doctorCIN: this.doctorCIN,
+       date: this.date,
+        
+        
         time: this.time,
-        date: this.date,
+        
         cause: this.cause,
         state: false,
       });
@@ -261,6 +267,21 @@ export default {
         this.doctorName = "";
       }
     },
+  },
+  beforeMount() {
+    UserService.getPatientBoard().then(
+      async (response) => {
+        this.currentUser = response;
+        this.patientCIN = this.currentUser.CIN
+        this.patientName = this.currentUser.fullName
+      },
+      (error) => {
+        this.content =
+          (error.currentUser && error.response.data) ||
+          error.message ||
+          error.toString();
+      }
+    );
   },
 };
 </script>

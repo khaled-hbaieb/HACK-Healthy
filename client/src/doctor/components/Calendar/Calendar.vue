@@ -18,7 +18,7 @@
             <vs-card>
               Appointment N°: {{ index + 1 }}
               <br />
-              PatientCIN: {{ appointment.patientCIN }}
+              Patient Name: {{ appointment.patientName }}
               <br />
               Time: {{ appointment.time }}
               <br />

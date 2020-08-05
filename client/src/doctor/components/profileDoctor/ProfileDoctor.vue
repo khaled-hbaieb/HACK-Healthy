@@ -1,185 +1,235 @@
 <template>
   <div>
-    <div>
-      <vs-card>
-        <div class="row page-titles">
-          <vs-col class="col-md-5 align-self-center">
-            <h4 class="text-themecolor">Profile</h4>
+    <vs-row class="row">
+      <vs-col class="col-sm-12">
+        <vs-card id="header-titles" class="card">
+          <vs-col vs-lg="11">
+            <h4 class="text-themecolor">My Profile</h4>
           </vs-col>
-          <vs-col class="col-md-7 align-self-center text-right">
-            <div class="d-flex justify-content-end align-items-center">
-              <ol class="breadcrumb">
-                <li class="breadcrumb-item">
-                  <a href="javascript:void(0)">Home</a>
-                </li>
-                <li class="breadcrumb-item active">Doctor Profile</li>
-              </ol>
-            </div>
+          <vs-col vs-lg="1">
+            <h6 class="text-themecolor">
+              <a href="/doctor">Home</a> > Profile
+            </h6>
           </vs-col>
-        </div>
-      </vs-card>
-      <vs-col vs-lg="6">
+        </vs-card>
+      </vs-col>
+    </vs-row>
+    <vs-row>
+      <vs-col v-if="ready" vs-lg="6">
         <vs-card>
-          <div class="user-bg">
-            <img
-              width="80%"
-              id="image"
-              alt="user"
-              :src="currentUser.imageName"
-            />
-          </div>
-          <div class="card-body">
-            <!-- .row -->
-            <div class="row text-center m-t-10">
-              <div class="col-md-6 b-r">
-                <strong>Full-Name</strong>
-                <p>{{ currentUser.fullName }}</p>
-              </div>
-              <div class="col-md-6">
-                <strong>Speciality</strong>
-                <p>{{ currentUser.speciality }}</p>
-              </div>
-            </div>
-            <hr />
-            <!-- /.row -->
-            <!-- .row -->
-            <div class="row text-center m-t-10">
-              <div class="col-md-6 b-r">
-                <strong>Email ID</strong>
-                <p>{{ currentUser.email }}</p>
-              </div>
-              <div class="col-md-6">
-                <strong>Phone</strong>
-                <p>{{ currentUser.phoneNumber }}</p>
-              </div>
-            </div>
-            <!-- /.row -->
-            <hr />
-            <!-- .row -->
-
-            <!-- .row -->
-            <vs-row class="row text-center m-t-10">
-              <vs-col class="col-md-6 b-r">
-                <strong>Gender</strong>
-                <p>{{ currentUser.gender }}</p>
-              </vs-col>
-              <vs-col class="col-md-6">
-                <strong>Date of Birth</strong>
-                <p>{{ currentUser.DateOfBirth }}</p>
-              </vs-col>
-            </vs-row>
-            <hr />
-            <vs-row class="row text-center m-t-10">
-              <div class="col-md-12">
-                <strong>Address</strong>
-                <p>{{ currentUser.address }}</p>
-              </div>
-            </vs-row>
-            <vs-button @click="edit = true">Edit Profile</vs-button>
-            <br />
-          </div>
+          <vs-row>
+            <vs-col vs-lg="6">
+              <img
+                v-if="currentUser.imageName !== ''"
+                id="doctor-profile-image"
+                alt="user"
+                :src="currentUser.imageName"
+              />
+              <img
+                v-else
+                id="doctor-profile-image"
+                alt="user"
+                src="@/assets/images/logo/doctor.jpg"
+              />
+            </vs-col>
+            <vs-col vs-lg="6">
+              <strong>Full-Name</strong>
+              <p>{{ currentUser.fullName }}</p>
+              <strong>Occupation</strong>
+              <p>{{ currentUser.job }}</p>
+              <hr />
+              <strong>Email ID</strong>
+              <p>{{ currentUser.email }}</p>
+              <strong>Phone</strong>
+              <p>{{ currentUser.phoneNumber }}</p>
+              <hr />
+            </vs-col>
+          </vs-row>
+          <vs-row>
+            <vs-col>
+              <strong>Gender</strong>
+              <p>{{ currentUser.gender }}</p>
+            </vs-col>
+            <vs-col>
+              <strong>Date of Birth</strong>
+              <p>{{ currentUser.dateOfBirth }}</p>
+            </vs-col>
+            <vs-col>
+              <strong>Address</strong>
+              <p>{{ currentUser.address }}</p>
+            </vs-col>
+          </vs-row>
+          <hr />
+          <vs-button @click="edit = true">Edit Profile</vs-button>
+          <br />
         </vs-card>
       </vs-col>
       <vs-col v-if="edit" vs-lg="6">
-        <vs-card class="card-body">
+        <vs-card>
           <h2>Update Info</h2>
           <hr />
-          <form class="form-horizontal form-material">
-            <div class="form-group">
-              <div class="col-md-12">
-                <vs-input
-                  v-model="user.fullName"
-                  label="Full Name"
-                  placeholder="Johnathan Doe"
-                />
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-md-12">
-                <vs-input
-                  type="email"
-                  label="Email"
-                  name="example-email"
-                  id="example-email"
-                  v-model="user.email"
-                />
-              </div>
-            </div>
-
-            <div class="form-group">
-              <div class="col-md-12">
-                <vs-input
-                  type="text"
-                  v-model="user.phoneNumber"
-                  label="Phone Number"
-                />
-              </div>
-            </div>
-
-            <div class="form-group">
-              <div class="col-md-12">
-                <vs-input
-                  type="text"
-                  v-model="user.dateOfBirth"
-                  label="Date of Birth"
-                />
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-md-12">
-                <vs-input type="text" v-model="user.address" label="address" />
-              </div>
-            </div>
-
-            <div class="form-group">
-              <div class="col-sm-12">
-                <vs-button class="btn btn-success" @click="updateProfile">
-                  Update Profile
-                </vs-button>
-              </div>
-            </div>
-          </form>
+          <vs-col vs-lg="4">
+            <vs-row>
+              <vs-input
+                maxlength="25"
+                v-model="user.fullName"
+                label="Full Name"
+              />
+            </vs-row>
+            <vs-row>
+              <vs-input
+                maxlength="25"
+                v-model="user.email"
+                type="email"
+                label="Email"
+                name="example-email"
+                id="example-email"
+              />
+            </vs-row>
+            <vs-row>
+              <vs-input
+                icon="dns"
+                v-on:icon-click="showPassowrd"
+                :type="passwordType"
+                v-model="user.password"
+                label="Password"
+              />
+            </vs-row>
+          </vs-col>
+          <vs-col vs-lg="4">
+            <vs-row>
+              <vs-input
+                maxlength="8"
+                type="number"
+                v-model="user.phoneNumber"
+                label="Phone Number"
+              />
+            </vs-row>
+            <vs-row>
+              <vs-input
+                maxlength="20"
+                type="text"
+                v-model="user.job"
+                label="Job"
+              />
+            </vs-row>
+            <vs-row>
+              <vs-input
+                maxlength="5"
+                type="date"
+                v-model="user.dateOfBirth"
+                label="Date of Birth"
+              />
+            </vs-row>
+          </vs-col>
+          <vs-col vs-lg="4"
+            ><label class="col-sm-12" for="image">Profile Image</label>
+            <div class="centerx">
+              <vs-upload
+                automatic
+                limit="1"
+                name="image"
+                :action="backEndUrl"
+                fileName="image"
+                @on-success="onFileUploaded"
+              /></div
+          ></vs-col>
+          <vs-row>
+            <vs-col vs-lg="9">
+              <vs-button class="doctor-profile-buttons" @click="cancelEdit"
+                >Cancel Edit</vs-button
+              >
+            </vs-col>
+            <vs-col vs-lg="3">
+              <vs-button class="patient-profile-buttons" @click="updateProfile"
+                >Update Profile</vs-button
+              >
+            </vs-col>
+          </vs-row>
         </vs-card>
       </vs-col>
-    </div>
+    </vs-row>
+    <vs-row>
+      
+      
+    </vs-row>
   </div>
 </template>
 <script>
 import UserService from "../../../services/user.service";
 import axios from "axios";
+
 export default {
-  name: "profileDoc",
+  name: "profile",
   data: () => {
     return {
       currentUser: null,
-      user: {
-        fullName: "",
-        email: "",
-        phoneNumber: "",
-        dateOfBirth: "",
-        address: "",
-      },
+      user: {},
+      isPassword: true,
+      passwordType: "password",
       edit: false,
+      ready: false,
+      imageName: "",
     };
   },
+  computed: {
+    backEndUrl() {
+      return `http://localhost:3000/upload-images`;
+    },
+  },
   methods: {
+    onFileUploaded(event) {
+      this.imageName = event.target.response;
+      this.user.imageName = this.imageName;
+    },
+    successUpload() {
+      this.$vs.notify({
+        color: "success",
+        title: "Upload Success",
+        text: this.name + " Uploaded The image Successfully!",
+      });
+    },
+    showPassowrd() {
+      if (this.isPassword) {
+        this.passwordType = "text";
+        this.isPassword = !this.isPassword;
+      } else {
+        this.passwordType = "password";
+        this.isPassword = !this.isPassword;
+      }
+    },
     async updateProfile() {
+      if(this.user.password === '') {
+        delete this.user.password
+      }
       let user = await axios.put(
-        `/api/users/clinicX/doctors/updateDoctor/${this.currentUser.CIN}`,
+        `/api/users/clinicX/doctors/updateDoctor`,
         { filter: { CIN: this.currentUser.CIN }, payload: this.user }
       );
       UserService.getDoctorBoard().then((response) => {
         this.currentUser = response;
         this.user = this.currentUser;
+        this.user.password = "";
+        this.edit = false;
+      });
+    },
+    cancelEdit() {
+      UserService.getDoctorBoard().then((response) => {
+        this.currentUser = response;
+        this.user = this.currentUser;
+        this.user.password = "";
         this.edit = false;
       });
     },
   },
   beforeMount() {
     UserService.getDoctorBoard().then(
-      (response) => {
+      async (response) => {
         this.currentUser = response;
         this.user = this.currentUser;
+        this.user.password = "";
+        
+        this.ready = true;
       },
       (error) => {
         this.content =
@@ -192,8 +242,12 @@ export default {
 };
 </script>
 
-<style scoped>
-#image {
-  height: 75%;
+<style>
+#doctor-profile-image {
+  height: 100%;
+  width: 80%;
+}
+.doctor-profile-buttons {
+  margin-top: 58px;
 }
 </style>
