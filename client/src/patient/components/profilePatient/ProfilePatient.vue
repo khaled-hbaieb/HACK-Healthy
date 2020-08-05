@@ -34,33 +34,42 @@
             </vs-col>
             <vs-col vs-lg="6">
               <strong>Full-Name</strong>
-              <p>{{ currentUser.fullName }}</p>
+              <p class="informations">{{ currentUser.fullName }}</p>
               <strong>Occupation</strong>
-              <p>{{ currentUser.job }}</p>
+              <p class="informations">{{ currentUser.job }}</p>
               <hr />
               <strong>Email ID</strong>
-              <p>{{ currentUser.email }}</p>
+              <p class="informations">{{ currentUser.email }}</p>
               <strong>Phone</strong>
-              <p>{{ currentUser.phoneNumber }}</p>
+              <p class="informations">{{ currentUser.phoneNumber }}</p>
               <hr />
             </vs-col>
           </vs-row>
           <vs-row>
             <vs-col>
               <strong>Gender</strong>
-              <p>{{ currentUser.gender }}</p>
+              <p class="informations">{{ currentUser.gender }}</p>
             </vs-col>
             <vs-col>
               <strong>Date of Birth</strong>
-              <p>{{ currentUser.dateOfBirth }}</p>
+              <p class="informations">{{ currentUser.dateOfBirth }}</p>
             </vs-col>
             <vs-col>
               <strong>Address</strong>
-              <p>{{ currentUser.address }}</p>
+              <p class="informations">{{ currentUser.address }}</p>
             </vs-col>
           </vs-row>
           <hr />
-          <vs-button @click="edit = true">Edit Profile</vs-button>
+          <vs-row>
+            <vs-col vs-lg="9">
+              <vs-button @click="edit = true">Edit Profile</vs-button>
+            </vs-col>
+            <vs-col vs-lg="3">
+              <vs-button class="patient-profile-buttons" @click="createPDF"
+                >Create PDF</vs-button
+              >
+            </vs-col>
+          </vs-row>
           <br />
         </vs-card>
       </vs-col>
@@ -164,22 +173,23 @@
             <h4>My Record</h4>
             <hr />
             <strong>CIN</strong>
-            <p>{{ currentUserRecord.patientCIN }}</p>
+            <p class="record">{{ currentUserRecord.patientCIN }}</p>
             <strong>Father's Name</strong>
-            <p>{{ currentUserRecord.fatherName }}</p>
+            <p class="record">{{ currentUserRecord.fatherName }}</p>
             <hr />
             <strong>Father's Phone Number</strong>
-            <p>{{ currentUserRecord.fatherNumber }}</p>
+            <p class="record">{{ currentUserRecord.fatherNumber }}</p>
             <hr />
             <strong>Mother's Name</strong>
-            <p>{{ currentUserRecord.motherName }}</p>
+            <p class="record">{{ currentUserRecord.motherName }}</p>
             <hr />
             <strong>Mother's Phone Number</strong>
-            <p>{{ currentUserRecord.motherNumber }}</p>
+            <p class="record">{{ currentUserRecord.motherNumber }}</p>
             <strong>Blood Type</strong>
-            <p>{{ currentUserRecord.bloodType }}</p>
+            <p class="record">{{ currentUserRecord.bloodType }}</p>
             <strong>Allergies</strong>
             <p
+              class="record"
               v-for="(allergy, index) in JSON.parse(
                 currentUserRecord.allergies
               )"
@@ -189,6 +199,7 @@
             </p>
             <strong>Vaccinations</strong>
             <p
+              class="record"
               v-for="(vaccination, index) in JSON.parse(
                 currentUserRecord.vaccinations
               )"
@@ -205,7 +216,7 @@
             <h4>My History</h4>
             <hr />
             <div>
-              <vs-table max-items="8" pagination :data="history">
+              <vs-table id="my-table" max-items="8" pagination :data="history">
                 <template slot="thead">
                   <vs-th>Entry Date</vs-th>
                   <vs-th>Exit Date</vs-th>
@@ -215,16 +226,22 @@
 
                 <template slot-scope="{ data }">
                   <vs-tr :key="indextr" v-for="(tr, indextr) in data">
-                    <vs-td :data="data[indextr].entryDate">{{
-                      data[indextr].entryDate
-                    }}</vs-td>
-                    <vs-td :data="data[indextr].exitDate">{{
-                      data[indextr].exitDate
-                    }}</vs-td>
-                    <vs-td :data="data[indextr].roomNumber">{{
-                      data[indextr].roomNumber
-                    }}</vs-td>
-                    <vs-td :data="data[indextr].illness">{{
+                    <vs-td
+                      class="history"
+                      :data="data[indextr].entryDate"
+                      >{{ data[indextr].entryDate }}</vs-td
+                    >
+                    <vs-td
+                      class="history"
+                      :data="data[indextr].exitDate"
+                      >{{ data[indextr].exitDate }}</vs-td
+                    >
+                    <vs-td
+                      class="history"
+                      :data="data[indextr].roomNumber"
+                      >{{ data[indextr].roomNumber }}</vs-td
+                    >
+                    <vs-td class="history" :data="data[indextr].illness">{{
                       data[indextr].illness
                     }}</vs-td>
                   </vs-tr>
@@ -240,7 +257,9 @@
 <script>
 import UserService from "../../../services/user.service";
 import axios from "axios";
-
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import $ from "jquery";
 export default {
   name: "profile",
   data: () => {
@@ -262,6 +281,37 @@ export default {
     },
   },
   methods: {
+    createPDF() {
+      let pdfName = "Record";
+      var doc = new jsPDF();
+      let informations = $(".informations");
+      let record = $('.record')
+      let history = $(".history");
+      let historyContainer = [];
+      let historyTable = [];
+      for (let j = 0; j < history.length; j++) {
+        if (j === 0 || j % 4 === 0) {
+          historyTable = [];
+          historyTable.push(history[j].innerText);
+        } else {
+          historyTable.push(history[j].innerText);
+        }
+        if(historyTable.length === 4) {
+          historyContainer.push(historyTable)
+        }
+      }
+      for (let i = 0; i < informations.length; i++) {
+        doc.text('info '+informations[i].innerText, 10, (i + 1) * 10);
+      }
+      for (let i = 0; i < record.length; i++) {
+        doc.text('record '+record[i].innerText, 10, (i + 1) * 10);
+      }
+      doc.autoTable({
+        head: [["Entry Date", "Exit Date", "Room Number", "Illness"]],
+        body: historyContainer,
+      });
+      doc.save(pdfName + ".pdf");
+    },
     async deletePicture() {
       await axios.put("/api/users/clinicX/patients/updatePatient", {
         filter: { CIN: this.user.CIN },
@@ -294,10 +344,10 @@ export default {
       }
     },
     async updateProfile() {
-      let user = await axios.put(
-        `/api/users/clinicX/patients/updatePatient`,
-        { filter: { CIN: this.currentUser.CIN }, payload: this.user }
-      );
+      let user = await axios.put(`/api/users/clinicX/patients/updatePatient`, {
+        filter: { CIN: this.currentUser.CIN },
+        payload: this.user,
+      });
       UserService.getPatientBoard().then((response) => {
         this.currentUser = response;
         this.user = this.currentUser;

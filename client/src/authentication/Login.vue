@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="home-page-container">
     <vs-row>
       <vs-col vs-lg="9"></vs-col>
       <vs-col id="login-page-container" vs-lg="3">
@@ -152,7 +152,6 @@ export default {
   },
   name: "Login",
   beforeMount() {
-    console.log("mounted");
     $("#recoverform").hide();
   },
   data() {
@@ -179,31 +178,28 @@ export default {
   },
   methods: {
     getBack() {
-      console.log(this.showRecover);
       this.showRecover = false;
-      console.log(this.showRecover);
+      $("#loginform").slideDown();
+      $("#recoverform").fadeOut();
     },
     handleLogin() {
       let user;
       this.loading = true;
 
       if (this.userRole === "doctor") {
-        console.log("doc");
         user = new doctor(this.email, this.password);
       }
       if (this.userRole === "administrator") {
         user = new administrator(this.email, this.password);
-        console.log("admi");
       }
       if (this.userRole === "patient") {
-        console.log("pat");
         user = new patient(this.email, this.password);
       }
       user.role = this.userRole;
       if (this.email && this.password) {
         this.$store.dispatch("auth/login", user).then(
           () => {
-            if (this.role !== "administrator") {
+            if (this.userRole !== "administrator") {
               this.$router.push(`/${this.userRole}/profile`);
             } else {
               this.$router.push(`/${this.userRole}`);
@@ -259,7 +255,8 @@ export default {
 .login-page-buttons {
   margin-bottom: 10px;
 }
-body {
+#home-page-container {
+  height: 100vh;
   background-image: url("../assets/images/background/login3.jpg");
   background-repeat: no-repeat;
   background-size: cover;
