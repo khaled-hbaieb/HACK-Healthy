@@ -130,6 +130,7 @@ export default {
         titleColor: "red",
       },
       patientCIN: '',
+      patientName:'',
       currentUser:null,
       doctorCIN: "",
       date: "",
@@ -176,11 +177,15 @@ export default {
     },
     async makeAppoint() {
       await axios.post("/api/appointments/createAppointment", {
-        doctorCIN: this.doctorCIN,
-        doctorName: this.doctorName,
         patientCIN: this.patientCIN,
+        patientName: this.patientName,
+         doctorName: this.doctorName,
+        doctorCIN: this.doctorCIN,
+       date: this.date,
+        
+        
         time: this.time,
-        date: this.date,
+        
         cause: this.cause,
         state: false,
       });
@@ -268,6 +273,7 @@ export default {
       async (response) => {
         this.currentUser = response;
         this.patientCIN = this.currentUser.CIN
+        this.patientName = this.currentUser.fullName
       },
       (error) => {
         this.content =

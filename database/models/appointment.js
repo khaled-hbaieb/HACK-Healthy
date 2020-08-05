@@ -5,6 +5,9 @@ const appointmentSchema = new Schema({
   patientCIN: {
     type: String,
   },
+  patientName: {
+    type: String,
+  },
   doctorName: {
     type: String,
   },
