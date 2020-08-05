@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="ready">
     <vs-row class="row">
       <vs-col class="col-sm-12">
         <vs-card id="header-titles" class="card">
@@ -15,7 +15,7 @@
       </vs-col>
     </vs-row>
     <vs-row>
-      <vs-col v-if="ready" vs-lg="6">
+      <vs-col vs-lg="6">
         <vs-card>
           <vs-row>
             <vs-col vs-lg="6">
@@ -150,8 +150,6 @@
       </vs-col>
     </vs-row>
     <vs-row>
-      
-      
     </vs-row>
   </div>
 </template>

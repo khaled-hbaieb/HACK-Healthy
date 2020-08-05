@@ -11,5 +11,6 @@ module.exports = {
   billRoutes: require("./billRoutes"),
   appointmentsRoutes: require("./appointmentsRoutes"),
   commentsRoutes :require ("./commentsRoutes"),
-  recordRoutes: require("./recordRoutes")
+  recordRoutes: require("./recordRoutes"),
+  postsRoutes: require('./postsRoutes')
 };
