@@ -54,16 +54,10 @@
         vs-sm="6"
         vs-lg="3"
       >
-        <vs-card
-          vs-xs="12"
-          vs-sm="12"
-          vs-lg="12"
-          id="profile"
-          actionable
-          class="cardx"
-        >
+        <vs-card actionable vs-xs="12" vs-sm="12" vs-lg="12" id="profile" class="cardx">
           <div slot="media">
             <img
+              
               v-if="patient.imageName !== ''"
               @click="rendershowPatientInfo(patient.CIN)"
               id="patient-profile-image"
@@ -106,7 +100,7 @@ export default {
       this.$router.push("/administrator/patients/createAPatient");
     },
     rendershowPatientInfo(arg) {
-      this.$router.push(`/administrator/patients/${arg}`);
+      this.$router.push(`/${localStorage.role}/patients/${arg}`);
     },
   },
   beforeMount: async function() {

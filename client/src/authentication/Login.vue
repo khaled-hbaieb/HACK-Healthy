@@ -37,7 +37,6 @@
                   />
                   <span>{{ errors[0] }}</span>
                 </ValidationProvider>
-
                 <vs-select
                   icon="account_circle"
                   placeholder="Select Your Role"

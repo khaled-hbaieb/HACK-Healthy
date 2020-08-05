@@ -40,7 +40,6 @@ import VueGmaps from 'vue-gmaps'
 Vue.use(VueGmaps, {
   key: "AIzaSyA5B4dM3gNQRexvjz3ge2mGewwYBWMOJo0"
 })
-
 Vue.use(Vuesax, {
   theme: {
     colors: {
