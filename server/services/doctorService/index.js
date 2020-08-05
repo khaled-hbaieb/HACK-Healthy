@@ -1,8 +1,7 @@
 const Doctors = require("../../../database/models/doctor");
 const bcrypt = require("bcrypt");
-const {
-  DocumentList,
-} = require("twilio/lib/rest/preview/sync/service/document");
+
+
 module.exports = {
   async findAllDoctors() {
     return Doctors.find({});
@@ -19,8 +18,8 @@ module.exports = {
   },
   async createDoctor(doctor) {
     doctor.password = bcrypt.hashSync(doctor.password, 10);
-    console.log(doctor);
-    return Doctors.create(doctor);
+    return Doctors.create(doctor)
+    .catch(err => console.log(err))
   },
   async updateDoctor(filter, payload) {
     if(payload.password)  {

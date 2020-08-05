@@ -151,6 +151,18 @@
     </vs-row>
     <vs-row>
     </vs-row>
+    <gmap-map
+      :center="center"
+      :zoom="12"
+      style="width:100%;  height: 400px;"
+    >
+      <gmap-marker
+        :key="index"
+        v-for="(m, index) in markers"
+        :position="m.position"
+        @click="center=m.position"
+      ></gmap-marker>
+    </gmap-map>
   </div>
 </template>
 <script>
@@ -168,6 +180,10 @@ export default {
       edit: false,
       ready: false,
       imageName: "",
+      center: null,
+      markers: [],
+      places: [],
+      currentPlace: null
     };
   },
   computed: {
@@ -176,6 +192,18 @@ export default {
     },
   },
   methods: {
+    addMarker() {
+      
+        const marker = {
+          lat: this.center.lat,
+          lng: this.center.lng
+        };
+        this.markers.push({ position: marker });
+        this.places.push(this.currentPlace);
+        this.center = marker;
+        this.currentPlace = null;
+      
+    },
     onFileUploaded(event) {
       this.imageName = event.target.response;
       this.user.imageName = this.imageName;
@@ -219,15 +247,27 @@ export default {
         this.edit = false;
       });
     },
+    geolocate: function() {
+      navigator.geolocation.getCurrentPosition(position => {
+        this.center = {
+          lat: this.center.lat,
+          lng: this.center.lng
+        };
+      });
+    },
   },
-  beforeMount() {
-    UserService.getDoctorBoard().then(
-      async (response) => {
+  async beforeMount() {
+    await UserService.getDoctorBoard().then(
+       (response) => {
+        
         this.currentUser = response;
         this.user = this.currentUser;
         this.user.password = "";
         
+        this.center = {lat: response.marker.lat, lng: response.marker.lng}
         this.ready = true;
+        this.geolocate()
+        this.addMarker()
       },
       (error) => {
         this.content =
@@ -237,6 +277,7 @@ export default {
       }
     );
   },
+ 
 };
 </script>
 

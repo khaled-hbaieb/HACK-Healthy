@@ -1,5 +1,5 @@
 export default class Doctor {
-    constructor( email, password,fullName,gender,dateOfBirth,phoneNumber,speciality,yearsOfExperiance,educationBackground,address,CIN,image) {
+    constructor( email, password,fullName,gender,dateOfBirth,phoneNumber,speciality,yearsOfExperiance,educationBackground,address,CIN,image,marker) {
  
       this.email = email;
       this.password = password;
@@ -13,5 +13,6 @@ export default class Doctor {
       this.address = address
       this.CIN = CIN
       this.imageName = image
+      this.marker = marker
     }
   }
