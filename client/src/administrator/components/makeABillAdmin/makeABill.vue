@@ -74,12 +74,12 @@
             <vs-input
             
               v-for="(input,index) in testsInputs"
-              v-model="input.value"
+              v-model="tests[index]"
               :key="index"
-              type="text"
-              name="test"
+              :type="input.type"
+              :name="input.name"
+              :placeholder="input.placeholder"
               class="make-bill-admin-inputs"
-              placeholder="Enter your test"
             />
             <!-- </vs-input> -->
             <vs-button
@@ -96,12 +96,12 @@
 
             <vs-input
               v-for="(input,index) in operationsInputs"
-              v-model="input.value"
+              v-model="operations[index]"
               :key="index"
-              type="text"
-              name="operation"
+              :type="input.type"
+              :name="input.name"
+              :placeholder="input.placeholder"
               class="make-bill-admin-inputs"
-              placeholder="Enter your operation "
             />
             <vs-button
               color="dark"
@@ -117,12 +117,12 @@
 
             <vs-input
               v-for="(input,index) in drugsInputs"
-              v-model="input.value"
+              v-model="drugs[index]"
               :key="index"
-              type="text"
-              name="drug"
+              :type="input.type"
+              :name="input.name"
+              :placeholder="input.placeholder"
               class="make-bill-admin-inputs"
-              placeholder="Enter your drug"
             />
             <vs-button
               color="dark"
@@ -191,6 +191,9 @@ export default {
   name: "makeABill",
   data: () => {
     return {
+      tests: [""],
+      operations:[""],
+      drugs:[""],
       title: "Checkbox",
       status: "",
       method: "",
@@ -202,18 +205,27 @@ export default {
       exitDate: "",
       testsInputs: [
         {
-          value: "",
-        },
+          id: "test",
+          type: "text",
+          name: "test",
+          placeholder: "Enter your test",
+        }
       ],
       operationsInputs: [
         {
-          value: "",
-        },
+          id: "operation",
+          type: "text",
+          name: "operation",
+          placeholder: "Enter your operation",
+        }
       ],
       drugsInputs: [
         {
-          value: "",
-        },
+          id: "drug",
+          type: "text",
+          name: "drug",
+          placeholder: "Enter your drug",
+        }
       ],
       FinalAmount: "",
       PaymentMethod: "",
@@ -255,12 +267,12 @@ export default {
        doctorCIN: this.doctorCIN,
        entryDate: this.entryDate,
        exitDate: this.exitDate,
-       tests: this.testsInputs,
-       operations: this.operationsInputs,
-       drugs: this.drugsInputs,
-       toPay: this.FinalAmount
+       tests: JSON.stringify(this.tests),
+       operations: JSON.stringify(this.operations),
+       drugs: JSON.stringify(this.drugs),
+       toPay: this.FinalAmount,
+       state : this.PaymentStatus
       };
-      console.log(bill)
       axios.post(`/api/clinicX/bills/makeBill`, bill);
     },
   },
