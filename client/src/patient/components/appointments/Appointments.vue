@@ -33,20 +33,19 @@
   </div>
 </template>
 <script>
+import UserService from "../../../services/user.service";
 import axios from "axios";
 import UserService from "../../../services/user.service";
 export default {
   data: () => ({
-    
     currentUser:null,
     appoints: [],
+    currentUser: null,
   }),
   async beforeMount () {
       UserService.getPatientBoard().then(
       async (response) => {
         this.currentUser = response;
-        
-        // console.log(this.currentUser)
         let appoints = await axios.post("/api/appointments/appointment", {
           patientCIN: this.currentUser.CIN,
         });
@@ -59,7 +58,6 @@ export default {
           error.toString();
       }
     );
-    // console.log(this.appoints)
   },
 };
 </script>

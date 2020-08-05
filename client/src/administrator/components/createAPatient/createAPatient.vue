@@ -239,6 +239,7 @@
               ></vs-select-item>
             </vs-select>
             <label class="col-md-12" for="allergies">Allergies</label>
+            {{ allergy }}
             <vs-input
               v-for="(input, index) in allergyInputs"
               :key="index"
@@ -262,6 +263,7 @@
             <br />
             <br />
             <label class="col-md-12" for="vaccinations">Vaccinations</label>
+            {{ vaccination }}
             <vs-input
               v-for="(input, index) in vaccinationInputs"
               :key="index + 50"
@@ -363,11 +365,9 @@ export default {
     loggedIn() {
       return this.$store.state.auth.status.loggedIn;
     },
-    
   },
 
   methods: {
-    
     addAllergyInput() {
       this.allergyInputs.push({
         id: "allergy",
