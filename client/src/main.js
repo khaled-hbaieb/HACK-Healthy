@@ -25,16 +25,21 @@ import router from "./router";
 Vue.config.productionTip = false;
 Vue.config.devtools = true;
 
-//GOOGLE MAPS
-import * as VueGoogleMaps from "vue2-google-maps";
+import VueGeolocation from "vue-browser-geolocation";
+Vue.use(VueGeolocation);
 
+import * as VueGoogleMaps from "vue2-google-maps";
 Vue.use(VueGoogleMaps, {
   load: {
-    key: "AIzaSyC8Wiz1YO9wsIQ0BseNHDPT8T5Dj7uvu-I",
-    libraries: "places", // necessary for places input
+    key: "AIzaSyA5B4dM3gNQRexvjz3ge2mGewwYBWMOJo0",
   },
+  installComponents: true
 });
 
+import VueGmaps from 'vue-gmaps'
+Vue.use(VueGmaps, {
+  key: "AIzaSyA5B4dM3gNQRexvjz3ge2mGewwYBWMOJo0"
+})
 Vue.use(Vuesax, {
   theme: {
     colors: {

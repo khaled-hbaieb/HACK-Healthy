@@ -11,6 +11,8 @@ module.exports = {
   },
   async updatePatient(filter, payload) {
     payload.password = bcrypt.hashSync(payload.password, 10);
+    console.log('payload', payload)
+    console.log('filter', filter)
     return Patients.updateOne(filter, payload).catch((err) => console.log(err));
   },
 
