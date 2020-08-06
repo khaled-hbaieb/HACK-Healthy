@@ -82,9 +82,9 @@
             <vs-select
               placeholder="Select Your Speciality"
               success-text="Thank You For Selecting Your Speciality"
-              :success="specialityValue !== ''"
+              :success="speciality !== ''"
               id="select-speciality-doctor-creation"
-              v-model="specialityValue"
+              v-model="speciality"
             >
               <vs-select-item
                 v-for="(speciality, index) in specialities"
@@ -261,7 +261,7 @@ export default {
       email: "",
       gender: "",
       dateOfBirth: "",
-      specialityValue: "",
+      speciality: "",
       yearsOfExperience: "",
       fURL: "",
       gURL: "",
@@ -341,7 +341,7 @@ export default {
         this.gender,
         this.dateOfBirth,
         this.phoneNumber,
-        this.specialityValue,
+        this.speciality,
         this.yearsOfExperience,
         this.educationBackground,
         this.address,
@@ -349,6 +349,7 @@ export default {
         this.imageName,
         this.marker,
       );
+      console.log(user)
       this.$store.dispatch("auth/register", { user, role: "doctor" }).then(
         () => {
           this.successful = true;

@@ -35,11 +35,13 @@ class AuthService {
         gender: user.user.gender,
         dateOfBirth: user.user.dateOfBirth,
         CIN: user.user.CIN,
+        speciality:user.user.speciality,
         phoneNumber: user.user.phoneNumber,
         address: user.user.address,
-        job: user.user.job,
+        yearsOfExperience:user.user.yearsOfExperience,
         imageName: user.user.imageName,
         marker: user.user.marker,
+        educationBackground:user.user.educationBackground
       }
     ).catch(err => console.log(err))
     

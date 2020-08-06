@@ -19,7 +19,7 @@ module.exports = {
     Rooms.updateOne({ patientCIN: bill.patientCIN },{ availibility: true, patientCIN : "", doctorCIN:"" } ).catch((e) => {
       console.log("e", e);
     });
-    History.updateOne({ patientCIN: bill.patientCIN, entryDate : bill.entryDate },{ exitDate: new Date().toLocaleDateString(), drugs : bill.drugs, operations: bill.operations, tests: bill.tests} ).catch((e) => {
+    History.updateOne({ patientCIN: bill.patientCIN, entryDate : bill.entryDate },{ exitDate: bill.exitDate, drugs : bill.drugs, operations: bill.operations, tests: bill.tests} ).catch((e) => {
       console.log("e", e);
     });
   },
