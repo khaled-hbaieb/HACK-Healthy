@@ -124,7 +124,7 @@ export default {
   data: () => {
     return {
       doctor: "",
-      center: null,
+      center: {},
       markers: [],
       places: [],
       currentPlace: null
@@ -149,7 +149,6 @@ addMarker() {
           lat: this.center.lat,
           lng: this.center.lng
         };
-        console.log('center',this.center)
       });
     },
   },
@@ -159,9 +158,7 @@ addMarker() {
       CIN: user,
     });
     this.doctor = doctor.data[0];
-    console.log('doctor',this.doctor)
       this.center = {lat: this.doctor.marker.lat, lng: this.doctor.marker.lng}
-      console.log(this.center)
       this.geolocate()
       this.addMarker()
     
