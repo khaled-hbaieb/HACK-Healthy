@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-
-const billSchema = new Schema({
+const AppointmentBillSchema = new Schema({
   patientCIN: {
     type: String,
   },
@@ -21,5 +20,4 @@ const billSchema = new Schema({
     type: String,
   },
 });
-
-module.exports = mongoose.model("Bills", billSchema);
+module.exports = mongoose.model("AppointmentBill", AppointmentBillSchema);
