@@ -8,6 +8,9 @@ const historySchema = new Schema({
   doctorCIN: {
     type: String,
   },
+  doctorName: {
+    type: String,
+  },
   entryDate: {
     type: String,
   },

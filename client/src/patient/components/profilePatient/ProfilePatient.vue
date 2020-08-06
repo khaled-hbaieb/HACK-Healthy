@@ -35,24 +35,24 @@
             <vs-col vs-lg="6">
               <strong>Full-Name</strong>
               <p class="informations">{{ currentUser.fullName }}</p>
-              <strong>Occupation</strong>
-              <p class="informations">{{ currentUser.job }}</p>
-              <hr />
-              <strong>Email ID</strong>
+              <strong>Email</strong>
               <p class="informations">{{ currentUser.email }}</p>
+              <hr />
               <strong>Phone</strong>
               <p class="informations">{{ currentUser.phoneNumber }}</p>
+              <strong>Gender</strong>
+              <p class="informations">{{ currentUser.gender }}</p>
               <hr />
             </vs-col>
           </vs-row>
           <vs-row>
             <vs-col>
-              <strong>Gender</strong>
-              <p class="informations">{{ currentUser.gender }}</p>
-            </vs-col>
-            <vs-col>
               <strong>Date of Birth</strong>
               <p class="informations">{{ currentUser.dateOfBirth }}</p>
+            </vs-col>
+            <vs-col>
+              <strong>Job</strong>
+              <p class="informations">{{ currentUser.job }}</p>
             </vs-col>
             <vs-col>
               <strong>Address</strong>
@@ -62,12 +62,10 @@
           <hr />
           <vs-row>
             <vs-col vs-lg="9">
-              <vs-button @click="edit = true">Edit Profile</vs-button>
+              <vs-button class="patient-profile-buttons" @click="edit = true">Edit Profile</vs-button>
             </vs-col>
             <vs-col vs-lg="3">
-              <vs-button class="patient-profile-buttons" @click="createPDF"
-                >Create PDF</vs-button
-              >
+              <vs-button class="patient-profile-buttons" @click="createPDF">Create PDF</vs-button>
             </vs-col>
           </vs-row>
           <br />
@@ -79,11 +77,7 @@
           <hr />
           <vs-col vs-lg="4">
             <vs-row>
-              <vs-input
-                maxlength="25"
-                v-model="user.fullName"
-                label="Full Name"
-              />
+              <vs-input maxlength="25" v-model="user.fullName" label="Full Name" />
             </vs-row>
             <vs-row>
               <vs-input
@@ -115,24 +109,14 @@
               />
             </vs-row>
             <vs-row>
-              <vs-input
-                maxlength="20"
-                type="text"
-                v-model="user.job"
-                label="Job"
-              />
+              <vs-input maxlength="20" type="text" v-model="user.job" label="Job" />
             </vs-row>
             <vs-row>
-              <vs-input
-                maxlength="5"
-                type="date"
-                v-model="user.dateOfBirth"
-                label="Date of Birth"
-              />
+              <vs-input maxlength="5" type="date" v-model="user.dateOfBirth" label="Date of Birth" />
             </vs-row>
           </vs-col>
-          <vs-col vs-lg="4"
-            ><label class="col-sm-12" for="image">Profile Image</label>
+          <vs-col vs-lg="4">
+            <label class="col-sm-12" for="image">Profile Image</label>
             <div class="centerx">
               <vs-upload
                 automatic
@@ -141,14 +125,13 @@
                 :action="backEndUrl"
                 fileName="image"
                 @on-success="onFileUploaded"
-              /></div
-          ></vs-col>
+              />
+            </div>
+          </vs-col>
 
           <vs-row>
             <vs-col vs-lg="7">
-              <vs-button class="patient-profile-buttons" @click="cancelEdit"
-                >Cancel Edit</vs-button
-              >
+              <vs-button class="patient-profile-buttons" @click="cancelEdit">Cancel Edit</vs-button>
             </vs-col>
 
             <vs-col vs-lg="5">
@@ -156,11 +139,8 @@
                 id="delete"
                 class="patient-profile-buttons"
                 @click="deletePicture"
-                >Delete Picture</vs-button
-              >
-              <vs-button class="patient-profile-buttons" @click="updateProfile"
-                >Update Profile</vs-button
-              >
+              >Delete Picture</vs-button>
+              <vs-button class="patient-profile-buttons" @click="updateProfile">Update Profile</vs-button>
             </vs-col>
           </vs-row>
         </vs-card>
@@ -189,24 +169,20 @@
             <p class="record">{{ currentUserRecord.bloodType }}</p>
             <strong>Allergies</strong>
             <p
-              class="record"
+              class="recordAllergies"
               v-for="(allergy, index) in JSON.parse(
                 currentUserRecord.allergies
               )"
               :key="index"
-            >
-              {{ allergy }}
-            </p>
+            >{{ allergy }}</p>
             <strong>Vaccinations</strong>
             <p
-              class="record"
+              class="recordVaccinations"
               v-for="(vaccination, index) in JSON.parse(
                 currentUserRecord.vaccinations
               )"
               :key="index + 10"
-            >
-              {{ vaccination }}
-            </p>
+            >{{ vaccination }}</p>
           </div>
         </vs-card>
       </vs-col>
@@ -222,6 +198,7 @@
                   <vs-th>Exit Date</vs-th>
                   <vs-th>Room Number</vs-th>
                   <vs-th>Illness</vs-th>
+                  <vs-th>Doctor Name</vs-th>
                 </template>
 
                 <template slot-scope="{ data }">
@@ -229,21 +206,25 @@
                     <vs-td
                       class="history"
                       :data="data[indextr].entryDate"
-                      >{{ data[indextr].entryDate }}</vs-td
-                    >
+                    >{{ data[indextr].entryDate }}</vs-td>
                     <vs-td
                       class="history"
                       :data="data[indextr].exitDate"
-                      >{{ data[indextr].exitDate }}</vs-td
-                    >
+                    >{{ data[indextr].exitDate }}</vs-td>
                     <vs-td
                       class="history"
                       :data="data[indextr].roomNumber"
-                      >{{ data[indextr].roomNumber }}</vs-td
-                    >
-                    <vs-td class="history" :data="data[indextr].illness">{{
+                    >{{ data[indextr].roomNumber }}</vs-td>
+                    <vs-td class="history" :data="data[indextr].illness">
+                      {{
                       data[indextr].illness
-                    }}</vs-td>
+                      }}
+                    </vs-td>
+                    <vs-td class="history" :data="data[indextr].doctorName">
+                      {{
+                      data[indextr].doctorName
+                      }}
+                    </vs-td>
                   </vs-tr>
                 </template>
               </vs-table>
@@ -285,29 +266,84 @@ export default {
       let pdfName = "Record";
       var doc = new jsPDF();
       let informations = $(".informations");
-      let record = $('.record')
+      let record = $(".record");
+      let recordAllergies = $(".recordAllergies");
+      let recordVaccinations = $(".recordVaccinations");
       let history = $(".history");
       let historyContainer = [];
       let historyTable = [];
+      let IDCounter = 1;
+      let informationsLabels = [
+        "Full Name",
+        "Email",
+        "Phone Number",
+        "Gender",
+        "Date Of Birth",
+        "Job",
+        "Address",
+      ];
+      let recordLabels = [
+        "CIN",
+        "Father's Name",
+        "Father's Phone Number",
+        "Mother's Name",
+        "Mother's Phone Number",
+        "Blood Type",
+      ];
       for (let j = 0; j < history.length; j++) {
-        if (j === 0 || j % 4 === 0) {
+        if (j === 0 || j % 5 === 0) {
           historyTable = [];
+          historyTable.push(IDCounter);
+          IDCounter++;
           historyTable.push(history[j].innerText);
         } else {
           historyTable.push(history[j].innerText);
         }
-        if(historyTable.length === 4) {
-          historyContainer.push(historyTable)
+        if (historyTable.length === 5) {
+          historyContainer.push(historyTable);
         }
       }
       for (let i = 0; i < informations.length; i++) {
-        doc.text('info '+informations[i].innerText, 10, (i + 1) * 10);
+        doc.text(
+          informationsLabels[i] + ": " + informations[i].innerText,
+          20,
+          (i + 1) * 10 + 50
+        );
       }
       for (let i = 0; i < record.length; i++) {
-        doc.text('record '+record[i].innerText, 10, (i + 1) * 10);
+        doc.text(
+          recordLabels[i] + ": " + record[i].innerText,
+          110,
+          (i + 1) * 10 + 50
+        );
+      }
+      for (let i = 0; i < recordAllergies.length; i++) {
+        doc.text("Allergies: "+
+          recordAllergies[i].innerText,
+          110,
+          (record.length + 1) * 10 + 50
+        );
+        record.length++;
+      }
+      for (let i = 0; i < recordVaccinations.length; i++) {
+        doc.text("Vaccinations: "+
+          recordVaccinations[i].innerText,
+          110,
+          (record.length + 1) * 10 + 50
+        );
+        record.length++;
       }
       doc.autoTable({
-        head: [["Entry Date", "Exit Date", "Room Number", "Illness"]],
+        head: [
+          [
+            "ID",
+            "Entry Date",
+            "Exit Date",
+            "Room Number",
+            "Illness",
+            "Doctor Name",
+          ],
+        ],
         body: historyContainer,
       });
       doc.save(pdfName + ".pdf");
