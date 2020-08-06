@@ -21,15 +21,15 @@
             <vs-col vs-lg="6">
               <img
                 v-if="currentUser.imageName !== ''"
-                id="patient-profile-image"
+                id="doctor-profile-image"
                 alt="user"
                 :src="currentUser.imageName"
               />
               <img
                 v-else
-                id="patient-profile-image"
+                id="doctor-profile-image"
                 alt="user"
-                src="@/assets/images/logo/patient.jpg"
+                src="@/assets/images/logo/doctor.jpg"
               />
             </vs-col>
             <vs-col vs-lg="6">
@@ -134,21 +134,13 @@
                 @on-success="onFileUploaded"
               /></div
           ></vs-col>
-
           <vs-row>
-            <vs-col vs-lg="7">
-              <vs-button class="patient-profile-buttons" @click="cancelEdit"
+            <vs-col vs-lg="9">
+              <vs-button class="doctor-profile-buttons" @click="cancelEdit"
                 >Cancel Edit</vs-button
               >
             </vs-col>
-
-            <vs-col vs-lg="5">
-              <vs-button
-                id="delete"
-                class="patient-profile-buttons"
-                @click="deletePicture"
-                >Delete Picture</vs-button
-              >
+            <vs-col vs-lg="3">
               <vs-button class="patient-profile-buttons" @click="updateProfile"
                 >Update Profile</vs-button
               >
@@ -158,121 +150,84 @@
       </vs-col>
     </vs-row>
     <vs-row>
-      <vs-col vs-lg="6">
-        <vs-card v-if="ready">
-          <div>
-            <h4>My Record</h4>
-            <hr />
-            <strong>CIN</strong>
-            <p>{{ currentUserRecord.patientCIN }}</p>
-            <strong>Father's Name</strong>
-            <p>{{ currentUserRecord.fatherName }}</p>
-            <hr />
-            <strong>Father's Phone Number</strong>
-            <p>{{ currentUserRecord.fatherNumber }}</p>
-            <hr />
-            <strong>Mother's Name</strong>
-            <p>{{ currentUserRecord.motherName }}</p>
-            <hr />
-            <strong>Mother's Phone Number</strong>
-            <p>{{ currentUserRecord.motherNumber }}</p>
-            <strong>Blood Type</strong>
-            <p>{{ currentUserRecord.bloodType }}</p>
-            <strong>Allergies</strong>
-            <p
-              v-for="(allergy, index) in JSON.parse(
-                currentUserRecord.allergies
-              )"
-              :key="index"
-            >
-              {{ allergy }}
-            </p>
-            <strong>Vaccinations</strong>
-            <p
-              v-for="(vaccination, index) in JSON.parse(
-                currentUserRecord.vaccinations
-              )"
-              :key="index + 10"
-            >
-              {{ vaccination }}
-            </p>
-          </div>
-        </vs-card>
-      </vs-col>
-      <vs-col vs-lg="6">
-        <vs-card>
-          <div>
-            <h4>My History</h4>
-            <hr />
-            <div>
-              <vs-table max-items="8" pagination :data="history">
-                <template slot="thead">
-                  <vs-th>Entry Date</vs-th>
-                  <vs-th>Exit Date</vs-th>
-                  <vs-th>Room Number</vs-th>
-                  <vs-th>Illness</vs-th>
-                </template>
-
-                <template slot-scope="{ data }">
-                  <vs-tr :key="indextr" v-for="(tr, indextr) in data">
-                    <vs-td :data="data[indextr].entryDate">{{
-                      data[indextr].entryDate
-                    }}</vs-td>
-                    <vs-td :data="data[indextr].exitDate">{{
-                      data[indextr].exitDate
-                    }}</vs-td>
-                    <vs-td :data="data[indextr].roomNumber">{{
-                      data[indextr].roomNumber
-                    }}</vs-td>
-                    <vs-td :data="data[indextr].illness">{{
-                      data[indextr].illness
-                    }}</vs-td>
-                  </vs-tr>
-                </template>
-              </vs-table>
-            </div>
-          </div>
-        </vs-card>
-      </vs-col>
     </vs-row>
   </div>
 </template>
 <script>
 import UserService from "../../../services/user.service";
 import axios from "axios";
+
 export default {
-  name: "profileDoc",
+  name: "profile",
   data: () => {
     return {
       currentUser: null,
-      user: {
-        fullName: "",
-        email: "",
-        phoneNumber: "",
-        dateOfBirth: "",
-        address: "",
-      },
+      user: {},
+      isPassword: true,
+      passwordType: "password",
       edit: false,
+      ready: false,
+      imageName: "",
     };
   },
+  computed: {
+    backEndUrl() {
+      return `http://localhost:3000/upload-images`;
+    },
+  },
   methods: {
+    onFileUploaded(event) {
+      this.imageName = event.target.response;
+      this.user.imageName = this.imageName;
+    },
+    successUpload() {
+      this.$vs.notify({
+        color: "success",
+        title: "Upload Success",
+        text: this.name + " Uploaded The image Successfully!",
+      });
+    },
+    showPassowrd() {
+      if (this.isPassword) {
+        this.passwordType = "text";
+        this.isPassword = !this.isPassword;
+      } else {
+        this.passwordType = "password";
+        this.isPassword = !this.isPassword;
+      }
+    },
     async updateProfile() {
+      if(this.user.password === '') {
+        delete this.user.password
+      }
       let user = await axios.put(
-        `/api/users/clinicX/doctors/updateDoctor/${this.currentUser.CIN}`,
+        `/api/users/clinicX/doctors/updateDoctor`,
         { filter: { CIN: this.currentUser.CIN }, payload: this.user }
       );
       UserService.getDoctorBoard().then((response) => {
         this.currentUser = response;
         this.user = this.currentUser;
+        this.user.password = "";
+        this.edit = false;
+      });
+    },
+    cancelEdit() {
+      UserService.getDoctorBoard().then((response) => {
+        this.currentUser = response;
+        this.user = this.currentUser;
+        this.user.password = "";
         this.edit = false;
       });
     },
   },
   beforeMount() {
     UserService.getDoctorBoard().then(
-      (response) => {
+      async (response) => {
         this.currentUser = response;
         this.user = this.currentUser;
+        this.user.password = "";
+        
+        this.ready = true;
       },
       (error) => {
         this.content =
@@ -285,8 +240,12 @@ export default {
 };
 </script>
 
-<style scoped>
-#image {
-  height: 75%;
+<style>
+#doctor-profile-image {
+  height: 100%;
+  width: 80%;
+}
+.doctor-profile-buttons {
+  margin-top: 58px;
 }
 </style>

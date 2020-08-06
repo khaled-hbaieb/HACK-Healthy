@@ -33,15 +33,16 @@
   </div>
 </template>
 <script>
-import UserService from "../../../services/user.service";
 import axios from "axios";
+import UserService from "../../../services/user.service";
 export default {
   data: () => ({
+    currentUser:null,
     appoints: [],
     currentUser: null,
   }),
-  beforeMount: async function() {
-    UserService.getPatientBoard().then(
+  async beforeMount () {
+      UserService.getPatientBoard().then(
       async (response) => {
         this.currentUser = response;
         let appoints = await axios.post("/api/appointments/appointment", {
