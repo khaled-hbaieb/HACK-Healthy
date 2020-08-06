@@ -188,22 +188,19 @@ export default {
       this.loading = true;
 
       if (this.userRole === "doctor") {
-        console.log("doc");
         user = new doctor(this.email, this.password);
       }
       if (this.userRole === "administrator") {
         user = new administrator(this.email, this.password);
-        console.log("admi");
       }
       if (this.userRole === "patient") {
-        console.log("pat");
         user = new patient(this.email, this.password);
       }
       user.role = this.userRole;
       if (this.email && this.password) {
         this.$store.dispatch("auth/login", user).then(
           () => {
-            if (this.role !== "administrator") {
+            if (this.userRole !== "administrator") {
               this.$router.push(`/${this.userRole}/profile`);
             } else {
               this.$router.push(`/${this.userRole}`);

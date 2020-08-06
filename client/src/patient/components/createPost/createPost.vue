@@ -54,6 +54,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "createPost",
   data: () => ({
@@ -61,11 +62,15 @@ export default {
     widthtextarea: false,
     heighttextarea: false,
     title:"",
-   PostDescription:""
+   PostDescription:"",
+   views:"",
+
   }),
   methods: {
-    addChangeView(){
+    async  addChangeView(){
+    
     this.$router.push("/patient/forum");
+
     }
   }
 };
