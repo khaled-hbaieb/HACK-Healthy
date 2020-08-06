@@ -45,7 +45,7 @@
     </vs-row>
         </vs-popup>
         
-        <vs-button>Add</vs-button>
+        <vs-button @click="addChangeView">Add</vs-button>
       </vs-card>
       
     </vs-col>
@@ -62,6 +62,11 @@ export default {
     heighttextarea: false,
     title:"",
    PostDescription:""
-  })
+  }),
+  methods: {
+    addChangeView(){
+    this.$router.push("/patient/forum");
+    }
+  }
 };
 </script>

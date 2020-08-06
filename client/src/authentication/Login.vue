@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="home-page-container">
     <vs-row>
       <vs-col vs-lg="9"></vs-col>
       <vs-col id="login-page-container" vs-lg="3">
@@ -259,7 +259,8 @@ export default {
 .login-page-buttons {
   margin-bottom: 10px;
 }
-body {
+#home-page-container {
+  height: 100vh;
   background-image: url("../assets/images/background/login3.jpg");
   background-repeat: no-repeat;
   background-size: cover;

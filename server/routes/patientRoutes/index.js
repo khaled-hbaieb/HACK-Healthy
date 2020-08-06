@@ -36,9 +36,8 @@ router.put("/updatePatient", async (req, res) => {
 });
 
 router.post("/checkPatient", async (req, res) => {
-
   try {
-    var Patients = await services.patientService.findPatients(req.body );
+    var Patients = await services.patientService.findPatients(req.body);
     res.send(Patients);
   } catch (err) {
     res.send(err);

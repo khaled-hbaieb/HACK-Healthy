@@ -12,4 +12,5 @@ module.exports = {
   appointmentsService: require("./appointmentsService"),
   commentsService: require("./commentsService"),
   recordService: require("./recordService"),
+  postsService: require("./postsService"),
 };

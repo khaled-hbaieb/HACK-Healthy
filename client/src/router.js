@@ -165,22 +165,11 @@ export default new Router({
             import("./administrator/components/patientsAdmin/patients.vue"),
           children: [
             {
-              path: "/",
-              name: "patientsList",
+              path: "patient",
+              name: "patient",
               index: 1,
               component: () =>
-                import(
-                  "./administrator/components/patientsAdmin/patientsList.vue"
-                ),
-            },
-            {
-              path: ":CIN",
-              name: "PatientMoreInfos",
-              index: 3,
-              component: () =>
-                import(
-                  "./administrator/components/patientsAdmin/PatientMoreInfo.vue"
-                ),
+                import("./doctor/components/patientProfile/PatientProfile.vue"),
             },
           ],
         },
@@ -224,7 +213,7 @@ export default new Router({
                 import(
                   "./administrator/components/doctorProfile/DoctorProfile.vue"
                 ),
-              index: 1,
+                index:1
             },
           ],
         },
@@ -233,7 +222,7 @@ export default new Router({
           name: "assignBill",
           component: () =>
             import("./doctor/components/assignBill/AssignBill.vue"),
-          index: 8,
+            index:8
         },
       ],
     },
@@ -289,31 +278,6 @@ export default new Router({
           component: () => import("./patient/components/billing/Billing.vue"),
         },
         {
-          path: "forum",
-          index: 5,
-          component: () => import("./patient/components/forum/Forums.vue"),
-          children: [
-            {
-              path: "/",
-              name: "forum",
-              index: 9,
-              component: () => import("./patient/components/forum/Forum.vue"),
-            },
-            {
-              path: "post",
-              name: "post",
-              index: 8,
-              component: () => import("./patient/components/post/Post.vue"),
-            },
-            {
-              path: "createpost",
-              name: "createpost",
-              index: 8,
-              component: () => import("./patient/components/createPost/createPost.vue"),
-            },
-          ],
-        },
-        {
           path: "history",
           name: "history",
           index: 5,
@@ -325,25 +289,6 @@ export default new Router({
               index: 1,
               component: () =>
                 import("./patient/components/oneHistory/oneHistory.vue"),
-            },
-          ],
-        },
-        {
-          path: "forum",
-          index: 6,
-          component: () => import("./doctor/components/forum/Forums.vue"),
-          children: [
-            {
-              path: "/",
-              name: "forum",
-              index: 1,
-              component: () => import("./doctor/components/forum/Forum.vue"),
-            },
-            {
-              path: "post",
-              name: "post",
-              index: 2,
-              component: () => import("./doctor/components/post/Post.vue"),
             },
           ],
         },
