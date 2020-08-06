@@ -18,7 +18,7 @@
             <vs-card>
               Appointment N°: {{ index + 1 }}
               <br />
-              PatientCIN: {{ appointment.patientCIN }}
+              Patient Name: {{ appointment.patientName }}
               <br />
               Time: {{ appointment.time }}
               <br />
@@ -32,6 +32,7 @@
   </div>
 </template>
 <script>
+import UserService from "../../../services/user.service";
 import axios from "axios";
 import FullCalendar from "@fullcalendar/vue";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -70,13 +71,24 @@ export default {
     },
   },
   beforeMount: async function() {
-    let appoints = await axios.post(`/api/appointments/appointment`, {
-      doctorCIN: 20202000,
-    });
-    for (let i = 0; i < appoints.data.length; i++) {
-      appoints.data[i].title = `Appointment At ${appoints.data[i].time}`;
-    }
-    this.calendarOptions.events = appoints.data;
+    UserService.getDoctorBoard().then(
+      async (response) => {
+        this.currentUser = response;
+        let appoints = await axios.post(`/api/appointments/appointment`, {
+          doctorCIN: this.currentUser.CIN,
+        });
+        for (let i = 0; i < appoints.data.length; i++) {
+          appoints.data[i].title = `Appointment At ${appoints.data[i].time}`;
+        }
+        this.calendarOptions.events = appoints.data;
+      },
+      (error) => {
+        this.content =
+          (error.currentUser && error.response.data) ||
+          error.message ||
+          error.toString();
+      }
+    );
   },
 };
 </script>

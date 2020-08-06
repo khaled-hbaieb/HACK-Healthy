@@ -7,7 +7,7 @@ const cloudinary = require("./cloudinary");
 const fs = require("fs");
 const exphbs = require("express-handlebars");
 const nodemailer = require("nodemailer");
-const axios = require('axios')
+const axios = require("axios");
 require("dotenv").config();
 
 //CRYPTO JS
@@ -51,11 +51,11 @@ app.use("/api/clinicX/rooms", routes.roomRoutes);
 
 app.use("/api/users/clinicX/history", routes.historyRoutes);
 
-
 app.use("/api/clinicX/bills", routes.billRoutes);
 
-app.use("/api/users/clinicX/record", routes.recordRoutes);
+app.use("/api/clinicX/appointmentBills", routes.appointmentsBillRoutes);
 
+app.use("/api/users/clinicX/record", routes.recordRoutes);
 
 app.use("/api/users/clinicX/currentPatients", routes.currentPatientsRoutes);
 
@@ -65,7 +65,9 @@ app.use("/api/pics", routes.multerRoutes);
 
 app.use("/api/cloud", routes.cloudinaryRoutes);
 
-app.use("/api/comments",routes.commentsRoutes)
+app.use("/api/comments", routes.commentsRoutes);
+
+app.use("/api/posts",routes.postsRoutes)
 
 var http = require("http");
 const { find } = require("../database/models/room");
@@ -127,7 +129,7 @@ app.use("/upload-images", upload.array("image"), async (req, res) => {
 /**
  *
  */
-
+const services = require("./services");
 app.post("/send", (req, res) => {
   const newPassword = crypto.scryptSync(
     req.body.email + String.fromCharCode(Math.ceil(65 * Math.random()) + 27),
@@ -178,11 +180,34 @@ app.post("/send", (req, res) => {
       return console.log(error);
     }
   });
-  console.log('newPass', newPassword)
-  axios.put(
-    `/api/users/clinicX/patients/updatePatient/${req.body.CIN}`,
-    { filter: { CIN: req.body.CIN }, payload: newPassword }).catch(err => console.log(err))
-})
+
+  if (req.body.role === "Patient") {
+    services.patientService
+      .updatePatient(
+        { CIN: req.body.CIN },
+        { password: newPassword.toString("base64") }
+      )
+      .catch((err) => {
+        console.log("err");
+      });
+  } else {
+    services.doctorService
+    .updateDoctor(
+      { CIN: req.body.CIN },
+      { password: newPassword.toString("base64") }
+    )
+    .catch((err) => {
+      console.log("err");
+    });
+  }
+  
+
+  // if() {
+
+  // }
+  // else {
+  // }
+});
 
 /**
  *

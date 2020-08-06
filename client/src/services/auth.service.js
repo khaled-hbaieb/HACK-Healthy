@@ -34,10 +34,12 @@ class AuthService {
         gender: user.user.gender,
         dateOfBirth: user.user.dateOfBirth,
         CIN: user.user.CIN,
+        speciality:user.user.speciality,
         phoneNumber: user.user.phoneNumber,
         address: user.user.address,
-        job: user.user.job,
+        yearsOfExperience:user.user.yearsOfExperience,
         imageName: user.user.imageName,
+        educationBackground:user.user.educationBackground
       }
     );
     

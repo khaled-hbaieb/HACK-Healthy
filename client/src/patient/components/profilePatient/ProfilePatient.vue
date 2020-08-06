@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="ready">
     <vs-row class="row">
       <vs-col class="col-sm-12">
         <vs-card id="header-titles" class="card">
@@ -15,7 +15,7 @@
       </vs-col>
     </vs-row>
     <vs-row>
-      <vs-col v-if="ready" vs-lg="6">
+      <vs-col vs-lg="6">
         <vs-card>
           <vs-row>
             <vs-col vs-lg="6">
@@ -134,13 +134,21 @@
                 @on-success="onFileUploaded"
               /></div
           ></vs-col>
+
           <vs-row>
-            <vs-col vs-lg="9">
+            <vs-col vs-lg="7">
               <vs-button class="patient-profile-buttons" @click="cancelEdit"
                 >Cancel Edit</vs-button
               >
             </vs-col>
-            <vs-col vs-lg="3">
+
+            <vs-col vs-lg="5">
+              <vs-button
+                id="delete"
+                class="patient-profile-buttons"
+                @click="deletePicture"
+                >Delete Picture</vs-button
+              >
               <vs-button class="patient-profile-buttons" @click="updateProfile"
                 >Update Profile</vs-button
               >
@@ -254,6 +262,17 @@ export default {
     },
   },
   methods: {
+    async deletePicture() {
+      await axios.put("/api/users/clinicX/patients/updatePatient", {
+        filter: { CIN: this.user.CIN },
+        payload: { imageName: "" },
+      });
+      UserService.getPatientBoard().then((response) => {
+        this.currentUser = response;
+        this.user = this.currentUser;
+        this.user.password = "";
+      });
+    },
     onFileUploaded(event) {
       this.imageName = event.target.response;
       this.user.imageName = this.imageName;
@@ -276,7 +295,7 @@ export default {
     },
     async updateProfile() {
       let user = await axios.put(
-        `/api/users/clinicX/patients/updatePatient/${this.currentUser.CIN}`,
+        `/api/users/clinicX/patients/updatePatient`,
         { filter: { CIN: this.currentUser.CIN }, payload: this.user }
       );
       UserService.getPatientBoard().then((response) => {
@@ -323,6 +342,9 @@ export default {
 </script>
 
 <style>
+#delete {
+  margin-right: 8px;
+}
 #patient-profile-image {
   height: 100%;
   width: 80%;
