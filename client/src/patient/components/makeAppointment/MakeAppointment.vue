@@ -111,6 +111,7 @@
 </template>
 <script>
 import axios from "axios";
+import TeleSignSDK from "telesignsdk";
 import FullCalendar from "@fullcalendar/vue";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
@@ -174,6 +175,9 @@ export default {
       axios.post("/api/appointments/cancelAppointment", { _id: appoint._id });
       this.inputChange();
       this.popupActivo = false;
+
+  
+
     },
     async makeAppoint() {
       await axios.post("/api/appointments/createAppointment", {
@@ -285,3 +289,5 @@ export default {
   },
 };
 </script>
+
+
