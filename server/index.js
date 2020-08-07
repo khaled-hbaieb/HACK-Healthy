@@ -8,6 +8,7 @@ const fs = require("fs");
 const exphbs = require("express-handlebars");
 const nodemailer = require("nodemailer");
 const axios = require("axios");
+const jwtDecode = require('jwt-decode')
 require("dotenv").config();
 
 //CRYPTO JS
@@ -214,6 +215,8 @@ app.post("/send", (req, res) => {
 /**
  *
  */
+
+
 
 app.get("*", (req, res) => {
   let dirPath = path.join(__dirname, "../client/dist/index.html");

@@ -257,6 +257,7 @@ export default {
     },
   },
   async beforeMount() {
+    
     await UserService.getDoctorBoard().then(
        (response) => {
         
