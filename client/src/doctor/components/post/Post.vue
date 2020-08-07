@@ -115,7 +115,7 @@ export default {
       if (this.comment !== "") {
         await axios.post("/api/comments/createComment", {
           idOfPost: this.post._id,
-          nameOfCommenter: this.post.nameOfPoster,
+          nameOfCommenter: this.currentUser.fullName,
           text: this.comment,
           roleOfSender: localStorage.role,
           createdAt: new Date(),

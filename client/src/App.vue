@@ -17,6 +17,11 @@ export default {
   height: 100vh;
   width: 100vw;
 }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 ::-webkit-scrollbar {
   display: none !important;
 }
