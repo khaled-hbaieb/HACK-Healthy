@@ -165,11 +165,16 @@ export default new Router({
             import("./administrator/components/patientsAdmin/patients.vue"),
           children: [
             {
-              path: "patient",
-              name: "patient",
+              path: "/",
               index: 1,
               component: () =>
-                import("./doctor/components/patientProfile/PatientProfile.vue"),
+                import("./administrator/components/patientsAdmin/patientsList.vue"),
+            },
+            {
+              path: ":id",
+              index: 2,
+              component: () =>
+                import("./administrator/components/patientsAdmin/PatientMoreInfo.vue"),
             },
           ],
         },
