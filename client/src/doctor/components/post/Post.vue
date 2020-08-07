@@ -82,6 +82,7 @@
   </div>
 </template>
 <script>
+import UserService from '../../../services/user.service'
 import axios from "axios";
 export default {
   name: "post",
@@ -95,9 +96,19 @@ export default {
     };
   },
   async beforeMount() {
-    let post = await axios.post("/api/posts/findPost", {
-      _id: window.location.pathname.slice(14),
-    });
+    let user, post;
+    if (localStorage.role == "patient") {
+      user = await UserService.getPatientBoard();
+      post = await axios.post("/api/posts/findPost", {
+        _id: window.location.pathname.slice(15),
+      });
+    } else {
+      user = await UserService.getDoctorBoard();
+      post = await axios.post("/api/posts/findPost", {
+        _id: window.location.pathname.slice(14),
+      });
+    }
+    this.currentUser = user;
     this.post = post.data[0];
     let comments = await axios.post("/api/comments/findComments", {
       idOfPost: this.post._id,
