@@ -377,49 +377,43 @@ export default {
     async handleRegister() {
       let user;
       this.password = Math.random().toString(36).slice(-8);
-      // this.password = crypto.randomFillSync(
-      //   this.email +
-      //     String.fromCharCode(Math.ceil(65 * Math.random()) + 27),
-      //   "salt",
-      //   8
-      // );
-      // user = new Patient(
-      //   this.email,
-      //   this.password,
-      //   this.fullName,
-      //   this.gender,
-      //   this.dateOfBirth,
-      //   this.CIN,
-      //   this.phoneNumber,
-      //   this.address,
-      //   this.job,
-      //   ""
-      // );
-      // this.$store.dispatch("auth/register", { user, role: "patient" }).then(
-      //   () => {
-      //     this.successful = true;
-      //   },
-      //   (error) => {
-      //     this.message =
-      //       (error.response && error.response.data) ||
-      //       error.message ||
-      //       error.toString();
-      //     this.successful = false;
-      //   }
-      // );
-      // let record = {
-      //   patientCIN: this.CIN,
-      //   dateOfBirth: this.dateOfBirth,
-      //   bloodType: this.bloodType,
-      //   allergies: JSON.stringify(this.allergy),
-      //   vaccinations: JSON.stringify(this.vaccination),
-      //   fatherName: this.fatherName,
-      //   fatherNumber: this.fatherNumber,
-      //   motherName: this.motherName,
-      //   motherNumber: this.motherNumber,
-      //   createdAt: new Date(),
-      // };
-      // await axios.post("/api/users/clinicX/record/createRecord", record);
+      user = new Patient(
+        this.email,
+        this.password,
+        this.fullName,
+        this.gender,
+        this.dateOfBirth,
+        this.CIN,
+        this.phoneNumber,
+        this.address,
+        this.job,
+        ""
+      );
+      this.$store.dispatch("auth/register", { user, role: "patient" }).then(
+        () => {
+          this.successful = true;
+        },
+        (error) => {
+          this.message =
+            (error.response && error.response.data) ||
+            error.message ||
+            error.toString();
+          this.successful = false;
+        }
+      );
+      let record = {
+        patientCIN: this.CIN,
+        dateOfBirth: this.dateOfBirth,
+        bloodType: this.bloodType,
+        allergies: JSON.stringify(this.allergy),
+        vaccinations: JSON.stringify(this.vaccination),
+        fatherName: this.fatherName,
+        fatherNumber: this.fatherNumber,
+        motherName: this.motherName,
+        motherNumber: this.motherNumber,
+        createdAt: new Date(),
+      };
+      await axios.post("/api/users/clinicX/record/createRecord", record);
 
       await axios.post("/api/service/SMS", {
         password: this.password,
