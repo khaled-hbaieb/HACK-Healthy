@@ -100,14 +100,14 @@
                 <br />
                 <p class="text-muted">{{history.entryDate}}</p>
               </div>
-               <div class="col-md-3 col-xs-6 b-r">
+              <div class="col-md-3 col-xs-6 b-r">
                 <strong>Exit Date :</strong>
                 <br />
                 <p class="text-muted">{{history.exitDate}}</p>
               </div>
             </div>
           </vs-card>
-           <vs-card>
+          <vs-card>
             <h5>Records:</h5>
             <hr />
             <div class="row">
@@ -141,7 +141,12 @@ export default {
     };
   },
   beforeMount: async function () {
-    let user = window.location.pathname.slice(24);
+    let user;
+    if (localStorage.role === "administrator") {
+      user = window.location.pathname.slice(24);
+    } else {
+      user = window.location.pathname.slice(17);
+    }
     let patient = await axios.post(`/api/users/clinicX/patients`, {
       CIN: user,
     });

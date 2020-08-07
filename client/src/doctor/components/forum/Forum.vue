@@ -53,7 +53,7 @@
           </div>
           <vs-row>
             <vs-col vs-lg="12">
-            <hr />
+              <hr />
               <vs-button
                 color="primary"
                 type="border"
@@ -89,7 +89,11 @@ export default {
   },
   methods: {
     renderPost(arg) {
-      this.$router.push(`/doctor/forum/${arg}`);
+      if (localStorage.role == "patient") {
+        this.$router.push(`/patient/forum/${arg}`);
+      } else {
+        this.$router.push(`/doctor/forum/${arg}`);
+      }
     },
     renderCreatePost() {
       this.$router.push(`/patient/forum/createpost`);

@@ -29,7 +29,7 @@
         <vs-col vs-sm="6" vs-lg="5">
           <div></div>
         </vs-col>
-        <vs-col v-if="!withSpeciality" vs-sm="4" vs-xs="9" vs-lg="3">
+        <vs-col v-if="!withSpeciality" vs-sm="4" vs-xs="9" vs-lg="5">
           <vs-input
             id="search-by-name"
             icon-after="true"
@@ -37,9 +37,10 @@
             class="text-muted"
             label-placeholder="Search Here By Name"
             v-model="searchCriteria"
+            @input="searchDoctors({ fullName: searchCriteria })"
           />
         </vs-col>
-        <vs-col v-if="!withSpeciality" vs-sm="2" vs-xs="3" vs-lg="2">
+        <!-- <vs-col v-if="!withSpeciality" vs-sm="2" vs-xs="3" vs-lg="2">
           <vs-button
             size="33px"
             id="search-doctor-button"
@@ -48,7 +49,7 @@
             @click="searchDoctors({ fullName: searchCriteria })"
             >Search</vs-button
           >
-        </vs-col>
+        </vs-col> -->
         <vs-col v-if="!withSpeciality" vs-lg="2">
           <vs-button
             size="33px"
@@ -204,6 +205,7 @@ export default {
         `/api/users/clinicX/doctors/searchDoctors`,
         criteria
       );
+      console.log(doctors.data)
       this.doctors = doctors.data;
     },
     renderCreateDoctor() {
