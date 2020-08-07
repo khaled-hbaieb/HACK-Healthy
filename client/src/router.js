@@ -3,6 +3,17 @@ import Router from "vue-router";
 // ./authentication/Login.vue
 Vue.use(Router);
 
+//middleware functions to check role of the user
+
+// f1 isAdmin
+
+// f2 isPatient
+
+// f3 isDoctor
+
+// for each of these functions, on success, invoke next()
+// on fail route.push(/login) or not found or not authorized
+
 export default new Router({
   mode: "history",
   routes: [
@@ -15,6 +26,10 @@ export default new Router({
       path: "/administrator",
       index: 2,
       component: () => import("./Interface/AdminInterface.vue"),
+      // meta :{
+
+      // }
+      // beforeEnter: f1
       children: [
         {
           path: "currentPatients",
@@ -160,21 +175,27 @@ export default new Router({
         {
           path: "patients",
           name: "patients",
-          index: 4,
+          index: 2,
           component: () =>
             import("./administrator/components/patientsAdmin/patients.vue"),
           children: [
             {
               path: "/",
+              name: "patientsList",
               index: 1,
               component: () =>
-                import("./administrator/components/patientsAdmin/patientsList.vue"),
+                import(
+                  "./administrator/components/patientsAdmin/patientsList.vue"
+                ),
             },
             {
-              path: ":id",
+              path: ":CIN",
+              name: "PatientMoreInfos",
               index: 2,
               component: () =>
-                import("./administrator/components/patientsAdmin/PatientMoreInfo.vue"),
+                import(
+                  "./administrator/components/patientsAdmin/PatientMoreInfo.vue"
+                ),
             },
           ],
         },

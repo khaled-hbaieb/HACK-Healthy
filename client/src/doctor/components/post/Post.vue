@@ -36,20 +36,32 @@
                   <strong>{{ comment.nameOfCommenter }}</strong>
                 </h6>
                 <br />
-                <vs-input v-if="toModify[comment._id]" :value="comment.text" id="comment._id"></vs-input>
-                <vs-dropdown v-if="!toModify[comment._id]" id="forum-dropdown-container">
+                <vs-input
+                  v-if="toModify[comment._id]"
+                  :value="comment.text"
+                  id="comment._id"
+                ></vs-input>
+                <vs-dropdown
+                  v-if="!toModify[comment._id]"
+                  id="forum-dropdown-container"
+                >
                   <h6>{{ comment.text }}</h6>
                   <vs-dropdown-menu>
                     <vs-dropdown-item>
                       <vs-row>
                         <vs-col vs-lg="6">
-                          <vs-button @click="deleteComment" class="forum-post-buttons">Delete</vs-button>
+                          <vs-button
+                            @click="deleteComment"
+                            class="forum-post-buttons"
+                            >Delete</vs-button
+                          >
                         </vs-col>
                         <vs-col vs-lg="6">
                           <vs-button
                             @click="editComment(comment._id)"
                             class="forum-post-buttons"
-                          >Edit</vs-button>
+                            >Edit</vs-button
+                          >
                         </vs-col>
                       </vs-row>
                     </vs-dropdown-item>
@@ -82,7 +94,7 @@
   </div>
 </template>
 <script>
-import UserService from '../../../services/user.service'
+import UserService from "../../../services/user.service";
 import axios from "axios";
 export default {
   name: "post",
@@ -92,6 +104,7 @@ export default {
       comment: "",
       toModify: {},
       ready: false,
+      currentUser: null,
       comments: [],
     };
   },
