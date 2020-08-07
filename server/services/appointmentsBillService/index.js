@@ -8,7 +8,7 @@ module.exports = {
   async makeAppointmentBill(appointmentBill) {
     console.log(appointmentBill);
     AppointmentBill.create(appointmentBill);
-    Appointments.updateOne({ patientCIN: appointmentBill.patientCIN },{ state: true } ).catch((e) => {
+    Appointments.updateOne({ patientCIN: appointmentBill.patientCIN,time:'9',date:'2020-08-14'  },{ state: true } ).catch((e) => {
       console.log("e", e);
     });
   },

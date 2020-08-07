@@ -34,7 +34,6 @@
 </template>
 <script>
 import axios from "axios";
-import UserService from "../../../services/user.service";
 export default {
   data: () => ({
     currentUser:null,

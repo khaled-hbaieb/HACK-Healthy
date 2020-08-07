@@ -44,6 +44,9 @@ const doctorSchema = new Schema({
   imageName: {
     type: String,
   },
+  marker: {
+    type: Object
+  }
 });
 
 module.exports = mongoose.model("Doctors", doctorSchema);

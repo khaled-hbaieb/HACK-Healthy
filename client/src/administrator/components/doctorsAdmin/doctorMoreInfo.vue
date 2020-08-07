@@ -100,18 +100,57 @@
         </vs-col>
       </vs-row>
     </div>
+    <gmap-map
+      :center="center"
+      :zoom="12"
+      style="width:100%;  height: 400px;"
+    >
+      <gmap-marker
+        :key="index"
+        v-for="(m, index) in markers"
+        :position="m.position"
+        @click="center=m.position"
+      ></gmap-marker>
+    </gmap-map>
   </div>
 </template>
 ​
 <script>
 import axios from "axios";
+import UserService from "../../../services/user.service";
 export default {
   name: "DoctorMoreInfos",
   props: ["name"],
   data: () => {
     return {
       doctor: "",
+      center: {},
+      markers: [],
+      places: [],
+      currentPlace: null
     };
+  },
+  methods: {
+addMarker() {
+      
+        const marker = {
+          lat: this.center.lat,
+          lng: this.center.lng
+        };
+        this.markers.push({ position: marker });
+        this.places.push(this.currentPlace);
+        this.center = marker;
+        this.currentPlace = null;
+      
+    },
+    geolocate: function() {
+      navigator.geolocation.getCurrentPosition(position => {
+        this.center = {
+          lat: this.center.lat,
+          lng: this.center.lng
+        };
+      });
+    },
   },
   beforeMount: async function () {
     let user = window.location.pathname.slice(23);
@@ -119,6 +158,10 @@ export default {
       CIN: user,
     });
     this.doctor = doctor.data[0];
+      this.center = {lat: this.doctor.marker.lat, lng: this.doctor.marker.lng}
+      this.geolocate()
+      this.addMarker()
+    
   },
 };
 </script>

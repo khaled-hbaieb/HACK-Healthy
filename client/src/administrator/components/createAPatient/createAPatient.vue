@@ -239,7 +239,6 @@
               ></vs-select-item>
             </vs-select>
             <label class="col-md-12" for="allergies">Allergies</label>
-            {{ allergy }}
             <vs-input
               v-for="(input, index) in allergyInputs"
               :key="index"
@@ -263,7 +262,6 @@
             <br />
             <br />
             <label class="col-md-12" for="vaccinations">Vaccinations</label>
-            {{ vaccination }}
             <vs-input
               v-for="(input, index) in vaccinationInputs"
               :key="index + 50"
@@ -431,14 +429,7 @@ export default {
 </script>
 
 <style>
-::-webkit-scrollbar {
-  display: none;
-}
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
+
 #button-admin-patient-container {
   margin-top: 15px;
   float: right;

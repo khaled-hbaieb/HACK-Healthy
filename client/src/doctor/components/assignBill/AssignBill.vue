@@ -112,6 +112,8 @@ export default {
       doctorCIN: "",
       patientName: "",
       doctorName: "",
+      date: "",
+      time: "",
       FinalAmount: "",
       PaymentMethod: "",
       PaymentStatus: "",
@@ -119,7 +121,7 @@ export default {
     };
   },
   methods: {
-    handleBill() {
+      handleBill() {
       let appointmentBill = {
        patientCIN: this.patientCIN,
        doctorCIN: this.doctorCIN,
@@ -127,14 +129,11 @@ export default {
        state : this.PaymentStatus
       };
       console.log(appointmentBill)
-      axios.post(`/api/clinicX/appointmentBills/makeAppointmentBill`, appointmentBill);
+       axios.post(`/api/clinicX/appointmentBills/makeAppointmentBill`, appointmentBill);
+      // let appointment = await axios.get(`/api/appointments/appointment/`, appointmentBill)
+      // console.log(appointment.data)
     },
   },
-  beforeMount: {
-    getAppointmentTime() {
-      axios.get(`/api/appointments/appointment/`, )
-    }
-  }
 };
 </script>
 <style>
