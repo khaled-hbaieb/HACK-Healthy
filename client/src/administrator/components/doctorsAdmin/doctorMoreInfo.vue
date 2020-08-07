@@ -48,7 +48,20 @@
               <vs-row class="row text-center m-t-10">
                 <vs-col class="col-md-12">
                   <strong>Address</strong>
-                  <p>{{doctor.address}}</p>
+                  
+<gmap-map
+      :center="center"
+      :zoom="20"
+      style="width:100%;  height: 400px;"
+    >
+      <gmap-marker
+        :key="index"
+        v-for="(m, index) in markers"
+        :position="m.position"
+        @click="center=m.position"
+      ></gmap-marker>
+    </gmap-map>
+
                 </vs-col>
               </vs-row>
               <hr />
@@ -100,18 +113,7 @@
         </vs-col>
       </vs-row>
     </div>
-    <gmap-map
-      :center="center"
-      :zoom="12"
-      style="width:100%;  height: 400px;"
-    >
-      <gmap-marker
-        :key="index"
-        v-for="(m, index) in markers"
-        :position="m.position"
-        @click="center=m.position"
-      ></gmap-marker>
-    </gmap-map>
+    
   </div>
 </template>
 ​
