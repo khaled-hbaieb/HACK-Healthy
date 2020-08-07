@@ -343,6 +343,7 @@ export default new Router({
           ],
         },
       ],
+      
     },
   ],
 });

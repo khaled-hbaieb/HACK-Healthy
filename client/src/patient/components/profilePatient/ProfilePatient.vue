@@ -192,7 +192,7 @@
             <h4>My History</h4>
             <hr />
             <div>
-              <vs-table id="my-table" max-items="8" pagination :data="history">
+              <vs-table id="my-table" max-items="1" pagination :data="history">
                 <template slot="thead">
                   <vs-th>Entry Date</vs-th>
                   <vs-th>Exit Date</vs-th>
