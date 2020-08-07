@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="home-page-container">
     <vs-row>
       <vs-col vs-lg="9"></vs-col>
       <vs-col id="login-page-container" vs-lg="3">
@@ -152,7 +152,6 @@ export default {
   },
   name: "Login",
   beforeMount() {
-    console.log("mounted");
     $("#recoverform").hide();
   },
   data() {
@@ -179,9 +178,9 @@ export default {
   },
   methods: {
     getBack() {
-      console.log(this.showRecover);
       this.showRecover = false;
-      console.log(this.showRecover);
+      $("#loginform").slideDown();
+      $("#recoverform").fadeOut();
     },
     handleLogin() {
       let user;
@@ -256,7 +255,8 @@ export default {
 .login-page-buttons {
   margin-bottom: 10px;
 }
-body {
+#home-page-container {
+  height: 100vh;
   background-image: url("../assets/images/background/login3.jpg");
   background-repeat: no-repeat;
   background-size: cover;

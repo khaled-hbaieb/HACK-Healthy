@@ -9,6 +9,7 @@ module.exports = {
   currentPatientsRoutes: require("./currentPatientsRoutes"),
   historyRoutes: require("./historyRoutes"),
   billRoutes: require("./billRoutes"),
+  appointmentsBillRoutes: require("./appointmentsBillRoutes"),
   appointmentsRoutes: require("./appointmentsRoutes"),
   commentsRoutes :require ("./commentsRoutes"),
   recordRoutes: require("./recordRoutes"),

@@ -166,21 +166,15 @@ export default new Router({
           children: [
             {
               path: "/",
-              name: "patientsList",
               index: 1,
               component: () =>
-                import(
-                  "./administrator/components/patientsAdmin/patientsList.vue"
-                ),
+                import("./administrator/components/patientsAdmin/patientsList.vue"),
             },
             {
-              path: ":CIN",
-              name: "PatientMoreInfos",
-              index: 3,
+              path: ":id",
+              index: 2,
               component: () =>
-                import(
-                  "./administrator/components/patientsAdmin/PatientMoreInfo.vue"
-                ),
+                import("./administrator/components/patientsAdmin/PatientMoreInfo.vue"),
             },
           ],
         },
@@ -289,32 +283,6 @@ export default new Router({
           component: () => import("./patient/components/billing/Billing.vue"),
         },
         {
-          path: "forum",
-          index: 5,
-          component: () => import("./doctor/components/forum/Forums.vue"),
-          children: [
-            {
-              path: "/",
-              name: "forum",
-              index: 9,
-              component: () => import("./doctor/components/forum/Forum.vue"),
-            },
-            {
-              path: "post",
-              name: "post",
-              index: 8,
-              component: () => import("./doctor/components/post/Post.vue"),
-            },
-            {
-              path: "createpost",
-              name: "createpost",
-              index: 8,
-              component: () =>
-                import("./patient/components/createPost/createPost.vue"),
-            },
-          ],
-        },
-        {
           path: "history",
           name: "history",
           index: 5,
@@ -341,9 +309,14 @@ export default new Router({
               component: () => import("./doctor/components/forum/Forum.vue"),
             },
             {
-              path: "post",
+              path: "createPost",
+              name: "createPost",
+              component: () =>
+                import("./patient/components/createPost/createPost.vue"),
+            },
+            {
+              path: ":id",
               name: "post",
-              index: 2,
               component: () => import("./doctor/components/post/Post.vue"),
             },
           ],

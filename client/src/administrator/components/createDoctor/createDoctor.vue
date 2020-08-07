@@ -82,9 +82,9 @@
             <vs-select
               placeholder="Select Your Speciality"
               success-text="Thank You For Selecting Your Speciality"
-              :success="specialityValue !== ''"
+              :success="speciality !== ''"
               id="select-speciality-doctor-creation"
-              v-model="specialityValue"
+              v-model="speciality"
             >
               <vs-select-item
                 v-for="(speciality, index) in specialities"
@@ -219,6 +219,34 @@
         </vs-card>
       </vs-col>
     </vs-row>
+    <div>
+    <div>
+      <h2>Doctor's Cabinet Location</h2>
+      <vs-label>
+        <gmap-autocomplete
+          @place_changed="setPlace"
+          id="inputLocation"
+          >
+        </gmap-autocomplete>
+        <vs-button @click="addMarker">Add</vs-button>
+      </vs-label>
+      <br/>
+
+    </div>
+    <br>
+    <gmap-map
+      :center="center"
+      :zoom="12"
+      style="width:100%;  height: 400px;"
+    >
+      <gmap-marker
+        :key="index"
+        v-for="(m, index) in markers"
+        :position="m.position"
+        @click="center=m.position"
+      ></gmap-marker>
+    </gmap-map>
+  </div>
   </div>
 </template>
 
@@ -233,7 +261,7 @@ export default {
       email: "",
       gender: "",
       dateOfBirth: "",
-      specialityValue: "",
+      speciality: "",
       yearsOfExperience: "",
       fURL: "",
       gURL: "",
@@ -268,6 +296,11 @@ export default {
         "UROLOGY",
       ],
       successful: false,
+      center: { lat: 45.508, lng: -73.587 },
+      markers: [],
+      places: [],
+      currentPlace: null,
+      marker: null,
     };
   },
   computed: {
@@ -278,7 +311,9 @@ export default {
       return `http://localhost:3000/upload-images`;
     },
   },
-  mounted() {},
+  mounted() {
+    this.geolocate();
+  },
   validations: {
     name: {
       required,
@@ -306,13 +341,15 @@ export default {
         this.gender,
         this.dateOfBirth,
         this.phoneNumber,
-        this.specialityValue,
+        this.speciality,
         this.yearsOfExperience,
         this.educationBackground,
         this.address,
         this.CIN,
-        this.imageName
+        this.imageName,
+        this.marker,
       );
+      console.log(user)
       this.$store.dispatch("auth/register", { user, role: "doctor" }).then(
         () => {
           this.successful = true;
@@ -326,6 +363,32 @@ export default {
         }
       );
     },
+    setPlace(place) {
+      this.currentPlace = place;
+      console.log(this.currentPlace)
+    },
+    addMarker() {
+      if (this.currentPlace) {
+        const marker = {
+          lat: this.currentPlace.geometry.location.lat(),
+          lng: this.currentPlace.geometry.location.lng()
+        };
+        this.marker = marker
+        console.log('marker', this.marker)
+        this.markers.push({ position: marker });
+        this.places.push(this.currentPlace);
+        this.center = marker;
+        this.currentPlace = null;
+      }
+    },
+    geolocate: function() {
+      navigator.geolocation.getCurrentPosition(position => {
+        this.center = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+      });
+    }
   },
 };
 </script>
@@ -375,5 +438,9 @@ input::-webkit-inner-spin-button {
   text-align: right;
   margin-top: 0%;
   position: relative !important;
+}
+#inputLocation {
+  width: 30%;
+  margin-right: 1%;
 }
 </style>
