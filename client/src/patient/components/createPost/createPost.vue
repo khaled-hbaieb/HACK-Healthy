@@ -1,77 +1,113 @@
 <template>
   <vs-row vs-justify="center">
-    <vs-col type="flex" vs-justify="center" vs-align="center" vs-lg="12" vs-xs="12">
-     
-
-     
+    <vs-col
+      type="flex"
+      vs-justify="center"
+      vs-align="center"
+      vs-lg="12"
+      vs-xs="12"
+    >
       <vs-card>
         <h4 class="card-title d-flex">
-          Write your post here 
-          <vs-button class="ml-auto p-0" @click="heighttextarea=true" type="line">
+          Write your post here
+          <vs-button
+            class="ml-auto p-0"
+            @click="heighttextarea = true"
+            type="line"
+          >
             <vs-icon icon="code"></vs-icon>
           </vs-button>
         </h4>
-        <vs-input v-model="title" placeholder="Post title"></vs-input><br>
+        <vs-input
+          maxLength="30"
+          v-model="title"
+          placeholder="Post title"
+        ></vs-input
+        ><br />
 
         <div>
-          <vs-textarea v-model="PostDescription" placeholder="Post description" height="200px" />
+          <vs-textarea
+            v-model="PostDescription"
+            placeholder="Post description"
+            height="200px"
+          />
         </div>
 
-        
-        <vs-popup class="holamundo" title="How it will looks" :active.sync="heighttextarea">
-          <vs-row class="row page-titles">
-      <vs-col
-        vs-lg="12"
-        vs-sm="6"
-        vs-xs="12"
-        
-      >
-        <vs-card vs-lg="12" actionable>
-          <div slot="header">
-            <h5 class="font-weight-bold"> Post Titel</h5>
-          </div>
-          <div slot="media">
-            <img src="data:image/jpeg;base64,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" id="imgset" />
-          </div>
-          <div class="mb-2">
-            
-            <span class="py-2 d-inline">Post Description</span>
-          </div>
-          <vs-button color="primary" type="border" 
-            >Read More</vs-button
-          >
-        </vs-card>
-      </vs-col>
-    </vs-row>
+        <vs-popup
+          class="holamundo"
+          title="How it will looks"
+          :active.sync="heighttextarea"
+        >
+          <vs-card vs-lg="12" actionable>
+            <div slot="header">
+              <h5 class="font-weight-bold">{{ title }}</h5>
+            </div>
+            <div slot="media">
+              <img src="@/assets/images/logo/forum.jpeg" id="imgset" />
+            </div>
+            <div class="mb-2">
+              <h6 class="mb-2">
+                {{ createdAt }}
+              </h6>
+              <hr />
+              <vs-col vs-lg="9"
+                ><span class="py-2 d-inline">{{
+                  currentUser.fullName
+                }}</span></vs-col
+              >
+              <vs-col vs-lg="3"> 0 Views </vs-col>
+            </div>
+            <vs-row>
+              <vs-col vs-lg="12">
+                <hr />
+                <vs-button color="primary" type="border">Read More</vs-button>
+              </vs-col>
+            </vs-row>
+          </vs-card>
         </vs-popup>
-        
+
         <vs-button @click="addChangeView">Add</vs-button>
       </vs-card>
-      
     </vs-col>
-    
   </vs-row>
 </template>
 
 <script>
+import moment from "moment"
+import UserService from "../../../services/user.service";
 import axios from "axios";
 export default {
   name: "createPost",
   data: () => ({
-    
+    currentUser: null,
     widthtextarea: false,
     heighttextarea: false,
-    title:"",
-   PostDescription:"",
-   views:"",
+    title: "",
+    createdAt: "",
+    PostDescription: "",
+    views: "",
+    date:""
 
   }),
   methods: {
-    async  addChangeView(){
-    
-    this.$router.push("/patient/forum");
+    addChangeView() {
+      if (this.title !== "" && this.PostDescription !== "") {
+        axios.post("/api/posts/createPost", {
+          nameOfPoster: this.currentUser.fullName,
+          title: this.title,
+          content: this.PostDescription,
+          views: this.views,
+          createdAt:moment().format().slice(0,10).split('-').join('')+ moment().format().slice(11,19).split(':').join('')
+        });
 
-    }
-  }
+        this.$router.push("/patient/forum");
+      }
+    },
+  },
+  async beforeMount() {
+    let user = await UserService.getPatientBoard();
+    this.currentUser = user;
+   
+  },
 };
 </script>

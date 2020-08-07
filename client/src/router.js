@@ -165,11 +165,16 @@ export default new Router({
             import("./administrator/components/patientsAdmin/patients.vue"),
           children: [
             {
-              path: "patient",
-              name: "patient",
+              path: "/",
               index: 1,
               component: () =>
-                import("./doctor/components/patientProfile/PatientProfile.vue"),
+                import("./administrator/components/patientsAdmin/patientsList.vue"),
+            },
+            {
+              path: ":id",
+              index: 2,
+              component: () =>
+                import("./administrator/components/patientsAdmin/PatientMoreInfo.vue"),
             },
           ],
         },
@@ -213,7 +218,7 @@ export default new Router({
                 import(
                   "./administrator/components/doctorProfile/DoctorProfile.vue"
                 ),
-                index:1
+              index: 1,
             },
           ],
         },
@@ -222,7 +227,7 @@ export default new Router({
           name: "assignBill",
           component: () =>
             import("./doctor/components/assignBill/AssignBill.vue"),
-            index:8
+          index: 8,
         },
       ],
     },
@@ -304,16 +309,15 @@ export default new Router({
               component: () => import("./doctor/components/forum/Forum.vue"),
             },
             {
-              path: ":id",
-              name: "post",
-              index: 2,
-              component: () => import("./doctor/components/post/Post.vue"),
+              path: "createPost",
+              name: "createPost",
+              component: () =>
+                import("./patient/components/createPost/createPost.vue"),
             },
             {
-              path: "createPost",
+              path: ":id",
               name: "post",
-              index: 2,
-              component: () => import("./patient/components/createPost/createPost.vue"),
+              component: () => import("./doctor/components/post/Post.vue"),
             },
           ],
         },

@@ -141,7 +141,12 @@ export default {
     };
   },
   beforeMount: async function () {
-    let user = window.location.pathname.slice(24);
+    let user;
+    if (localStorage.role === "administrator") {
+      user = window.location.pathname.slice(24);
+    } else {
+      user = window.location.pathname.slice(17);
+    }
     let patient = await axios.post(`/api/users/clinicX/patients`, {
       CIN: user,
     });
