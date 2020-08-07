@@ -69,6 +69,8 @@ app.use("/api/comments", routes.commentsRoutes);
 
 app.use("/api/posts",routes.postsRoutes)
 
+app.use('/api/service/SMS',routes.SMSRoutes)
+
 var http = require("http");
 const { find } = require("../database/models/room");
 var AccessToken = require("twilio").jwt.AccessToken;

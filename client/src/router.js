@@ -3,6 +3,17 @@ import Router from "vue-router";
 // ./authentication/Login.vue
 Vue.use(Router);
 
+//middleware functions to check role of the user
+
+// f1 isAdmin
+
+// f2 isPatient
+
+// f3 isDoctor
+
+// for each of these functions, on success, invoke next()
+// on fail route.push(/login) or not found or not authorized
+
 export default new Router({
   mode: "history",
   routes: [
@@ -15,6 +26,10 @@ export default new Router({
       path: "/administrator",
       index: 2,
       component: () => import("./Interface/AdminInterface.vue"),
+      // meta :{
+
+      // }
+      // beforeEnter: f1
       children: [
         {
           path: "currentPatients",
@@ -160,16 +175,27 @@ export default new Router({
         {
           path: "patients",
           name: "patients",
-          index: 4,
+          index: 2,
           component: () =>
             import("./administrator/components/patientsAdmin/patients.vue"),
           children: [
             {
-              path: "patient",
-              name: "patient",
+              path: "/",
+              name: "patientsList",
               index: 1,
               component: () =>
-                import("./doctor/components/patientProfile/PatientProfile.vue"),
+                import(
+                  "./administrator/components/patientsAdmin/patientsList.vue"
+                ),
+            },
+            {
+              path: ":CIN",
+              name: "PatientMoreInfos",
+              index: 2,
+              component: () =>
+                import(
+                  "./administrator/components/patientsAdmin/PatientMoreInfo.vue"
+                ),
             },
           ],
         },
@@ -185,7 +211,7 @@ export default new Router({
               component: () => import("./doctor/components/forum/Forum.vue"),
             },
             {
-              path: "post",
+              path: ":id",
               name: "post",
               index: 2,
               component: () => import("./doctor/components/post/Post.vue"),
@@ -213,7 +239,7 @@ export default new Router({
                 import(
                   "./administrator/components/doctorProfile/DoctorProfile.vue"
                 ),
-                index:1
+              index: 1,
             },
           ],
         },
@@ -222,7 +248,7 @@ export default new Router({
           name: "assignBill",
           component: () =>
             import("./doctor/components/assignBill/AssignBill.vue"),
-            index:8
+          index: 8,
         },
       ],
     },
@@ -289,6 +315,30 @@ export default new Router({
               index: 1,
               component: () =>
                 import("./patient/components/oneHistory/oneHistory.vue"),
+            },
+          ],
+        },
+        {
+          path: "forum",
+          index: 6,
+          component: () => import("./doctor/components/forum/Forums.vue"),
+          children: [
+            {
+              path: "/",
+              name: "forum",
+              index: 1,
+              component: () => import("./doctor/components/forum/Forum.vue"),
+            },
+            {
+              path: "createPost",
+              name: "createPost",
+              component: () =>
+                import("./patient/components/createPost/createPost.vue"),
+            },
+            {
+              path: ":id",
+              name: "post",
+              component: () => import("./doctor/components/post/Post.vue"),
             },
           ],
         },
