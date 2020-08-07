@@ -228,7 +228,7 @@
           id="inputLocation"
           >
         </gmap-autocomplete>
-        <vs-button @click="addMarker">Add</vs-button>
+        <vs-button  @click="addMarker">Add</vs-button>
       </vs-label>
       <br/>
 

@@ -56,7 +56,18 @@
             </vs-col>
             <vs-col>
               <strong>Address</strong>
-              <p>{{ currentUser.address }}</p>
+              <gmap-map
+      :center="center"
+      :zoom="18"
+      style="width:100%;  height: 400px;"
+    >
+      <gmap-marker
+        :key="index"
+        v-for="(m, index) in markers"
+        :position="m.position"
+        @click="center=m.position"
+      ></gmap-marker>
+    </gmap-map>
             </vs-col>
           </vs-row>
           <hr />
@@ -151,18 +162,7 @@
     </vs-row>
     <vs-row>
     </vs-row>
-    <gmap-map
-      :center="center"
-      :zoom="12"
-      style="width:100%;  height: 400px;"
-    >
-      <gmap-marker
-        :key="index"
-        v-for="(m, index) in markers"
-        :position="m.position"
-        @click="center=m.position"
-      ></gmap-marker>
-    </gmap-map>
+    
   </div>
 </template>
 <script>
