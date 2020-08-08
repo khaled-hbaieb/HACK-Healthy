@@ -42,7 +42,7 @@ const isPatient = async function(next) {
 const isDoctor = async function(next) {
   let token = jwtDecode(localStorage.getItem("token"));
   let user = await axios
-    .post("/api/users/clinicX/doctors", { _id: token.userId })
+    .post("/api/users/clinicX/doctors/getDoctor", { _id: token.userId })
     .catch((err) => console.log(err));
     console.log('token doctor', user)
   if (user.data.length > 0) {
