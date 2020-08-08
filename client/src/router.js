@@ -12,7 +12,6 @@ const isAdmin = async function(next) {
   let token = jwtDecode(localStorage.getItem("token"));
   let user = await axios
     .post("/api/users/clinicX/administrators", { _id: token.userId })
-    .catch((err) => console.log(err));
   if (user.data.length > 0) {
     next();
   } else {
@@ -26,11 +25,9 @@ const isAdmin = async function(next) {
 // f2 isPatient
 const isPatient = async function(next) {
   let token = jwtDecode(localStorage.getItem("token"));
-  console.log('tokenPatient', token)
   let user = await axios
   .post("/api/users/clinicX/patients", { _id: token.userId })
   .catch((err) => console.log(err));
-  console.log("user isPatient", user);
   if (user.data.length > 0) {
     next();
   } else {
@@ -44,7 +41,6 @@ const isDoctor = async function(next) {
   let user = await axios
     .post("/api/users/clinicX/doctors/getDoctor", { _id: token.userId })
     .catch((err) => console.log(err));
-    console.log('token doctor', user)
   if (user.data.length > 0) {
     next();
   } else {
@@ -336,7 +332,7 @@ export default new Router({
           name: "chatRoom",
           index: 6,
           component: () =>
-            import("./doctor/components/chatDoctor/ChatView.vue"),
+            import("./doctor/components/chatDoctor/Chat.vue"),
             beforeEnter: (to, from, next) => {
               isDoctor(next);
             },
