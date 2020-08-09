@@ -25,7 +25,6 @@ class AuthService {
   }
 
   async register(user) {
-    console.log('usereeere',user)
     let newPatient = await axios.post(
       API_URL + `${user.role}s/create${user.role}`,
       {
@@ -43,8 +42,7 @@ class AuthService {
         marker: user.user.marker,
         educationBackground:user.user.educationBackground
       }
-    ).catch(err => console.log(err))
-    
+    )
     return newPatient.data;
   }
 }

@@ -346,7 +346,6 @@ export default {
           placeholder: "Enter The Vaccination",
         },
       ],
-      successful: false,
     };
   },
   computed: {
@@ -390,15 +389,30 @@ export default {
         ""
       );
       this.$store.dispatch("auth/register", { user, role: "patient" }).then(
-        () => {
-          this.successful = true;
+        (data) => {
+          if (data.name === "MongoError") {
+            this.$vs.notify({
+              title: "",
+              text: "An Error has occurred!",
+              color: "danger",
+              position: "top-center",
+            });
+          } else {
+            this.$vs.notify({
+              title: "",
+              text: "Patient created successfully!",
+              color: "success",
+              position: "top-center",
+            });
+            setTimeout(() => {this.$router.push("/administrator/patients")},2000)
+            
+          }
         },
         (error) => {
           this.message =
             (error.response && error.response.data) ||
             error.message ||
             error.toString();
-          this.successful = false;
         }
       );
       let record = {

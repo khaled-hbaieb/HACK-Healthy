@@ -332,7 +332,7 @@ export default new Router({
           name: "chatRoom",
           index: 6,
           component: () =>
-            import("./doctor/components/chatDoctor/Chat.vue"),
+            import("./doctor/components/chatDoctor/ChatView.vue"),
             beforeEnter: (to, from, next) => {
               isDoctor(next);
             },

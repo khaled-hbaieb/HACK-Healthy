@@ -203,50 +203,36 @@
               placeholder="Your LinkedIN URL"
             />
             <div id="buttons-doctor-creation">
-              <vs-button
-                type="submit"
-                class="btn btn-inverse waves-effect waves-light"
-                >Cancel</vs-button
-              >
+              <vs-button type="submit" class="btn btn-inverse waves-effect waves-light">Cancel</vs-button>
               <vs-button
                 type="submit"
                 class="btn btn-info waves-effect waves-light m-r-10"
                 @click="handleRegisterDoc"
-                >Submit</vs-button
-              >
+              >Submit</vs-button>
             </div>
           </form>
         </vs-card>
       </vs-col>
     </vs-row>
     <div>
-    <div>
-      <h2>Doctor's Cabinet Location</h2>
-      <vs-label>
-        <gmap-autocomplete
-          @place_changed="setPlace"
-          id="inputLocation"
-          >
-        </gmap-autocomplete>
-        <vs-button  @click="addMarker">Add</vs-button>
-      </vs-label>
-      <br/>
-
+      <div>
+        <h2>Doctor's Cabinet Location</h2>
+        <vs-label>
+          <gmap-autocomplete @place_changed="setPlace" id="inputLocation"></gmap-autocomplete>
+          <vs-button @click="addMarker">Add</vs-button>
+        </vs-label>
+        <br />
+      </div>
+      <br />
+      <gmap-map :center="center" :zoom="12" style="width:100%;  height: 400px;">
+        <gmap-marker
+          :key="index"
+          v-for="(m, index) in markers"
+          :position="m.position"
+          @click="center=m.position"
+        ></gmap-marker>
+      </gmap-map>
     </div>
-    <br>
-    <gmap-map
-      :center="center"
-      :zoom="12"
-      style="width:100%;  height: 400px;"
-    >
-      <gmap-marker
-        :key="index"
-        v-for="(m, index) in markers"
-        :position="m.position"
-        @click="center=m.position"
-      ></gmap-marker>
-    </gmap-map>
-  </div>
   </div>
 </template>
 
@@ -295,7 +281,6 @@ export default {
         "SURGERY",
         "UROLOGY",
       ],
-      successful: false,
       center: { lat: 45.508, lng: -73.587 },
       markers: [],
       places: [],
@@ -347,48 +332,61 @@ export default {
         this.address,
         this.CIN,
         this.imageName,
-        this.marker,
+        this.marker
       );
-      console.log(user)
       this.$store.dispatch("auth/register", { user, role: "doctor" }).then(
-        () => {
-          this.successful = true;
+        (data) => {
+          if (data.name === "MongoError") {
+            this.$vs.notify({
+              title: "An Error has occurred!",
+              text: "Please try again",
+              color: "danger",
+              position: "top-center",
+            });
+          } else {
+            this.$vs.notify({
+              title: "",
+              text: "Doctor created successfully!",
+              color: "success",
+              position: "top-center",
+            });
+            setTimeout(() => {this.$router.push("/administrator/doctors")},2000);
+          }
         },
         (error) => {
           this.message =
             (error.response && error.response.data) ||
             error.message ||
             error.toString();
-          this.successful = false;
         }
       );
     },
     setPlace(place) {
       this.currentPlace = place;
-      console.log(this.currentPlace)
+      console.log(this.currentPlace);
     },
     addMarker() {
       if (this.currentPlace) {
         const marker = {
           lat: this.currentPlace.geometry.location.lat(),
-          lng: this.currentPlace.geometry.location.lng()
+          lng: this.currentPlace.geometry.location.lng(),
         };
-        this.marker = marker
-        console.log('marker', this.marker)
+        this.marker = marker;
+        console.log("marker", this.marker);
         this.markers.push({ position: marker });
         this.places.push(this.currentPlace);
         this.center = marker;
         this.currentPlace = null;
       }
     },
-    geolocate: function() {
-      navigator.geolocation.getCurrentPosition(position => {
+    geolocate: function () {
+      navigator.geolocation.getCurrentPosition((position) => {
         this.center = {
           lat: position.coords.latitude,
-          lng: position.coords.longitude
+          lng: position.coords.longitude,
         };
       });
-    }
+    },
   },
 };
 </script>

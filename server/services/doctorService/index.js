@@ -19,7 +19,7 @@ module.exports = {
   },
   async createDoctor(doctor) {
     doctor.password = bcrypt.hashSync(doctor.password, 10);
-    return Doctors.create(doctor).catch((err) => console.log(err));
+    return Doctors.create(doctor)
   },
   async updateDoctor(filter, payload) {
     if (payload.password) {
