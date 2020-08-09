@@ -11,10 +11,7 @@
           <FullCalendar :options="calendarOptions" />
         </vs-card>
         <vs-popup :title="Title" color="black" :active.sync="popupActivo">
-          <vs-col
-            v-for="(appointment, index) in calendarOptions.appointments"
-            :key="index"
-          >
+          <vs-col v-for="(appointment, index) in calendarOptions.appointments" :key="index">
             <vs-card>
               Appointment N°: {{ index + 1 }}
               <br />
@@ -57,7 +54,7 @@ export default {
     };
   },
   methods: {
-    handleDateClick: function(arg) {
+    handleDateClick: function (arg) {
       this.calendarOptions.appointments = [];
       for (let i = 0; i < this.calendarOptions.events.length; i++) {
         if (this.calendarOptions.events[i].date === arg.dateStr) {
@@ -70,12 +67,13 @@ export default {
       this.popupActivo = true;
     },
   },
-  beforeMount: async function() {
+  beforeMount: async function () {
     UserService.getDoctorBoard().then(
       async (response) => {
         this.currentUser = response;
         let appoints = await axios.post(`/api/appointments/appointment`, {
           doctorCIN: this.currentUser.CIN,
+          state: false,
         });
         for (let i = 0; i < appoints.data.length; i++) {
           appoints.data[i].title = `Appointment At ${appoints.data[i].time}`;

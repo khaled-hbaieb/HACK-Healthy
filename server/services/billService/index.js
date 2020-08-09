@@ -5,28 +5,21 @@ const CurrentPatients = require("../../../database/models/currentPatients");
 
 module.exports = {
   async findBills() {
-    return Bill.find();
+    return Bill.find({});
   },
   async makeBill(bill) {
-    console.log(bill);
     Bill.create(bill);
     CurrentPatients.deleteOne(
       { patientCIN: bill.patientCIN },
       { useFindAndModify: false }
-    ).catch((e) => {
-        console.log("e", e);
-      });
-    Rooms.updateOne({ patientCIN: bill.patientCIN },{ availibility: true, patientCIN : "", doctorCIN:"" } ).catch((e) => {
-      console.log("e", e);
-    });
-    History.updateOne({ patientCIN: bill.patientCIN, entryDate : bill.entryDate },{ exitDate: bill.exitDate, drugs : bill.drugs, operations: bill.operations, tests: bill.tests} ).catch((e) => {
-      console.log("e", e);
-    });
+    )
+    Rooms.updateOne({ patientCIN: bill.patientCIN },{ availibility: true, patientCIN : "", doctorCIN:"" } )
+    History.updateOne({ patientCIN: bill.patientCIN, entryDate : bill.entryDate },{ exitDate: bill.exitDate, drugs : bill.drugs, operations: bill.operations, tests: bill.tests} )
   },
-  async findBill(bill) {
-    return Bill.find(bill);
+  async findBill(filter) {
+    return Bill.find(filter);
   },
-  async updateBill(history) {
-    return Bill.updateOne({ patientCIN: Bill.CIN }, bill.bill);
+  async updateBill(filter,payload) {
+    return Bill.updateOne(filter,payload);
   },
 };

@@ -5,7 +5,6 @@ module.exports = {
     return Records.create(record);
   },
   async findRecord(filter) {
-    console.log(filter);
     return Records.find(filter);
   },
 };

@@ -20,7 +20,6 @@ module.exports = {
     }
   },
   async upload(name) {
-    console.log("upload multer");
     multer({
       storage: storage,
       limits: { fileSize: 1024 * 1024 },

@@ -57,6 +57,13 @@ export default new Router({
                   "./administrator/components/assignARoom/assignARoom.vue"
                 ),
             },
+            {
+              path: ":id",
+              component: () =>
+                import(
+                  "./administrator/components/patientsAdmin/PatientMoreInfo.vue"
+                ),
+            },
           ],
         },
         {
@@ -260,30 +267,37 @@ export default new Router({
 
       children: [
         {
+          path:'emergency',
+          name:'emergency',
+          index:1,
+          component: () =>
+            import("./patient/components/emergency/Emergency.vue"),
+        },
+        {
           path: "profile",
           name: "profile",
-          index: 7,
+          index: 2,
           component: () =>
             import("./patient/components/profilePatient/ProfilePatient.vue"),
         },
         {
           path: "makeAppointment",
           name: "makeAppointment",
-          index: 1,
+          index: 3,
           component: () =>
             import("./patient/components/makeAppointment/MakeAppointment.vue"),
         },
         {
           path: "appointments",
           name: "appointments",
-          index: 2,
+          index: 4,
           component: () =>
             import("./patient/components/appointments/Appointments.vue"),
         },
         {
           path: "doctors",
           name: "doctors",
-          index: 3,
+          index: 5,
           component: () =>
             import("./administrator/components/doctorsAdmin/doctorsList.vue"),
           children: [
@@ -300,13 +314,13 @@ export default new Router({
         {
           path: "billing",
           name: "billing",
-          index: 4,
+          index: 6,
           component: () => import("./patient/components/billing/Billing.vue"),
         },
         {
           path: "history",
           name: "history",
-          index: 5,
+          index: 7,
           component: () => import("./patient/components/history/History.vue"),
           children: [
             {
@@ -320,7 +334,7 @@ export default new Router({
         },
         {
           path: "forum",
-          index: 6,
+          index: 8,
           component: () => import("./doctor/components/forum/Forums.vue"),
           children: [
             {
@@ -332,18 +346,19 @@ export default new Router({
             {
               path: "createPost",
               name: "createPost",
+              index:2,
               component: () =>
                 import("./patient/components/createPost/createPost.vue"),
             },
             {
               path: ":id",
               name: "post",
+              index:3,
               component: () => import("./doctor/components/post/Post.vue"),
             },
           ],
         },
       ],
-      
     },
   ],
 });

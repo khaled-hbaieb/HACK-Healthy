@@ -205,7 +205,6 @@ export default {
         `/api/users/clinicX/doctors/searchDoctors`,
         criteria
       );
-      console.log(doctors.data)
       this.doctors = doctors.data;
     },
     renderCreateDoctor() {

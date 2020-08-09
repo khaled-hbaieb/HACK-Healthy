@@ -54,30 +54,6 @@
               placeholder="Your CIN"
               v-model="CIN"
             />
-            <div class="images-container">
-              <div class="images-container-body">
-                <label class="col-sm-12">Profile Image</label>
-                <div class="centerx">
-                  <vs-upload
-                    automatic
-                    :action="backEndUrl"
-                    fileName="image"
-                    @on-success="onFileUploaded"
-                  />
-                </div>
-              </div>
-              <div class="images-container-body">
-                <label class="col-sm-12">CIN & Certificate Images</label>
-                <div class="centerx">
-                  <vs-upload
-                    automatic
-                    :action="backEndUrl"
-                    fileName="image"
-                    @on-success="onFileUploaded"
-                  />
-                </div>
-              </div>
-            </div>
             <label class="col-md-12" for="special">Speciality</label>
             <vs-select
               placeholder="Select Your Speciality"
@@ -113,15 +89,25 @@
               placeholder="Your Education Background"
               v-model="educationBackground"
             />
-            <label class="col-md-12" for="url">Address</label>
-            <vs-input
-              class="doctor-form-inputs-doctor-creation"
-              type="text"
-              id="url"
-              name="url"
-              placeholder="Your Address"
-              v-model="address"
-            />
+            <div>
+              <div>
+                <h2>Doctor's Cabinet Location</h2>
+                <vs-label>
+                  <gmap-autocomplete @place_changed="setPlace" id="inputLocation"></gmap-autocomplete>
+                  <vs-button @click="addMarker">Submit Location</vs-button>
+                </vs-label>
+                <br />
+              </div>
+              <br />
+              <gmap-map :center="center" :zoom="12" style="width:100%;  height: 400px;">
+                <gmap-marker
+                  :key="index"
+                  v-for="(m, index) in markers"
+                  :position="m.position"
+                  @click="center=m.position"
+                ></gmap-marker>
+              </gmap-map>
+            </div>
           </form>
         </vs-card>
       </vs-col>
@@ -149,24 +135,6 @@
               placeholder="enter your phone"
               data-mask="(999) 999-9999"
               v-model="phoneNumber"
-            />
-            <label class="col-md-12" for="pwd">Password</label>
-            <vs-input
-              class="doctor-form-inputs-doctor-creation"
-              type="password"
-              id="pwd"
-              name="pwd"
-              v-model="pwd"
-              placeholder="enter your password"
-            />
-            <label class="col-md-12" for="cpwd">Confirm Password</label>
-            <vs-input
-              class="doctor-form-inputs-doctor-creation"
-              type="password"
-              id="cpwd"
-              name="cpwd"
-              placeholder="confirm your password"
-              v-model="cpwd"
             />
           </form>
         </vs-card>
@@ -203,54 +171,22 @@
               placeholder="Your LinkedIN URL"
             />
             <div id="buttons-doctor-creation">
-              <vs-button
-                type="submit"
-                class="btn btn-inverse waves-effect waves-light"
-                >Cancel</vs-button
-              >
+              <vs-button type="submit" class="btn btn-inverse waves-effect waves-light">Cancel</vs-button>
               <vs-button
                 type="submit"
                 class="btn btn-info waves-effect waves-light m-r-10"
                 @click="handleRegisterDoc"
-                >Submit</vs-button
-              >
+              >Submit</vs-button>
             </div>
           </form>
         </vs-card>
       </vs-col>
     </vs-row>
-    <div>
-    <div>
-      <h2>Doctor's Cabinet Location</h2>
-      <vs-label>
-        <gmap-autocomplete
-          @place_changed="setPlace"
-          id="inputLocation"
-          >
-        </gmap-autocomplete>
-        <vs-button  @click="addMarker">Add</vs-button>
-      </vs-label>
-      <br/>
-
-    </div>
-    <br>
-    <gmap-map
-      :center="center"
-      :zoom="12"
-      style="width:100%;  height: 400px;"
-    >
-      <gmap-marker
-        :key="index"
-        v-for="(m, index) in markers"
-        :position="m.position"
-        @click="center=m.position"
-      ></gmap-marker>
-    </gmap-map>
-  </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
 import { required } from "vuelidate/lib/validators";
 import Doctor from "../../../models/doctor";
 export default {
@@ -269,7 +205,6 @@ export default {
       phoneNumber: "",
       pwd: "",
       cpwd: "",
-      address: "",
       imageName: "",
       educationBackground: "",
       CIN: "",
@@ -332,8 +267,9 @@ export default {
       });
     },
     submitForm() {},
-    handleRegisterDoc() {
+    async handleRegisterDoc() {
       let user;
+      this.pwd = Math.random().toString(36).slice(-8);
       user = new Doctor(
         this.email,
         this.pwd,
@@ -347,48 +283,49 @@ export default {
         this.address,
         this.CIN,
         this.imageName,
-        this.marker,
+        this.marker
       );
-      console.log(user)
-      this.$store.dispatch("auth/register", { user, role: "doctor" }).then(
-        () => {
-          this.successful = true;
-        },
-        (error) => {
-          this.message =
-            (error.response && error.response.data) ||
-            error.message ||
-            error.toString();
-          this.successful = false;
-        }
-      );
+      this.$store
+        .dispatch("auth/register", { user, role: "doctor" })
+        .then((err) => {
+          if (!err) {
+            this.successful = true;
+          } else {
+            this.successful = false;
+          }
+        });
+      await axios.post("/api/service/SMS", {
+        password: this.pwd,
+        email: this.email,
+        phoneNumber: this.phoneNumber,
+      });
     },
     setPlace(place) {
       this.currentPlace = place;
-      console.log(this.currentPlace)
+      console.log(this.currentPlace);
     },
     addMarker() {
       if (this.currentPlace) {
         const marker = {
           lat: this.currentPlace.geometry.location.lat(),
-          lng: this.currentPlace.geometry.location.lng()
+          lng: this.currentPlace.geometry.location.lng(),
         };
-        this.marker = marker
-        console.log('marker', this.marker)
+        this.marker = marker;
+        console.log("marker", this.marker);
         this.markers.push({ position: marker });
         this.places.push(this.currentPlace);
         this.center = marker;
         this.currentPlace = null;
       }
     },
-    geolocate: function() {
-      navigator.geolocation.getCurrentPosition(position => {
+    geolocate: function () {
+      navigator.geolocation.getCurrentPosition((position) => {
         this.center = {
           lat: position.coords.latitude,
-          lng: position.coords.longitude
+          lng: position.coords.longitude,
         };
       });
-    }
+    },
   },
 };
 </script>

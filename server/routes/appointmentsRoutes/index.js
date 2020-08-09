@@ -5,15 +5,15 @@ const services = require("../../services");
 
 router.get("/", async (req, res) => {
   try {
-    var appointment = await services.appointmentsService.findAppointments();
+    var appointment = await services.appointmentsService.findAllAppointments();
     res.send(appointment);
   } catch (error) {
     res.send(error);
   }
 });
-router.post("/appointment", async (req, res) => {
+router.post("/findAppointments", async (req, res) => {
   try {
-    var appointment = await services.appointmentsService.findOneAppointment(
+    var appointment = await services.appointmentsService.findAppointments(
       req.body
     );
     res.send(appointment);
@@ -45,6 +45,16 @@ router.put("/updateAppointment", async (req, res) => {
 router.post("/cancelAppointment", async (req, res) => {
   try {
     var appointment = await services.appointmentsService.cancelAppointment(
+      req.body
+    );
+    res.send(appointment);
+  } catch (error) {
+    res.send(error);
+  }
+});
+router.post("/checkoutAppointment", async (req, res) => {
+  try {
+    var appointment = await services.appointmentsService.checkoutAppointment(
       req.body
     );
     res.send(appointment);

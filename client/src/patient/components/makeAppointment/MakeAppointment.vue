@@ -74,7 +74,7 @@
         </vs-col>
       </vs-col>
 
-      <vs-col v-if="isChosen" vs-lg="8">
+      <vs-col vs-lg="8">
         <vs-card>
           <FullCalendar :options="calendarOptions"></FullCalendar>
         </vs-card>
@@ -130,9 +130,9 @@ export default {
         weekends: true,
         titleColor: "red",
       },
-      patientCIN: '',
-      patientName:'',
-      currentUser:null,
+      patientCIN: "",
+      patientName: "",
+      currentUser: null,
       doctorCIN: "",
       date: "",
       time: "",
@@ -175,21 +175,15 @@ export default {
       axios.post("/api/appointments/cancelAppointment", { _id: appoint._id });
       this.inputChange();
       this.popupActivo = false;
-
-  
-
     },
     async makeAppoint() {
       await axios.post("/api/appointments/createAppointment", {
         patientCIN: this.patientCIN,
         patientName: this.patientName,
-         doctorName: this.doctorName,
+        doctorName: this.doctorName,
         doctorCIN: this.doctorCIN,
-       date: this.date,
-        
-        
+        date: this.date,
         time: this.time,
-        
         cause: this.cause,
         state: false,
       });
@@ -205,6 +199,7 @@ export default {
           this.nonAvailable.push(this.calendarOptions.events[i].time);
         }
       }
+      console.log(this.nonAvailable);
       for (let i = 8; i <= 18; i++) {
         if (!this.nonAvailable.includes(i.toString()) && i !== 12) {
           this.availableAppointments.push(i.toString());
@@ -276,8 +271,8 @@ export default {
     UserService.getPatientBoard().then(
       async (response) => {
         this.currentUser = response;
-        this.patientCIN = this.currentUser.CIN
-        this.patientName = this.currentUser.fullName
+        this.patientCIN = this.currentUser.CIN;
+        this.patientName = this.currentUser.fullName;
       },
       (error) => {
         this.content =
