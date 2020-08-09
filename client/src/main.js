@@ -44,7 +44,7 @@ Vue.use(VueGmaps, {
 Vue.use(Vuesax, {
   theme: {
     colors: {
-      primary: "#fb9678",
+      primary: "#000000",
     },
   },
 });
