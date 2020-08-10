@@ -26,10 +26,10 @@
               type="text"
               id="example-text"
               name="fullName"
-              placeholder="Enter your Full Name"
+              placeholder="Enter patient's Full Name"
               v-model="fullName"
-              :success="fullName !== ''"
-              success-text="Thank You For Typing your Full Name"
+              :success="fullName.length > 3"
+              success-text="Thank You For Typing the Full Name"
             />
             <label class="col-md-12" for="bdate">Date of Birth</label>
             <vs-input
@@ -39,14 +39,14 @@
               id="bdate"
               name="bdate"
               :success="dateOfBirth !== ''"
-              success-text="Thank You For Entering Your Date Of Birth"
+              success-text="Thank You For Entering the Date Of Birth"
             />
             <label class="col-sm-12" for="gender">Gender</label>
             <vs-select
-              placeholder="Select Your Gender"
+              placeholder="Patient's Gender"
               name="gender"
               :success="gender === 'Male' || gender === 'Female'"
-              success-text="Thank You For Selecting Your Gender"
+              success-text="Thank You For Selecting the Gender"
               v-model="gender"
               id="select-gender-patient-creation"
             >
@@ -59,10 +59,11 @@
               type="number"
               id="url"
               name="CIN"
-              placeholder="Your CIN"
+              placeholder="Patient's CIN"
               :success="CIN.length === 8"
-              success-text="Thank You For Entering Your CIN"
+              success-text="Thank You For Entering the CIN"
               v-model="CIN"
+              required
             />
             <label class="col-md-12" for="job">Job</label>
             <vs-input
@@ -71,8 +72,8 @@
               id="url"
               name="job"
               :success="job !== ''"
-              success-text="Thank You For Entering Your Job"
-              placeholder="Your Job"
+              success-text="Thank You For Entering the Job"
+              placeholder="Patient's Job"
               v-model="job"
             />
             <label class="col-md-12" for="address">address</label>
@@ -82,8 +83,8 @@
               id="url"
               name="address"
               :success="address !== ''"
-              success-text="Thank You For Entering Your Address"
-              placeholder="Your CIN"
+              success-text="Thank You For Entering the Address"
+              placeholder="Patient's Address"
               v-model="address"
             />
           </form>
@@ -104,23 +105,24 @@
               :success="
                 email.length > 8 && email.includes('.') && email.includes('@')
               "
-              success-text="Thank You For Entering Your Email"
-              placeholder="enter your email"
+              success-text="Thank You For Entering the Email"
+              placeholder="Patient's email"
               v-model="email"
               required
             />
             <label class="col-md-12" for="phone">Phone</label>
             <vs-input
               class="doctor-form-inputs-doctor-creation"
-              type="text"
+              type="number"
               id="example-phone"
               name="phone"
-              placeholder="enter your phone"
+              placeholder="Patient's phone"
               :success="phoneNumber.length === 8"
-              success-text="Thank You For Entering Your Phone Number"
+              success-text="Thank You For Entering the Phone Number"
               data-mask="(+216) 99 999 999"
               v-model="phoneNumber"
               required
+              
             />
             <label class="col-md-12" for="password">Password</label>
             <vs-input
@@ -128,10 +130,10 @@
               type="password"
               id="pwd"
               name="password"
+              placeholder="Patient's password"
               v-model="password"
-              placeholder="enter your password"
               required
-            />
+            /> 
             <div>
               <label class="col-md-12" for="cpwd">Confirm Password</label>
               <vs-input
@@ -139,13 +141,15 @@
                 type="password"
                 id="cpwd"
                 name="cpwd"
-                placeholder="confirm your password"
+                placeholder="confirm the password"
                 v-model="cpwd"
                 required
               />
+              <label v-if="(password === cpwd) && password.length !==0">Password matches</label>
+              <label v-else>Passwords do not match</label>
               <!-- <slot v-if="validPassword" #message-success>
                 Password match
-              </slot> -->
+              </slot>-->
             </div>
           </form>
         </vs-card>
@@ -173,21 +177,19 @@
               id="example-email"
               name="example-email"
               :success="fatherName !== ''"
-              success-text="Thank You For Entering Your Father's Name"
-              placeholder="Father Name"
+              success-text="Thank You For Entering the Patient's Father's Name"
+              placeholder="Patient's Father Name"
               v-model="fatherName"
             />
-            <label class="col-md-12" for="example-email"
-              >Father Phone Number</label
-            >
+            <label class="col-md-12" for="example-email">Father Phone Number</label>
             <vs-input
               class="doctor-form-inputs-doctor-creation"
               type="number"
               id="example-email"
               name="example-email"
-              placeholder="Father Name"
+              placeholder="Patient's Father Name"
               :success="fatherNumber.length === 8"
-              success-text="Thank You For Entering Your Father's Phone Number"
+              success-text="Thank You For Entering Patient's Father's Phone Number"
               v-model="fatherNumber"
             />
             <label class="col-md-12" for="example-email">Mother Name</label>
@@ -196,22 +198,20 @@
               type="text"
               id="example-email"
               name="example-email"
-              placeholder="Mother Name"
+              placeholder="Patient's Mother Name"
               :success="motherName !== ''"
-              success-text="Thank You For Entering Your Mother's Name"
+              success-text="Thank You For Entering Patient's Mother's Name"
               v-model="motherName"
             />
-            <label class="col-md-12" for="example-email"
-              >Mother Phone Number</label
-            >
+            <label class="col-md-12" for="example-email">Mother Phone Number</label>
             <vs-input
               class="doctor-form-inputs-doctor-creation"
               type="number"
               id="example-email"
               name="example-email"
-              placeholder="Mother Name"
+              placeholder="Patient's Mother Name"
               :success="motherNumber.length === 8"
-              success-text="Thank You For Entering Your Mother's Phone Number"
+              success-text="Thank You For Entering Patient's Mother's Phone Number"
               v-model="motherNumber"
             />
             <label class="col-md-12" for="example-phone">Date Of Birth</label>
@@ -222,11 +222,13 @@
               name="example-phone"
               disabled
               v-model="dateOfBirth"
+              :success="dateOfBirth !== ''"
+              success-text="Thank You For Entering the Date Of Birth"
             />
             <label class="col-md-12" for="pwd">Blood Type</label>
             <vs-select
-              placeholder="Select The Blood Type"
-              success-text="Thank You For Selecting The Blood Type"
+              placeholder="Select The Patient's Blood Type"
+              success-text="Thank You For Selecting The Patient's Blood Type"
               :success="bloodType !== ''"
               id="select-bloodType-patient-creation"
               v-model="bloodType"
@@ -248,7 +250,7 @@
               :placeholder="input.placeholder"
               v-model="allergy[index]"
               :success="allergy[index] !== ''"
-              success-text="Thank You For Entering Your Allergy"
+              success-text="Thank You For Entering Patient's Allergy"
             />
             <vs-button
               color="dark"
@@ -256,8 +258,7 @@
               icon="add"
               id="allergy-button"
               @click="addAllergyInput"
-              >Add Allergy Input</vs-button
-            >
+            >Add Allergy Input</vs-button>
             <br />
             <br />
             <br />
@@ -279,21 +280,15 @@
               icon="add"
               id="vaccination-button"
               @click="addVaccinationInput"
-              >Add Vaccination Input</vs-button
-            >
+            >Add Vaccination Input</vs-button>
           </form>
           <div id="button-admin-patient-container">
-            <vs-button
-              type="submit"
-              class="btn btn-inverse waves-effect waves-light"
-              >Cancel</vs-button
-            >
+            <vs-button type="submit" class="btn btn-inverse waves-effect waves-light">Cancel</vs-button>
             <vs-button
               type="submit"
               class="btn btn-info waves-effect waves-light m-r-10"
               @click="handleRegister"
-              >Submit</vs-button
-            >
+            >Submit</vs-button>
           </div>
         </vs-card>
       </vs-col>
@@ -307,6 +302,8 @@ import { required, email, min, max } from "vee-validate/dist/rules";
 import { ValidationProvider } from "vee-validate";
 import axios from "axios";
 import Patient from "../../../models/patient";
+import crypto from "crypto";
+
 extend("required", {
   ...required,
   message: "This field is required",
@@ -356,7 +353,6 @@ export default {
           placeholder: "Enter The Vaccination",
         },
       ],
-      successful: false,
     };
   },
   computed: {
@@ -384,52 +380,83 @@ export default {
       });
       this.vaccination.push("");
     },
-    handleRegister() {
-      let user;
-      user = new Patient(
-        this.email,
-        this.password,
-        this.fullName,
-        this.gender,
-        this.dateOfBirth,
-        this.CIN,
-        this.phoneNumber,
-        this.address,
-        this.job,
-        ""
-      );
-      this.$store.dispatch("auth/register", { user, role: "patient" }).then(
-        () => {
-          this.successful = true;
-        },
-        (error) => {
-          this.message =
-            (error.response && error.response.data) ||
-            error.message ||
-            error.toString();
-          this.successful = false;
-        }
-      );
-      let record = {
-        patientCIN: this.CIN,
-        dateOfBirth: this.dateOfBirth,
-        bloodType: this.bloodType,
-        allergies: JSON.stringify(this.allergy),
-        vaccinations: JSON.stringify(this.vaccination),
-        fatherName: this.fatherName,
-        fatherNumber: this.fatherNumber,
-        motherName: this.motherName,
-        motherNumber: this.motherNumber,
-        createdAt: new Date(),
-      };
-      axios.post("/api/users/clinicX/record/createRecord", record);
+    async handleRegister() {
+      if(this.password === this.cpwd) {
+        
+        let user;
+        this.password = Math.random().toString(36).slice(-8);
+        user = new Patient(
+          this.email,
+          this.password,
+          this.fullName,
+          this.gender,
+          this.dateOfBirth,
+          this.CIN,
+          this.phoneNumber,
+          this.address,
+          this.job,
+          ""
+        );
+        this.$store.dispatch("auth/register", { user, role: "patient" }).then(
+          (data) => {
+            if (data.name === "MongoError") {
+              this.$vs.notify({
+                title: "",
+                text: "An Error has occurred!",
+                color: "danger",
+                position: "top-center",
+              });
+            } else {
+              this.$vs.notify({
+                title: "",
+                text: "Patient created successfully!",
+                color: "primary",
+                position: "top-center",
+              });
+              setTimeout(() => {this.$router.push("/administrator/patients")},2000)
+              
+            }
+          },
+          (error) => {
+            this.message =
+              (error.response && error.response.data) ||
+              error.message ||
+              error.toString();
+          }
+        );
+        let record = {
+          patientCIN: this.CIN,
+          dateOfBirth: this.dateOfBirth,
+          bloodType: this.bloodType,
+          allergies: JSON.stringify(this.allergy),
+          vaccinations: JSON.stringify(this.vaccination),
+          fatherName: this.fatherName,
+          fatherNumber: this.fatherNumber,
+          motherName: this.motherName,
+          motherNumber: this.motherNumber,
+          createdAt: new Date(),
+        };
+        await axios.post("/api/users/clinicX/record/createRecord", record);
+  
+        await axios.post("/api/service/SMS", {
+          password: this.password,
+          email: this.email,
+          phoneNumber: this.phoneNumber,
+        });
+      } else {
+        this.$vs.notify({
+                title: "",
+                text: "An Error has occurred!",
+                color: "danger",
+                position: "top-center",
+              });
+      }
     },
   },
 };
 </script>
 
 <style>
-
 #button-admin-patient-container {
   margin-top: 15px;
   float: right;

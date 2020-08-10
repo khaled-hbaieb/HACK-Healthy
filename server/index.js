@@ -8,6 +8,8 @@ const fs = require("fs");
 const exphbs = require("express-handlebars");
 const nodemailer = require("nodemailer");
 const axios = require("axios");
+const jwtDecode = require('jwt-decode')
+var io = require('socket.io')(http);
 require("dotenv").config();
 
 //CRYPTO JS
@@ -68,6 +70,8 @@ app.use("/api/cloud", routes.cloudinaryRoutes);
 app.use("/api/comments", routes.commentsRoutes);
 
 app.use("/api/posts",routes.postsRoutes)
+
+app.use('/api/service/SMS',routes.SMSRoutes)
 
 var http = require("http");
 const { find } = require("../database/models/room");
@@ -213,6 +217,8 @@ app.post("/send", (req, res) => {
  *
  */
 
+
+
 app.get("*", (req, res) => {
   let dirPath = path.join(__dirname, "../client/dist/index.html");
   res.sendFile(dirPath);
@@ -222,4 +228,15 @@ app.listen(PORT, (err) => {
   if (!err) {
     console.log(`App Is Listetning On Port: ${PORT}`);
   }
+});
+
+io.on('connection', function (socket) {
+  socket.on( 'new_notification', function( data ) {
+    console.log(data.title,data.message);
+    io.sockets.emit( 'show_notification', { 
+      title: data.title, 
+      message: data.message, 
+      icon: data.icon, 
+    });
+  });
 });
