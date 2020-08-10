@@ -1,9 +1,8 @@
 <template>
-  <div>
-    <vs-row id="all">
-      <!-- class="row justify-content-center h-100" -->
-      <div class="col-md-4 col-xl-3 chat">
-        <div class="card mb-sm-3 mb-md-0 contacts_card">
+  
+    <vs-row  id="all">
+      <vs-col vs-lg="4"  >
+        <vs-card>
           <div class="card-header">
             <div class="input-group">
               <input
@@ -42,10 +41,10 @@
             </vs-list>
           </div>
           <div class="card-footer"></div>
-        </div>
-      </div>
-      <div class="col-md-8 col-xl-6 chat">
-        <div class="card">
+        </vs-card>
+      </vs-col>
+      <vs-col vs-lg="8" >
+        <vs-card id="cardChat">
           <div class="card-header msg_head">
             <div class="d-flex bd-highlight">
               <div class="img_cont">
@@ -62,7 +61,7 @@
                   <vs-icon icon="phone"></vs-icon>
                 </span>
                 <span>
-                  <vs-icon icon="video_call" @click="createChat"></vs-icon>
+                  <vs-icon icon="video_call" ></vs-icon>
                 </span>
               </div>
             </div>
@@ -92,12 +91,13 @@
                 <img class="rounded-circle user_img_msg" />
               </div>
               <div class="msg_cotainer">
-                <!-- <span class="msg_time">8:40 AM, Today</span> -->
+                
               </div>
             </div>
             <div class="d-flex justify-content-end mb-4">
-              <div class="msg_cotainer_send">
-                <!-- <span class="msg_time_send">8:55 AM, Today</span> -->
+              <div class="msg_cotainer_send" >
+               <span id="rec"></span> 
+                
               </div>
               <div class="img_cont_msg">
                 <img class="rounded-circle user_img_msg" />
@@ -106,26 +106,29 @@
           </div>
 
           <div class="card-footer">
-            <div class="input-group">
+            <div id="msn" class="input-group">
               <div class="input-group-append">
                 <span class="input-group-text attach_btn">
                   <vs-icon icon="attach_files"></vs-icon>
                 </span>
               </div>
               <textarea
+              
+                id="inputmsn"
                 name
                 class="form-control type_msg"
                 placeholder="Type your message..."
+               v-model:value="message"
               ></textarea>
               <div class="input-group-append">
-                <span class="input-group-text send_btn">
+                <vs-button id="snd" @click="sendMsn" class="input-group-text send_btn">
                   <vs-icon icon="send"></vs-icon>
-                </span>
+                </vs-button>
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </vs-card>
+      </vs-col>
 
       <div id="chatbox" class="row remote_video_container">
         <div id="remoteTrack"></div>
@@ -135,7 +138,7 @@
         <div id="localTrack"></div>
       </div>
     </vs-row>
-  </div>
+  
 </template>
 <script>
 import $ from "jquery";
@@ -147,15 +150,19 @@ import {
 } from "twilio-video";
 import { EventBus } from "../../../Event";
 import axios from "axios";
+import io from "socket.io"
 export default {
   name: "ChatView",
   data: () => {
-    return {
+    return {message:"",
+    currentUser:null,
+    doctorName:'',
       roomsList: {
         General: {
           name: "General",
           source:
             "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAA4VBMVEX///8tQVFuvv+EnKtXZnNkgY/5MDBmu/+Jyf+33P9juv/j8v94kqB/xf/p9P8oPU7v9/9ib3pxe4R9ho9VYm6i0//c3uFxi5p3kZ9uiZdde4p+l6XJ0dYIKj/IzM8VMENFVmQ2SVj19veNlZz5JSUbNEats7igsLr/9vb5KSn7goL8n5+quML5ExOMn6n7jIz+4uKaoaf5Gxv5DAzr7e6RmaD8nJz9vr7+19f6YmL7fHy7wMSmrLIAJTxLWmf5PDz6UlL8sbH+7Oz6a2v9t7cAFTH9yMgACiv+3NzW6/+a0P8QhqaTAAALqUlEQVR4nO2dfUOjuBbGwYud3bmzy9R2GF2LQFuqHafjSKuO1lZH77pz7/f/QBdCgRDycpLal1Sev2rJIfmRk5zDAdUwatWqtXG923UZe7uumlB/1YT6KyPc9I63CpUJf989fXqHE/6x6bC8An18v+uEf9aE2qsm1F96E36/Of9yd3d38fPlidlGY8Kb58Yo6iNF0ejhyw96M10Jn66jaNjA1R8//IfWUlPCi6jfqGgYNSiMWhK+DPuLacs1SiFHt2dkYx0Jr8cLv7w7e8q1cNn+kFyOGhI+j7KV9wX7Nl+U45tycxDhZHrVajZbV9MJ9p3jTMhmjtPNPveu6KfqYlbxZ/IUiZxB76B50Lo86VIOGsZt1OASNsY/S+0BhPdz1wvtWKHnzgeLLzt/u+7fTqndNP5qthhVN3Rb1HPFbdzsBzs+xSXRYNIz3XDRm9fsVM/wnAOyCBvjFynC+5jOzGV7dnrZB6FpetNSy6v4K9fJCE2vRyFsxedyFxPXdePzHZQOd1uz0MR6c5vkCa5HDSFhY/QdTjiZe4vOYqEP3oBH6BWEpkfOT0aYtakQTsMw7y39MCPc+GXcABAOH8CEHS/pyQ7dcG5Zvpf8FIIJTbeKyCW8nC16M9uWFbjoFARhOcazCBvRBZCw4ybXMbQv0zF1p3PPliA03XsZwivUmzcfpFSTS9MjCS8iGCHupzzCCfLQGb4rdtr/nMAJTXdglMUhHLhoAvFzDmyvZH02agAJ+88gQj9xGu+kPMbFRYURmm65CYdwggADIkIQU9iHEjbG+SRyCO+TKZxRNmwJQtMtXyA2oRUfsU16CGRQ8Aj7+UpkE6JBeqSbyRCi/bB8iZiEJ8kUerQEoNBLBCdsNMSE9/EgbYvVG4DQ9tNZxBGZhMkUepWNqay72En7mEZ32MEowo7EuKMsP2UTotGVsxZJwibaqmz8JCzCySzpjg9oJIAX54Wu8Qz0Gjtw/jxs9K9FhE7Sf5vZG4SwbTgonnoFIoswcZhQMIXf42g/YlcrcP2MGsPbxWcm4YDfJ4wwjah2mCOyCJu2cBWiZVjKx9g6j4qFyCRMxuIxnRRKmO4gtp0NnkUYJPsSYNgShNGZgFBwVaGExnSGdtUJl7BozlESDSUIM4dmEraTHJQdnsCExhQP5QzCJNzblfuIJQl/rYtwkY756PMaCaPFXeLKvTTWfYG4jJdeS87hIiCueqdBukwQwzabcBU7TdZ0xdEiO+QtEFmEFiBa3LzyXvoqET9XDyE2jd4SEf/X6HXj4Stkbfj1aSHEFoswydpsWzDuJKf5dYYLO1j6+rzfGGZ3iILMmzmJsoTGQX63Qc280dZNKezguo0T6iGWX0f4vQWeeCeZd5TVFEV3T6xOpQlTRCZhevfE3tkSncvcPY2zDFZ0B1ypQygTGs2QQ5jeAfMRn0ZwwuFjdoBXxZgnTuWWi9dOq6tKaLRDDuEkrXqVSwLTcs31dggmzJ2UX4lCtWBvXlzY7pU7mxaE5eEICdNLxqpEoezOdFtFzHCaeQ091Qu4EtXo5we41UTHRQVMt32fPJCYnPTCEK+X2ge9hTowwi6qbbGqifeztKp+MJ10je5k2ox7J6qJj0MgYTGFgoqwk9aekycWsbzEyzDC+PtUXhNGGOcuvIrwwE17Q525yIEIwh9jGCFe9BZU9btNF3tqgdUHB6XnC20oYTdGZFf1HTMkepsRuf9dH0Q4xh4iCp/MnPgYo50/Uhp4NiYrJbTNWTb65DAtmE6Kuk13Fp+v/GTGuLQ9rDfPruzkD0MAIV7UhzxdO2nZnoec0ZvfZ17j+NiVDtBAOvEqy2tzrfhraqCZ2P9k83IQ3zZOyeODZugmvXlu2KwcNIzvgGdP/VvcAvYMeDIdDAbTDr9eC1SXH9aTBqg3RjNsKTII+48lA/2echcP2OiE/cfyywr6ERo/shdpqITRLdFcQ0Lj7DFNUIePF4UWYWJ8TbbWkTB53wRFDfxGI53Ah+qrX3oSGk9fIuJGI+YdPfykNNWUMHmxrTEq3mwb9qPx7Q21obaEsX6cPz+MxqPRaNx//HLDeqKhMyHS0/dfT5V32XBpTyhUTai/akL9Vf6toL3fdk9/7JUId1c1of7KCN+vRuiXHN+t6OSQvou99M9/r0T/jbt592lFJwf0vbfyaPExIfx9RScXaD3xsCZcpSiEzglA6ElFB9LSwQmdjoqMZSwphE3XE8pFpd85pOUBTvjtLxUZypZdKuEB8eyApvT1njakZatE+FlFSV+nKoZH6yc8/ZeKkr6+qhge14SvT/ht/0ha+/vISxUsjzaxDvcVlO40SpaaeOkx8tJjPbx099fh6eEHeR0aqpaf63W4AsI64uu/DneeUGk17Wu1DtUJ/9KDcPe99A0QKsTtwzrib9c6/Hwor0XEV7CsI35NWEf8N0m4+176BggVtvwlokUd8Vcxh3XE138d7jzh7sfD3SfcfS99A4Q7Hy3eQMRXqdOkc6hkWa/DLSHU6gnp7sdDdcJTTQjrdag/4TeFuP25jvjbtQ53/l2M3V+Hp0pxWznif6jX4SoIFd4w1OrdxDewDneecImIf1RH/O3YaeqIr/86VIn4x3XE36p1uOaIv1+vw5pwTe95H6URX4/3vHd/pzn9cCytDx8MRcvjOuKvglBhIrKIryBdIr5Wb7J/Uwjba474doj+xChGuPgGRrj969C2er3keEFot3o93lzqRpj8UXHHwwmTv4PbC9kWpJeuNeIreGlC2CkTOlKEKhvNWiP+soRKcRtF/K8qlocbINRiHS5FqDAR6434S69Dlbi91uf4SxOqRPzFXrqeiP9m1mEAJQzeHKFKxD9ae8R3yoTcnKZCqLRfrHOnMUPXjZehj2Xenkv+cwFMvnYRfzEzPvTuaa7dOpQlbG824ivPoQ8mtF4j4m+g1jZXJ9z6iI9kt8GETVvLdWhbUMLA0pPQhBLafoXwELA/kHEBPQP+qmKpWhEOwHM4JwlbpX9Pw5DZxmWZYdJXT8EySP5XnQqhD55Dq0IIqT+2rZLQOLnZfW45JyxNNcJ4BNA5VCIMLFXCiqUiYTxuIGGgRGipEpKTr0wYgAl9FUJfmbBqqUjogwnbKoTkMMGEpI+qE87BhJY8YcXT4IQUS0VCC0oYKBBWPA1MSLNUIwzAhHN5wqqngQlplmqEPpjQkiak+CiUkGqpRtiGEgbShGTEhhMyLJUI0bhBhL40Ic1HYYQMSyVCH0poW7KE9GGCCBmWKoTpuCGEgTQhfZgQQpalCmEAJpxLEtKXEoSQuj8pE87BhJYcIRNQSMixVCG0oISBHKFNCdgwQp6lPGF2NjFh5jlAQs4wBYRcS4U5bEMJs30RRsgbJp+QbylPmI1bSJivDRAhd5hcQoGlNGG+aYnnMOsEQsgfJo9QZClNmIdkEWGxvQEIBcPkEAotZQmLuCOcw7wTACFzsxcRigDlCYusSkCIRSgxIStciwlFl0aaEEsdBIRYgikiZOSiAEKIpRwh7hN8QjyL4hPagGHSCWGWknOImXIJS8uDTyj0MyYhzFKKsJT98ecQ74RDCJoGKiHYUoqwdFIeYTkR5hCKdkI2IdhSirBkyiEkri+LEDoNVUIZSwlC4g6FN4flTuiEdiCMEQxCOUsJQsIvOITEAKiEMqMsEUrxSRGSjsEkrKQZFMJg3pZSQShtCSckLw6TsLJGSMKZ57nSQoQqlh6UsOIaLMLqJkAQThwVGctYQgir0ZVBSNnlCMINSExIK/QwCKsNtSCk5Ud0QkrDLSD8KCKkJoBUQlpDjHDvt08b0f/2+IT0+EMhZGQaGOHeu41oj09IH3aVkJlK4YQbFZWQnQGShOyy83YTsu/BCEJOLrXFhNwUsETILQhtMSH3JhojFCTDW0soKBIUhKJkf0sJA1+g/LcR/LmgpbmdhKZQGaG4aUr4frN4sQwUHN8jQvj/dPYBLWfJ/3T+8/1moj2mV8wDa9Wqpaj/A8lMeZXnNbHAAAAAAElFTkSuQmCC",
+          message:[],
         },
         Surgery: {
           source:
@@ -228,112 +235,30 @@ export default {
     };
   },
   methods: {
-    // Generate access token
-    async getAccessToken() {
-      let token = await axios.get(
-        `/token?identity=${this.currentUser.fullName}`
-      );
-      return token.data;
-    },
-    dispatchLog(message) {
-      EventBus.$emit("new_log", message);
-    },
-    // Attach the Tracks to the DOM.
-    attachTracks(tracks, container) {
-      tracks.forEach(function(track) {
-        container.appendChild(track.attach());
-      });
-    },
-    // Attach the Participant's Tracks to the DOM.
-    attachParticipantTracks(participant, container) {
-      let tracks = Array.from(participant.tracks.values());
-      this.attachTracks(tracks, container);
-    },
-    // Create a new chat
-    createChat() {
-      this.loading = true;
-      const VueThis = this;
-      this.getAccessToken().then((data) => {
-        VueThis.roomName = "General";
-        const token = data.token;
-
-        let connectOptions = {
-          name: "General",
-          // logLevel: "debug",
-          audio: true,
-          video: { width: 400 },
-        };
-        // before a user enters a new room,
-        // disconnect the user from they joined already
-
-        // remove any remote track when joining a new room
-        document.getElementById("remoteTrack").innerHTML = "";
-        // document.getElementById("message").style.display = "block";
-
-        // this.leaveRoomIfJoined();
-
-        connect(token, connectOptions).then((room) => {
-          VueThis.dispatchLog("Successfully joined a Room: " + "General");
-
-          // set active toom
-          // VueThis.activeRoom = room;
-          VueThis.roomName = "General";
-          // VueThis.loading = false;
-
-          // Attach the Tracks of all the remote Participants.
-          room.participants.forEach(function(participant) {
-            let previewContainer = document.getElementById("remoteTrack");
-            VueThis.attachParticipantTracks(participant, previewContainer);
-          });
-          // When a Participant joins the Room, log the event.
-          room.on("participantConnected", function(participant) {
-            VueThis.dispatchLog("Joining: '" + participant.identity + "'");
-          });
-          // When a Participant adds a Track, attach it to the DOM.
-          room.on("trackAdded", function(track, participant) {
-            VueThis.dispatchLog(
-              participant.identity + " added tracks: " + track.kind
-            );
-            let previewContainer = document.getElementById("remoteTrack");
-            VueThis.attachTracks([track], previewContainer);
-          });
-          // When a Participant removes a Track, detach it from the DOM.
-          room.on("trackRemoved", function(track, participant) {
-            VueThis.dispatchLog(
-              participant.identity + " removed track: " + track.kind
-            );
-            VueThis.detachTracks([track]);
-          });
-          // When a Participant leaves the Room, detach its Tracks
-          room.on("participantDisconnected", function(participant) {
-            VueThis.dispatchLog(
-              "Participant '" + participant.identity + "' left the room"
-            );
-            VueThis.detachParticipantTracks(participant);
-          });
-          // if local preview is not active, create it
-          if (!VueThis.localTrack) {
-            createLocalVideoTrack().then((track) => {
-              let localMediaContainer = document.getElementById("localTrack");
-
-              localMediaContainer.appendChild(track.attach());
-              VueThis.localTrack = true;
-            });
-          }
-        });
-      });
-    },
-    openTab() {
+      openTab() {
       $(".action_menu").toggle();
     },
     changeRoom(room) {
       this.currentRoom = room;
     },
+    sendMsn(){
+
+  var snd = document.getElementById("send");
+  var inputmsn = document.getElementById("inputmsn");
+  var rec = document.getElementById("rec")
+ console.log(inputmsn.value)
+ this.message = inputmsn.value
+ rec.value = this.message
+  // socket.to(currentRoom.name).emit(this.doctorName, this.message);
+  this.message = ''
+    
+    }
   },
   beforeMount: function() {
     UserService.getDoctorBoard().then(
       async (response) => {
         this.currentUser = response;
+        this.doctorName = this.currentUser.fullName
       },
       (error) => {
         this.content =
@@ -344,7 +269,9 @@ export default {
     );
     this.currentRoom = this.roomsList.General;
   },
-};
+    
+
+}
 </script>
 <style>
 .chat {
@@ -458,7 +385,7 @@ export default {
 .user_img_msg {
   height: 40px;
   width: 40px;
-  border: 1.5px solid #f5f6fa;
+  border: 1.5px solid black;
 }
 .img_cont {
   position: relative;
@@ -489,18 +416,18 @@ export default {
 }
 .user_info span {
   font-size: 20px;
-  color: white;
+  color:black;
 }
 .user_info p {
   font-size: 10px;
-  color: rgba(255, 255, 255, 0.6);
+  color:black
 }
 .video_cam {
   margin-left: 50px;
   margin-top: 5px;
 }
 .video_cam span {
-  color: white;
+  color: black;
   font-size: 20px;
   cursor: pointer;
   margin-right: 20px;
@@ -544,7 +471,7 @@ export default {
   position: absolute;
   right: 10px;
   top: 10px;
-  color: white;
+  color: black;
   cursor: pointer;
   font-size: 20px;
 }
@@ -553,7 +480,7 @@ export default {
   position: absolute;
   padding: 15px 0;
   background-color: rgba(0, 0, 0, 0.5);
-  color: white;
+  color: black;
   border-radius: 15px;
   top: 30px;
   right: 15px;
@@ -578,10 +505,18 @@ export default {
 }
 
 #list-items:hover {
-  background-color: darkgrey;
+  background-color: rgba(240, 236, 236, 0.849);
   cursor: pointer;
 }
 .vs-list--slot {
   margin-left: 0 !important;
 }
+#cardChat{
+  height:100%
+}
+#msn{
+
+color: rgba(240, 236, 236, 0.849);;
+}
+
 </style>

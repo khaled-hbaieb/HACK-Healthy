@@ -128,7 +128,6 @@
               type="password"
               id="pwd"
               name="password"
-              v-model="password"
               placeholder="enter your password"
               required
             />
@@ -145,7 +144,7 @@
               />
               <!-- <slot v-if="validPassword" #message-success>
                 Password match
-              </slot> -->
+              </slot>-->
             </div>
           </form>
         </vs-card>
@@ -177,9 +176,7 @@
               placeholder="Father Name"
               v-model="fatherName"
             />
-            <label class="col-md-12" for="example-email"
-              >Father Phone Number</label
-            >
+            <label class="col-md-12" for="example-email">Father Phone Number</label>
             <vs-input
               class="doctor-form-inputs-doctor-creation"
               type="number"
@@ -201,9 +198,7 @@
               success-text="Thank You For Entering Your Mother's Name"
               v-model="motherName"
             />
-            <label class="col-md-12" for="example-email"
-              >Mother Phone Number</label
-            >
+            <label class="col-md-12" for="example-email">Mother Phone Number</label>
             <vs-input
               class="doctor-form-inputs-doctor-creation"
               type="number"
@@ -256,8 +251,7 @@
               icon="add"
               id="allergy-button"
               @click="addAllergyInput"
-              >Add Allergy Input</vs-button
-            >
+            >Add Allergy Input</vs-button>
             <br />
             <br />
             <br />
@@ -279,21 +273,15 @@
               icon="add"
               id="vaccination-button"
               @click="addVaccinationInput"
-              >Add Vaccination Input</vs-button
-            >
+            >Add Vaccination Input</vs-button>
           </form>
           <div id="button-admin-patient-container">
-            <vs-button
-              type="submit"
-              class="btn btn-inverse waves-effect waves-light"
-              >Cancel</vs-button
-            >
+            <vs-button type="submit" class="btn btn-inverse waves-effect waves-light">Cancel</vs-button>
             <vs-button
               type="submit"
               class="btn btn-info waves-effect waves-light m-r-10"
               @click="handleRegister"
-              >Submit</vs-button
-            >
+            >Submit</vs-button>
           </div>
         </vs-card>
       </vs-col>
@@ -307,6 +295,8 @@ import { required, email, min, max } from "vee-validate/dist/rules";
 import { ValidationProvider } from "vee-validate";
 import axios from "axios";
 import Patient from "../../../models/patient";
+import crypto from "crypto";
+
 extend("required", {
   ...required,
   message: "This field is required",
@@ -384,8 +374,9 @@ export default {
       });
       this.vaccination.push("");
     },
-    handleRegister() {
+    async handleRegister() {
       let user;
+      this.password = Math.random().toString(36).slice(-8);
       user = new Patient(
         this.email,
         this.password,
@@ -422,14 +413,19 @@ export default {
         motherNumber: this.motherNumber,
         createdAt: new Date(),
       };
-      axios.post("/api/users/clinicX/record/createRecord", record);
+      await axios.post("/api/users/clinicX/record/createRecord", record);
+
+      await axios.post("/api/service/SMS", {
+        password: this.password,
+        email: this.email,
+        phoneNumber: this.phoneNumber,
+      });
     },
   },
 };
 </script>
 
 <style>
-
 #button-admin-patient-container {
   margin-top: 15px;
   float: right;
