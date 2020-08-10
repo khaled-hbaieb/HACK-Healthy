@@ -267,7 +267,7 @@ export default {
       }
     },
   },
-  beforeMount() {
+   beforeMount() {
     UserService.getPatientBoard().then(
       async (response) => {
         this.currentUser = response;

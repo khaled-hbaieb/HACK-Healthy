@@ -1,60 +1,114 @@
 <script>
-import { Line } from "vue-chartjs";
+import {Bar } from "vue-chartjs";
 
 export default {
-  extends: Line,
+  extends: Bar,
   data() {
     return {
-      gradient: null,
-      gradient2: null
+      // gradient: null,
+      // gradient2: null
     };
   },
-  mounted() {
-    this.gradient = this.$refs.canvas
-      .getContext("2d")
-      .createLinearGradient(0, 0, 0, 450);
-    this.gradient2 = this.$refs.canvas
-      .getContext("2d")
-      .createLinearGradient(0, 0, 0, 450);
-
-    this.gradient.addColorStop(0, "rgba(180, 190, 203, 0.5)");
-    this.gradient.addColorStop(0.4, "rgba(180, 190, 203, 0.25)");
-    this.gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
-
-    this.gradient2.addColorStop(0, "rgba(1, 192, 200, 0.5)");
-    this.gradient2.addColorStop(0.4, "rgba(1, 192, 200, 0.25)");
-    this.gradient2.addColorStop(1, "rgba(1, 192, 200, 0.2)");
-
+   mounted() {
+    
     this.renderChart(
       {
-        labels: ["2010", "2011", "2012", "2013", "2014", "2015", "2016"],
-        datasets: [
-          {
-            label: "Male",
-            borderColor: "rgba(180, 190, 203, 0.5)",
-            pointBackgroundColor: "white",
-            borderWidth: 2,
-            pointBorderWidth: 0,
-            backgroundColor: this.gradient,
-            data: [0, 130, 80, 70, 180, 105, 250],
-            pointStrokeColors: "rgba(180, 190, 203, 0.5)",
-            lineTension: 0
-          },
-          {
-            label: "Female",
-            borderColor: "rgba(1, 192, 200, 0.5)",
-            pointBackgroundColor: "white",
-            borderWidth: 2,
-            pointBorderWidth: 0,
-            backgroundColor: this.gradient2,
-            data: [0, 100, 60, 200, 150, 90, 150],
-            pointStrokeColors: "rgba(1, 192, 200, 0.5)",
-            lineTension: 0
-          }
-        ]
-      },
-      { responsive: true, maintainAspectRatio: false }
+        labels: ["ALLERGY & IMMUNOLOGY",
+        "ANESTHESIOLOGY",
+        "DERMATOLOGY",
+        "DIAGNOSTIC RADIOLOGY",
+        "EMERGENCY MEDICINE",
+        "FAMILY MEDICINE",
+        "INTERNAL MEDICINE",
+        "MEDICAL GENETICS",
+        "NEUROLOGY",
+        "NUCLEAR MEDICINE",
+        "OBSTETRICS AND GYNECOLOGY",
+        "OPHTHALMOLOGY",
+        "PATHOLOGY",
+        "PEDIATRICS",
+        "PHYSICAL MEDICINE & REHABILITATION",
+        "PREVENTIVE MEDICINE",
+        "PSYCHIATRY",
+        "RADIATION ONCOLOGY",
+        "SURGERY",
+        "UROLOGY",],
+        datasets: [{
+            label: '# of Doctors',
+            data: [12, 1, 3, 5, 2, 3,12, 19, 3, 5, 2, 3,19, 3, 5, 2, 3,5,7,12],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+              'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+
+            ],
+            borderWidth: 1
+        }]
+    },
+    {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+        
+    },
+    
+    {
+        responsive: true,
+        maintainAspectRatio: false,
+        gridLines: {
+          color: "#e0e0e0"
+        },
+        legend: {
+          position: "bottom"
+        }
+      }
+
+    
     );
+    
   }
 };
 </script>
