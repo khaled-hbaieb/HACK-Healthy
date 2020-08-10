@@ -80,13 +80,11 @@
             type="border"
             class="btn btn-info waves-effect waves-light m-r-10 handling-buttons-assign"
             @click="submitAssignRoom"
-            >Submit</vs-button
-          >
+          >Submit</vs-button>
           <vs-button
             class="btn btn-inverse waves-effect waves-light handling-buttons-assign"
             type="submit"
-            >Cancel</vs-button
-          >
+          >Cancel</vs-button>
         </vs-card>
       </vs-col>
     </vs-row>
@@ -108,33 +106,53 @@ export default {
     };
   },
   methods: {
-    successUpload() {
-      this.$vs.notify({
-        color: "success",
-        title: "Upload Success",
-        text: this.name + " Uploaded The image Successfully!",
-      });
-    },
-    submitAssignRoom() {
-      axios.post(
-        `/api/clinicX/rooms/assignRoom`,
+    async submitAssignRoom() {
+      let patient = await axios.post(
+        "/api/users/clinicX/patients/findPatients",
         {
-          roomNumber: this.roomNumber,
-          CINP: this.CINP,
-          CIND: this.CIND,
-          ED: this.ED,
-          illness: this.illness,
+          CIN: this.CINP,
         }
       );
+      let doctor = await axios.post("/api/users/clinicX/doctors/findDoctors", {
+        CIN: this.CIND,
+      });
+      let currentPatient = await axios.post(
+        "/api/users/clinicX/currentPatients/findCurrentPatients",
+        { patientCIN: this.CINP }
+      );
+      if (currentPatient.data.length > 0) {
+        this.$vs.notify({
+          color: "danger",
+          position: "top-center",
+          title: "Sorry,",
+          text: "Patient Already Assigned To A Room",
+        });
+      } else if (patient.data.length > 0 && doctor.data.length > 0) {
+        patient.data[0].roomNumber = this.roomNumber;
+        patient.data[0].doctorCIN = this.CIND;
+        patient.data[0].entryDate = this.ED;
+        patient.data[0].illness = this.illness;
+        axios.post(`/api/clinicX/rooms/assignRoom`, patient.data[0]);
+        this.$vs.notify({
+          color: "danger",
+          position: "top-center",
+          title: "Sorry,",
+          text: "Room Assigned Successfully!",
+        });
+      } else {
+        this.$vs.notify({
+          color: "danger",
+          position: "top-center",
+          title: "Sorry,",
+          text: "Patient CIN or Doctor CIN Does Not Exist",
+        });
+      }
     },
   },
-  beforeMount: async function() {
-    let available = await axios.post(
-      `/api/clinicX/rooms`,
-      {
-        availibility: true,
-      }
-    );
+  beforeMount: async function () {
+    let available = await axios.post(`/api/clinicX/rooms`, {
+      availibility: true,
+    });
     this.availableRooms = available.data;
   },
 };

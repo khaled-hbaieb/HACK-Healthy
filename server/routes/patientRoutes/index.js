@@ -5,7 +5,15 @@ const services = require("../../services");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-router.post("/", async (req, res) => {
+router.get("/", async (req, res) => {
+  try {
+    var Patients = await services.patientService.findAllPatients();
+    res.send(Patients);
+  } catch (error) {
+    res.send(error);
+  }
+});
+router.post("/findPatients", async (req, res) => {
   try {
     var Patients = await services.patientService.findPatients(req.body);
     res.send(Patients);
@@ -13,7 +21,6 @@ router.post("/", async (req, res) => {
     res.send(error);
   }
 });
-
 router.post("/createpatient", async (req, res) => {
   try {
     var newPatient = await services.patientService.createPatient(req.body);
@@ -25,19 +32,28 @@ router.post("/createpatient", async (req, res) => {
 
 router.put("/updatePatient", async (req, res) => {
   try {
-    let filter = req.body.filter
-    let payload = req.body.payload
-    console.log(req.body)
-    var newPatient = await services.patientService.updatePatient(filter, payload);
+    let filter = req.body.filter;
+    let payload = req.body.payload;
+    var newPatient = await services.patientService.updatePatient(
+      filter,
+      payload
+    );
     res.send(newPatient);
   } catch (error) {
     res.send(error);
   }
 });
-
+router.post("/searchPatients", async (req, res) => {
+  try {
+    var Patients = await services.patientService.searchPatients(req.body);
+    res.send(Patients);
+  } catch (error) {
+    res.send(error);
+  }
+});
 router.post("/checkPatient", async (req, res) => {
   try {
-    var Patients = await services.patientService.findPatients(req.body);
+    var Patients = await services.patientService.checkPatient(req.body);
     res.send(Patients);
   } catch (err) {
     res.send(err);

@@ -22,10 +22,19 @@ router.post("/createRooms", async (req, res) => {
 router.post("/assignRoom", async (req, res) => {
   try {
     let roomNumber = req.body.roomNumber;
-    let patientCIN = req.body.CINP;
-    let doctorCIN = req.body.CIND;
+    let patientCIN = req.body.CIN;
+    let doctorCIN = req.body.doctorCIN;
     let illness = req.body.illness;
-    let entryDate = req.body.ED;
+    let entryDate = req.body.entryDate;
+    let fullName = req.body.fullName;
+    let job = req.body.job;
+    let address = req.body.address;
+    let gender = req.body.gender;
+    let dateOfBirth = req.body.dateOfBirth;
+    let email = req.body.email;
+    let phoneNumber = req.body.phoneNumber;
+    let imageName = req.body.imageName;
+
     let arrayOfPromises = [];
     arrayOfPromises.push(
       services.roomService.updateRoom(
@@ -41,6 +50,14 @@ router.post("/assignRoom", async (req, res) => {
     );
     arrayOfPromises.push(
       services.currentPatientsService.createCurrentPatient({
+        fullName,
+        email,
+        job,
+        address,
+        gender,
+        dateOfBirth,
+        imageName,
+        phoneNumber,
         roomNumber,
         doctorCIN,
         patientCIN,
@@ -60,7 +77,6 @@ router.post("/assignRoom", async (req, res) => {
     Promise.all(arrayOfPromises);
     res.send("Room Assigned");
   } catch (error) {
-    console.log(error);
     res.send(error);
   }
 });

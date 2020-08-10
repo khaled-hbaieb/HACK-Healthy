@@ -17,11 +17,7 @@
         </div>
       </div>
       <vs-spacer></vs-spacer>
-      <vs-dropdown
-        vs-trigger-click
-        left
-        class="cursor-pointer pr-2 pl-2 ml-1 mr-1"
-      >
+      <vs-dropdown vs-trigger-click left class="cursor-pointer pr-2 pl-2 ml-1 mr-1">
         <a class="text-white-dark" href="#">
           <vs-icon icon="menu"></vs-icon>
         </a>
@@ -31,11 +27,7 @@
         </vs-dropdown-menu>
       </vs-dropdown>
 
-      <vs-dropdown
-        vs-trigger-click
-        left
-        class="cursor-pointer pr-2 pl-2 ml-1 mr-1"
-      >
+      <vs-dropdown vs-trigger-click left class="cursor-pointer pr-2 pl-2 ml-1 mr-1">
         <a class="text-white-dark" href="#">
           <vs-icon icon="mode_comment"></vs-icon>
         </a>
@@ -47,16 +39,8 @@
         </vs-dropdown-menu>
       </vs-dropdown>
       <div>
-        <vs-dropdown
-          vs-trigger-click
-          left
-          class="cursor-pointer pr-2 pl-2 ml-1 mr-md-3"
-        >
-          <a
-            v-if="role === 'patient'"
-            class="text-white-dark user-image"
-            href="#"
-          >
+        <vs-dropdown vs-trigger-click left class="cursor-pointer pr-2 pl-2 ml-1 mr-md-3">
+          <a v-if="role === 'patient'" class="text-white-dark user-image" href="#">
             <img
               v-if="ready && currentUser.imageName !== ''"
               :src="currentUser.imageName"
@@ -64,11 +48,7 @@
             />
             <img v-else src="@/assets/images/logo/patient.jpg" alt="User" />
           </a>
-          <a
-            v-if="role === 'doctor'"
-            class="text-white-dark user-image"
-            href="#"
-          >
+          <a v-if="role === 'doctor'" class="text-white-dark user-image" href="#">
             <img
               v-if="ready && currentUser.imageName !== ''"
               :src="currentUser.imageName"
@@ -76,18 +56,11 @@
             />
             <img v-else src="@/assets/images/logo/doctor.jpg" alt="User" />
           </a>
-          <a
-            v-if="role === 'administrator'"
-            class="text-white-dark user-image"
-            href="#"
-          >
+          <a v-if="role === 'administrator'" class="text-white-dark user-image" href="#">
             <img src="@/assets/images/logo/admin.jpg" alt="User" />
           </a>
           <vs-dropdown-menu class="topbar-dd">
-            <vs-dropdown-item
-              v-if="role !== 'administrator'"
-              @click="renderProfile"
-            >
+            <vs-dropdown-item v-if="role !== 'administrator'" @click="renderProfile">
               <vs-icon icon="person_outline" class="mr-1"></vs-icon>My Profile
             </vs-dropdown-item>
             <hr v-if="role !== 'administrator'" class="mb-1" />
@@ -175,7 +148,7 @@ export default {
       );
     }
     if (localStorage.getItem("role") === "administrator") {
-      UserService.getAdminBoard().then(
+      UserService.getAdministratorBoard().then(
         (response) => {
           this.currentUser = response;
           this.ready = true;
@@ -210,6 +183,7 @@ export default {
       UserService.getDoctorBoard().then(
         (response) => {
           this.currentUser = response;
+          console.log(this.currentUser);
           this.ready = true;
         },
         (error) => {
@@ -222,7 +196,7 @@ export default {
     }
     if (localStorage.getItem("role") === "administrator") {
       this.role = "administrator";
-      UserService.getAdminBoard().then(
+      UserService.getAdministratorBoard().then(
         (response) => {
           this.currentUser = response;
           this.ready = true;

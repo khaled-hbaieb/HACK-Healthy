@@ -26,23 +26,15 @@
     <vs-card>
       <vs-row>
         <vs-col vs-sm="6" vs-lg="7"></vs-col>
-        <vs-col vs-sm="4" vs-xs="9" vs-lg="3">
+        <vs-col vs-sm="4" vs-xs="9" vs-lg="5">
           <vs-input
             icon-after="true"
             icon="search"
             class="text-muted"
             label-placeholder="Search Here By Name/CIN"
             v-model="search"
+            @input="searchPatients({ fullName: search })"
           />
-        </vs-col>
-        <vs-col vs-sm="2" vs-xs="3" vs-lg="2">
-          <vs-button
-            size="33px"
-            id="search-patient-button"
-            color="dark"
-            type="border"
-            >Search</vs-button
-          >
         </vs-col>
       </vs-row>
     </vs-card>
@@ -54,10 +46,16 @@
         vs-sm="6"
         vs-lg="3"
       >
-        <vs-card actionable vs-xs="12" vs-sm="12" vs-lg="12" id="profile" class="cardx">
+        <vs-card
+          actionable
+          vs-xs="12"
+          vs-sm="12"
+          vs-lg="12"
+          id="profile"
+          class="cardx"
+        >
           <div slot="media">
             <img
-              
               v-if="patient.imageName !== ''"
               @click="rendershowPatientInfo(patient.CIN)"
               id="patient-profile-image"
@@ -96,6 +94,13 @@ export default {
     popupActivo5: false,
   }),
   methods: {
+    async searchPatients(criteria) {
+      let patients = await axios.post(
+        `/api/users/clinicX/patients/searchPatients`,
+        criteria
+      );
+      this.patients = patients.data;
+    },
     renderCreatePatient() {
       this.$router.push("/administrator/patients/createAPatient");
     },
@@ -104,7 +109,7 @@ export default {
     },
   },
   beforeMount: async function() {
-    let patients = await axios.post(`/api/users/clinicX/patients`);
+    let patients = await axios.get(`/api/users/clinicX/patients`);
     this.patients = patients.data;
   },
 };

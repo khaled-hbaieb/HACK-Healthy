@@ -29,6 +29,9 @@ const billSchema = new Schema({
   state: {
     type: String,
   },
+  paymentMethod: {
+    type: String,
+  },
   createdAt: {
     type: String,
   },

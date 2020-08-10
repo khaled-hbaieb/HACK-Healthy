@@ -14,14 +14,24 @@
           <h5 class="card-title">Payment Information</h5>
           <form class="form-material form-horizontal">
             <label class="col-md-12" for="example-text">Patient CIN</label>
-            <vs-input
+            <vs-select
+              placeholder="Select The Patient CIN"
               class="make-bill-admin-inputs"
-              type="number"
-              id="example-text"
-              name="example-text"
-              placeholder="Patient CIN"
-              v-model="patientCIN"
-            />
+              select
+              v-model="currentPatient"
+              @change="changeValues(currentPatient)"
+            >
+              <vs-select-item
+                v-if="currentPatients.length===0"
+                text="There Are No Current Patients"
+              ></vs-select-item>
+              <vs-select-item
+                v-for="(currentPatient,index) in currentPatients"
+                :key="index"
+                :value="currentPatient"
+                :text="currentPatient.patientCIN"
+              ></vs-select-item>
+            </vs-select>
             <label class="col-md-12" for="paydate">Doctor CIN</label>
             <vs-input
               class="make-bill-admin-inputs"
@@ -30,6 +40,7 @@
               name="paydate"
               placeholder="Doctor CIN"
               v-model="doctorCIN"
+              disabled
             />
             <label class="col-md-12" for="pname">Patient Name</label>
             <vs-input
@@ -39,29 +50,18 @@
               name="pname"
               placeholder="Patient Name"
               v-model="patientName"
+              disabled
             />
-            <label class="col-md-12" for="dname">Doctor Name</label>
-            <vs-input
-              class="make-bill-admin-inputs"
-              type="text"
-              id="dname"
-              name="dname"
-              placeholder="Doctor Name"
-              v-model="doctorName"
-            />
-
             <label class="col-md-12" for="toamt">Entry Date</label>
-
             <vs-input
               class="make-bill-admin-inputs"
               type="date"
               id="toamt"
               name="toamt"
               v-model="entryDate"
+              disabled
             />
-
             <label class="col-md-12" for="toamt">Exit Date</label>
-
             <vs-input
               class="make-bill-admin-inputs"
               type="date"
@@ -70,18 +70,15 @@
               v-model="exitDate"
             />
             <label class="col-md-12" for="tests">Tests</label>
-            <!-- <vs-input v-model=" testsInputs"> -->
             <vs-input
-            
               v-for="(input,index) in testsInputs"
               v-model="tests[index]"
-              :key="index"
+              :key="index+60"
               :type="input.type"
               :name="input.name"
               :placeholder="input.placeholder"
               class="make-bill-admin-inputs"
             />
-            <!-- </vs-input> -->
             <vs-button
               color="dark"
               type="line"
@@ -97,7 +94,7 @@
             <vs-input
               v-for="(input,index) in operationsInputs"
               v-model="operations[index]"
-              :key="index"
+              :key="index+40"
               :type="input.type"
               :name="input.name"
               :placeholder="input.placeholder"
@@ -114,11 +111,10 @@
             <br />
             <br />
             <label class="col-md-12" for="drugs">Drugs</label>
-
             <vs-input
               v-for="(input,index) in drugsInputs"
               v-model="drugs[index]"
-              :key="index"
+              :key="index+20"
               :type="input.type"
               :name="input.name"
               :placeholder="input.placeholder"
@@ -134,21 +130,19 @@
             <br />
             <br />
             <br />
-
             <label class="col-md-12" for="fiamt">Final Amount</label>
-
-            <vs-input 
-            v-model="FinalAmount"
-            class="make-bill-admin-inputs"
-             type="number"
-             id="fiamt"
-             name="fiamt" />
-
+            <vs-input
+              v-model="finalAmount"
+              class="make-bill-admin-inputs"
+              type="number"
+              id="fiamt"
+              name="fiamt"
+            />
             <label class="col-sm-12">Payment Method</label>
             <vs-select
               placeholder="Select The Payment Method"
-              v-model="method"
-              :success="method !== ''"
+              v-model="paymentMethod"
+              :success="paymentMethod !== ''"
               success-text="Thank You For Selecting The Payment Method"
               class="select"
             >
@@ -162,8 +156,8 @@
             <label class="col-sm-12">Payment Status</label>
             <vs-select
               placeholder="Select The Payment Status"
-              v-model="status"
-              :success="status !== ''"
+              v-model="paymentStatus"
+              :success="paymentStatus !== ''"
               success-text="Thank You For The Payment Status"
               class="select"
             >
@@ -192,11 +186,13 @@ export default {
   data: () => {
     return {
       tests: [""],
-      operations:[""],
-      drugs:[""],
+      operations: [""],
+      drugs: [""],
       title: "Checkbox",
       status: "",
       method: "",
+      currentPatients: [],
+      currentPatient: null,
       patientCIN: "",
       doctorCIN: "",
       patientName: "",
@@ -209,7 +205,7 @@ export default {
           type: "text",
           name: "test",
           placeholder: "Enter your test",
-        }
+        },
       ],
       operationsInputs: [
         {
@@ -217,7 +213,7 @@ export default {
           type: "text",
           name: "operation",
           placeholder: "Enter your operation",
-        }
+        },
       ],
       drugsInputs: [
         {
@@ -225,15 +221,21 @@ export default {
           type: "text",
           name: "drug",
           placeholder: "Enter your drug",
-        }
+        },
       ],
-      FinalAmount: "",
-      PaymentMethod: "",
-      PaymentStatus: "",
+      finalAmount: "",
+      paymentMethod: "",
+      paymentStatus: "",
       successful: false,
     };
   },
   methods: {
+    changeValues(args) {
+      this.patientCIN = args.patientCIN;
+      this.doctorCIN = args.doctorCIN;
+      this.patientName = args.fullName;
+      this.entryDate = args.entryDate;
+    },
     addTestsInput() {
       this.testsInputs.push({
         id: "test",
@@ -263,18 +265,23 @@ export default {
     },
     handleBill() {
       let bill = {
-       patientCIN: this.patientCIN,
-       doctorCIN: this.doctorCIN,
-       entryDate: this.entryDate,
-       exitDate: this.exitDate,
-       tests: JSON.stringify(this.tests),
-       operations: JSON.stringify(this.operations),
-       drugs: JSON.stringify(this.drugs),
-       toPay: this.FinalAmount,
-       state : this.PaymentStatus
+        patientCIN: this.patientCIN,
+        doctorCIN: this.doctorCIN,
+        entryDate: this.entryDate,
+        exitDate: this.exitDate,
+        tests: JSON.stringify(this.tests),
+        operations: JSON.stringify(this.operations),
+        drugs: JSON.stringify(this.drugs),
+        toPay: this.finalAmount,
+        state: this.paymentStatus,
+        paymentMethod: this.paymentMethod,
       };
       axios.post(`/api/clinicX/bills/makeBill`, bill);
     },
+  },
+  async beforeMount() {
+    let currentPatients = await axios.get("/api/users/clinicX/currentPatients");
+    this.currentPatients = currentPatients.data;
   },
 };
 </script>

@@ -1,11 +1,11 @@
 const Appointments = require("../../../database/models/appointment");
 
 module.exports = {
-  async findAppointments() {
+  async findAllAppointments() {
     return Appointments.find({});
   },
-  async findOneAppointment(appointment) {
-    return Appointments.find(appointment);
+  async findAppointments(filter) {
+    return Appointments.find(filter);
   },
   async createAppointment(appointment) {
     return Appointments.create(appointment);
@@ -13,7 +13,10 @@ module.exports = {
   async updatePatient(filter, payload) {
     return Appointments.updateOne(filter, payload);
   },
-  cancelAppointment(appoint) {
-    return Appointments.deleteOne(appoint);
+  cancelAppointment(filter) {
+    return Appointments.deleteOne(filter);
+  },
+  checkoutAppointment(filter) {
+    return Appointments.updateOne(filter, { state: true });
   },
 };

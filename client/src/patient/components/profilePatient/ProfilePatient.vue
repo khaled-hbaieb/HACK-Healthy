@@ -192,8 +192,9 @@
             <h4>My History</h4>
             <hr />
             <div>
-              <vs-table id="my-table" max-items="1" pagination :data="history">
+              <vs-table id="my-table" max-items="8" pagination search :data="history">
                 <template slot="thead">
+                  <vs-th>N°</vs-th>
                   <vs-th>Entry Date</vs-th>
                   <vs-th>Exit Date</vs-th>
                   <vs-th>Room Number</vs-th>
@@ -202,7 +203,8 @@
                 </template>
 
                 <template slot-scope="{ data }">
-                  <vs-tr :key="indextr" v-for="(tr, indextr) in data">
+                  <vs-tr :key="indextr" v-for="(tr, indextr) in data" @click="showHistory(tr)">
+                    <vs-td class="history">{{ indextr+1 }}</vs-td>
                     <vs-td
                       class="history"
                       :data="data[indextr].entryDate"
@@ -262,6 +264,9 @@ export default {
     },
   },
   methods: {
+    showHistory(arg) {
+      console.log("here", arg);
+    },
     createPDF() {
       let pdfName = "Record";
       var doc = new jsPDF();
@@ -318,16 +323,16 @@ export default {
         );
       }
       for (let i = 0; i < recordAllergies.length; i++) {
-        doc.text("Allergies: "+
-          recordAllergies[i].innerText,
+        doc.text(
+          "Allergies: " + recordAllergies[i].innerText,
           110,
           (record.length + 1) * 10 + 50
         );
         record.length++;
       }
       for (let i = 0; i < recordVaccinations.length; i++) {
-        doc.text("Vaccinations: "+
-          recordVaccinations[i].innerText,
+        doc.text(
+          "Vaccinations: " + recordVaccinations[i].innerText,
           110,
           (record.length + 1) * 10 + 50
         );
@@ -349,27 +354,35 @@ export default {
       doc.save(pdfName + ".pdf");
     },
     async deletePicture() {
+      if (this.user.password === "") {
+        delete this.user.password;
+      }
       await axios.put("/api/users/clinicX/patients/updatePatient", {
         filter: { CIN: this.user.CIN },
         payload: { imageName: "" },
       });
-      UserService.getPatientBoard().then((response) => {
-        this.currentUser = response;
-        this.user = this.currentUser;
-        this.user.password = "";
+      let user = await UserService.getPatientBoard();
+      this.currentUser = user;
+      this.user = this.currentUser;
+      this.user.password = "";
+      this.$vs.notify({
+        title: "Hack-Healthy:",
+        text: "Image Successfully Deleted",
+        color: "success",
+        position: "top-center",
       });
     },
     onFileUploaded(event) {
       this.imageName = event.target.response;
       this.user.imageName = this.imageName;
-    },
-    successUpload() {
       this.$vs.notify({
+        title: "Hack-Healthy:",
+        text: "Image Successfully Uploaded",
         color: "success",
-        title: "Upload Success",
-        text: this.name + " Uploaded The image Successfully!",
+        position: "top-center",
       });
     },
+
     showPassowrd() {
       if (this.isPassword) {
         this.passwordType = "text";
@@ -380,49 +393,48 @@ export default {
       }
     },
     async updateProfile() {
-      let user = await axios.put(`/api/users/clinicX/patients/updatePatient`, {
+      if (this.user.password === "") {
+        delete this.user.password;
+      }
+      await axios.put(`/api/users/clinicX/patients/updatePatient`, {
         filter: { CIN: this.currentUser.CIN },
         payload: this.user,
       });
-      UserService.getPatientBoard().then((response) => {
-        this.currentUser = response;
-        this.user = this.currentUser;
-        this.user.password = "";
-        this.edit = false;
+      let user = await UserService.getPatientBoard();
+      this.currentUser = user;
+      this.user = this.currentUser;
+      this.user.password = "";
+      this.edit = false;
+      this.$vs.notify({
+        title: "Hack-Healthy:",
+        text: "Proile Successfully Updated",
+        color: "success",
+        position: "top-center",
       });
     },
-    cancelEdit() {
-      UserService.getPatientBoard().then((response) => {
-        this.currentUser = response;
-        this.user = this.currentUser;
-        this.user.password = "";
-        this.edit = false;
-      });
+    async cancelEdit() {
+      let user = await UserService.getPatientBoard();
+      this.currentUser = user;
+      console.log(this.currentUser);
+      this.user = this.currentUser;
+      this.user.password = "";
+      this.edit = false;
     },
   },
-  beforeMount() {
-    UserService.getPatientBoard().then(
-      async (response) => {
-        this.currentUser = response;
-        this.user = this.currentUser;
-        this.user.password = "";
-        let record = await axios.post("/api/users/clinicX/record/findRecord", {
-          patientCIN: this.currentUser.CIN,
-        });
-        let history = await axios.post("/api/users/clinicX/history", {
-          patientCIN: this.currentUser.CIN,
-        });
-        this.history = history.data;
-        this.currentUserRecord = record.data[0];
-        this.ready = true;
-      },
-      (error) => {
-        this.content =
-          (error.currentUser && error.response.data) ||
-          error.message ||
-          error.toString();
-      }
-    );
+  async beforeMount() {
+    let user = await UserService.getPatientBoard();
+    this.currentUser = user;
+    this.user = this.currentUser;
+    this.user.password = "";
+    let record = await axios.post("/api/users/clinicX/record/findRecord", {
+      patientCIN: this.currentUser.CIN,
+    });
+    let history = await axios.post("/api/users/clinicX/history", {
+      patientCIN: this.currentUser.CIN,
+    });
+    this.history = history.data;
+    this.currentUserRecord = record.data[0];
+    this.ready = true;
   },
 };
 </script>
