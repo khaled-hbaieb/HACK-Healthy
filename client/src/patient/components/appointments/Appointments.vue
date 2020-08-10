@@ -16,7 +16,6 @@
 
       <template slot-scope="{ data }">
   <vs-tr
-  
     :state="data[indextr].state == true ? 'success' : 'primary'"
     :key="indextr"
     v-for="(tr, indextr) in data"
@@ -40,6 +39,8 @@ import UserService from "../../../services/user.service";
 import axios from "axios";
 export default {
   data: () => ({
+    currentUser: null,
+    appoints: [],
     currentUser: null,
     appoints: [],
   }),
