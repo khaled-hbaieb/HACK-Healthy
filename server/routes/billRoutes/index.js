@@ -27,6 +27,14 @@ router.post("/findBill", async (req, res) => {
     res.send(error);
   }
 });
+router.post("/findBills", async (req, res) => {
+  try {
+    var bills = await services.billService.findBills(req.body);
+    res.send(bills);
+  } catch (error) {
+    res.send(error);
+  }
+});
 router.post("/updateBill", async (req, res) => {
   try {
     let filter = req.body.filter;

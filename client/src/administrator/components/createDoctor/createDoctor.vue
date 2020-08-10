@@ -61,30 +61,6 @@
               :success="CIN.length === 8"
               success-text="Thank You For Entering the CIN"
             />
-            <div class="images-container">
-              <div class="images-container-body">
-                <label class="col-sm-12">Profile Image</label>
-                <div class="centerx">
-                  <vs-upload
-                    automatic
-                    :action="backEndUrl"
-                    fileName="image"
-                    @on-success="onFileUploaded"
-                  />
-                </div>
-              </div>
-              <div class="images-container-body">
-                <label class="col-sm-12">CIN & Certificate Images</label>
-                <div class="centerx">
-                  <vs-upload
-                    automatic
-                    :action="backEndUrl"
-                    fileName="image"
-                    @on-success="onFileUploaded"
-                  />
-                </div>
-              </div>
-            </div>
             <label class="col-md-12" for="special">Speciality</label>
             <vs-select
               placeholder="Select Your Speciality"
@@ -124,17 +100,25 @@
               success-text="Thank You For entering the doctor's education background"
               :success="educationBackground !== ''"
             />
-            <label class="col-md-12" for="url">Address</label>
-            <vs-input
-              class="doctor-form-inputs-doctor-creation"
-              type="text"
-              id="url"
-              name="url"
-              placeholder="Doctor's Address"
-              v-model="address"
-              success-text="Thank You For entering the doctor's address"
-              :success="address !== ''"
-            />
+            <div>
+              <div>
+                <h2>Doctor's Cabinet Location</h2>
+                <vs-label>
+                  <gmap-autocomplete @place_changed="setPlace" id="inputLocation"></gmap-autocomplete>
+                  <vs-button @click="addMarker">Submit Location</vs-button>
+                </vs-label>
+                <br />
+              </div>
+              <br />
+              <gmap-map :center="center" :zoom="12" style="width:100%;  height: 400px;">
+                <gmap-marker
+                  :key="index"
+                  v-for="(m, index) in markers"
+                  :position="m.position"
+                  @click="center=m.position"
+                ></gmap-marker>
+              </gmap-map>
+            </div>
           </form>
         </vs-card>
       </vs-col>
@@ -167,27 +151,6 @@
               success-text="Thank You For entering the doctor's Phone Number"
               :success="phoneNumber !== ''"
             />
-            <label class="col-md-12" for="pwd">Password</label>
-            <vs-input
-              class="doctor-form-inputs-doctor-creation"
-              type="password"
-              id="pwd"
-              name="pwd"
-              v-model="pwd"
-              placeholder="enter doctor's password"
-
-            />
-            <label class="col-md-12" for="cpwd">Confirm Password</label>
-            <vs-input
-              class="doctor-form-inputs-doctor-creation"
-              type="password"
-              id="cpwd"
-              name="cpwd"
-              placeholder="confirm the password"
-              v-model="cpwd"
-            />
-            <vs-label v-if="(pwd === cpwd) && pwd.length !==0" color="primary">Password matches</vs-label>
-              <vs-label color="danger" v-else >Passwords do not match</vs-label>
           </form>
         </vs-card>
       </vs-col>
@@ -234,29 +197,11 @@
         </vs-card>
       </vs-col>
     </vs-row>
-    <div>
-      <div>
-        <h2>Doctor's Cabinet Location</h2>
-        <vs-label>
-          <gmap-autocomplete @place_changed="setPlace" id="inputLocation"></gmap-autocomplete>
-          <vs-button @click="addMarker">Add</vs-button>
-        </vs-label>
-        <br />
-      </div>
-      <br />
-      <gmap-map :center="center" :zoom="12" style="width:100%;  height: 400px;">
-        <gmap-marker
-          :key="index"
-          v-for="(m, index) in markers"
-          :position="m.position"
-          @click="center=m.position"
-        ></gmap-marker>
-      </gmap-map>
-    </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
 import { required } from "vuelidate/lib/validators";
 import Doctor from "../../../models/doctor";
 export default {
@@ -275,7 +220,6 @@ export default {
       phoneNumber: "",
       pwd: "",
       cpwd: "",
-      address: "",
       imageName: "",
       educationBackground: "",
       CIN: "",
@@ -337,8 +281,9 @@ export default {
       });
     },
     submitForm() {},
-    handleRegisterDoc() {
+    async handleRegisterDoc() {
       let user;
+      this.pwd = Math.random().toString(36).slice(-8);
       user = new Doctor(
         this.email,
         this.pwd,
@@ -381,8 +326,6 @@ export default {
             error.message ||
             error.toString();
         }
-      );
-    },
     setPlace(place) {
       this.currentPlace = place;
       console.log(this.currentPlace);

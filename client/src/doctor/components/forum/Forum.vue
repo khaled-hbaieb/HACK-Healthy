@@ -82,8 +82,6 @@ export default {
   async updated() {
     let posts = await axios.get("/api/posts");
     this.postsList = posts.data;
-    // this.displayed = false
-    // this.getmomentDate()
   },
   computed: {
     isPatient() {

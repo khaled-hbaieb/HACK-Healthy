@@ -1,37 +1,55 @@
 <script>
-import { Line } from "vue-chartjs";
-
+import { Pie } from "vue-chartjs";
+import axios from "axios";
 export default {
-  extends: Line,
+  extends: Pie,
   data() {
-    return {};
+    return {
+      female:"",
+      male:""
+    };
   },
-  mounted() {
-    this.renderChart(
-      {
-        labels: ["2010", "2011", "2012", "2013", "2014", "2015", "2016"],
+ 
+  async beforeMount() {
+  let maleNumber =  await axios.get(`/api/users/clinicX/doctors`);
+  
+      var countMale =0;
+      for (let i = 0; i < maleNumber.data.length; i++) {
+        if(maleNumber.data[i].gender === "Male"){
+           countMale++
+        }
+        
+      }
+      this.male = countMale
+      
+      
+   let femaleNumber =  await axios.get(`/api/users/clinicX/doctors`);
+      // this.number = available.data.length
+     
+      var countFemale =0;
+      for (let i = 0; i < femaleNumber.data.length; i++) {
+        if(femaleNumber.data[i].gender === "Female"){
+           countFemale++
+        }
+        
+      }
+      this.female = countFemale
+      
+      this.renderChart(
+     {
+    datasets: [{
+        data: [countFemale, countMale],
+        backgroundColor:["pink","lightblue"],
+        
+    }],
 
-        datasets: [
-          {
-            label: "Male",
-            borderColor: "#00bfc7",
-            pointBackgroundColor: "white",
-            borderWidth: 3,
-            backgroundColor: "transparent",
-            pointBorderWidth: 3,
-            data: [50, 130, 80, 70, 180, 105, 250]
-          },
-          {
-            label: "Female",
-            borderColor: "#fb9678",
-            pointBackgroundColor: "white",
-            borderWidth: 3,
-            backgroundColor: "transparent",
-            pointBorderWidth: 3,
-            data: [80, 100, 60, 200, 150, 100, 150]
-          }
-        ]
-      },
+    
+    labels: [
+        'Female',
+        'Male'
+    ]
+},
+
       {
         responsive: true,
         maintainAspectRatio: false,
@@ -43,6 +61,7 @@ export default {
         }
       }
     );
+    
   }
 };
 </script>

@@ -11,7 +11,6 @@ cloudinary.config({
 
 module.exports = {
   async uploads(file, folder) {
-    console.log("upload cloudinary");
     return new Promise((resolve) => {
       cloudinary.uploader.upload(
         file,

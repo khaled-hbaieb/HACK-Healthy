@@ -4,12 +4,16 @@ const API_URL = `/api/users/clinicX/`;
 
 class AuthService {
   async login(user) {
-    let users = await axios.post(API_URL + `${user.role}s/checkLogin`, {
-      email: user.email,
-      password: user.password,
-    },{ headers: { Authorization:localStorage.getItem('token') } });
+    let users = await axios.post(
+      API_URL + `${user.role}s/checkLogin`,
+      {
+        email: user.email,
+        password: user.password,
+      },
+      { headers: { Authorization: localStorage.getItem("token") } }
+    );
     if (users.data.token) {
-      axios.defaults.headers.common['Authorization'] = users.data.token
+      axios.defaults.headers.common["Authorization"] = users.data.token;
       localStorage.setItem("token", users.data.token);
       localStorage.setItem("role", user.role);
       setTimeout(() => {
@@ -34,10 +38,10 @@ class AuthService {
         gender: user.user.gender,
         dateOfBirth: user.user.dateOfBirth,
         CIN: user.user.CIN,
-        speciality:user.user.speciality,
+        speciality: user.user.speciality,
         phoneNumber: user.user.phoneNumber,
         address: user.user.address,
-        yearsOfExperience:user.user.yearsOfExperience,
+        yearsOfExperience: user.user.yearsOfExperience,
         imageName: user.user.imageName,
         marker: user.user.marker,
         educationBackground:user.user.educationBackground

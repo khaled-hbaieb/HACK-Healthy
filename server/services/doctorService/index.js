@@ -5,8 +5,8 @@ module.exports = {
   async findAllDoctors() {
     return Doctors.find({});
   },
-  async findDoctor(doctor) {
-    return Doctors.find(doctor);
+  async findDoctors(filter) {
+    return Doctors.find(filter);
   },
   async searchDoctors(doctor) {
     if (doctor.fullName) {
@@ -25,6 +25,6 @@ module.exports = {
     if (payload.password) {
       payload.password = bcrypt.hashSync(payload.password, 10);
     }
-    return Doctors.updateOne(filter, payload).catch((err) => console.log(err));
+    return Doctors.updateOne(filter, payload)
   },
 };

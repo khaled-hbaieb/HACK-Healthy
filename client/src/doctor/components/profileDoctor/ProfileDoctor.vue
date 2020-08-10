@@ -18,7 +18,7 @@
       <vs-col vs-lg="6">
         <vs-card>
           <vs-row>
-            <vs-col vs-lg="6">
+            <vs-col vs-lg="4">
               <img
                 v-if="currentUser.imageName !== ''"
                 id="doctor-profile-image"
@@ -32,7 +32,7 @@
                 src="@/assets/images/logo/doctor.jpg"
               />
             </vs-col>
-            <vs-col vs-lg="6">
+            <vs-col vs-lg="8">
               <strong>Full-Name</strong>
               <p>{{ currentUser.fullName }}</p>
               <strong>Occupation</strong>
@@ -56,18 +56,14 @@
             </vs-col>
             <vs-col>
               <strong>Address</strong>
-              <gmap-map
-      :center="center"
-      :zoom="18"
-      style="width:100%;  height: 400px;"
-    >
-      <gmap-marker
-        :key="index"
-        v-for="(m, index) in markers"
-        :position="m.position"
-        @click="center=m.position"
-      ></gmap-marker>
-    </gmap-map>
+              <gmap-map :center="center" :zoom="18" style="width:100%;  height: 400px;">
+                <gmap-marker
+                  :key="index"
+                  v-for="(m, index) in markers"
+                  :position="m.position"
+                  @click="center=m.position"
+                ></gmap-marker>
+              </gmap-map>
             </vs-col>
           </vs-row>
           <hr />
@@ -81,11 +77,7 @@
           <hr />
           <vs-col vs-lg="4">
             <vs-row>
-              <vs-input
-                maxlength="25"
-                v-model="user.fullName"
-                label="Full Name"
-              />
+              <vs-input maxlength="25" v-model="user.fullName" label="Full Name" />
             </vs-row>
             <vs-row>
               <vs-input
@@ -117,24 +109,14 @@
               />
             </vs-row>
             <vs-row>
-              <vs-input
-                maxlength="20"
-                type="text"
-                v-model="user.job"
-                label="Job"
-              />
+              <vs-input maxlength="20" type="text" v-model="user.job" label="Job" />
             </vs-row>
             <vs-row>
-              <vs-input
-                maxlength="5"
-                type="date"
-                v-model="user.dateOfBirth"
-                label="Date of Birth"
-              />
+              <vs-input maxlength="5" type="date" v-model="user.dateOfBirth" label="Date of Birth" />
             </vs-row>
           </vs-col>
-          <vs-col vs-lg="4"
-            ><label class="col-sm-12" for="image">Profile Image</label>
+          <vs-col vs-lg="4">
+            <label class="col-sm-12" for="image">Profile Image</label>
             <div class="centerx">
               <vs-upload
                 automatic
@@ -143,26 +125,26 @@
                 :action="backEndUrl"
                 fileName="image"
                 @on-success="onFileUploaded"
-              /></div
-          ></vs-col>
+              />
+            </div>
+          </vs-col>
           <vs-row>
-            <vs-col vs-lg="9">
-              <vs-button class="doctor-profile-buttons" @click="cancelEdit"
-                >Cancel Edit</vs-button
-              >
+            <vs-col vs-lg="7">
+              <vs-button class="doctor-profile-buttons" @click="cancelEdit">Cancel Edit</vs-button>
             </vs-col>
-            <vs-col vs-lg="3">
-              <vs-button class="patient-profile-buttons" @click="updateProfile"
-                >Update Profile</vs-button
-              >
+            <vs-col vs-lg="5">
+              <vs-button
+                id="delete"
+                class="doctor-profile-buttons"
+                @click="deletePicture"
+              >Delete Picture</vs-button>
+              <vs-button class="doctor-profile-buttons" @click="updateProfile">Update Profile</vs-button>
             </vs-col>
           </vs-row>
         </vs-card>
       </vs-col>
     </vs-row>
-    <vs-row>
-    </vs-row>
-    
+    <vs-row></vs-row>
   </div>
 </template>
 <script>
@@ -183,7 +165,7 @@ export default {
       center: null,
       markers: [],
       places: [],
-      currentPlace: null
+      currentPlace: null,
     };
   },
   computed: {
@@ -192,27 +174,43 @@ export default {
     },
   },
   methods: {
+    async deletePicture() {
+      if (this.user.password === "") {
+        delete this.user.password;
+      }
+      await axios.put("/api/users/clinicX/doctors/updateDoctor", {
+        filter: { CIN: this.user.CIN },
+        payload: { imageName: "" },
+      });
+      let user = await UserService.getDoctorBoard();
+      this.currentUser = user;
+      this.user = this.currentUser;
+      this.user.password = "";
+      this.$vs.notify({
+        title: "Hack-Healthy:",
+        text: "Image Successfully Deleted",
+        color: "success",
+        position: "top-center",
+      });
+    },
     addMarker() {
-      
-        const marker = {
-          lat: this.center.lat,
-          lng: this.center.lng
-        };
-        this.markers.push({ position: marker });
-        this.places.push(this.currentPlace);
-        this.center = marker;
-        this.currentPlace = null;
-      
+      const marker = {
+        lat: this.center.lat,
+        lng: this.center.lng,
+      };
+      this.markers.push({ position: marker });
+      this.places.push(this.currentPlace);
+      this.center = marker;
+      this.currentPlace = null;
     },
     onFileUploaded(event) {
       this.imageName = event.target.response;
       this.user.imageName = this.imageName;
-    },
-    successUpload() {
       this.$vs.notify({
+        title: "Hack-Healthy:",
+        text: "Image Successfully Uploaded",
         color: "success",
-        title: "Upload Success",
-        text: this.name + " Uploaded The image Successfully!",
+        position: "top-center",
       });
     },
     showPassowrd() {
@@ -225,18 +223,23 @@ export default {
       }
     },
     async updateProfile() {
-      if(this.user.password === '') {
-        delete this.user.password
+      if (this.user.password === "") {
+        delete this.user.password;
       }
-      let user = await axios.put(
-        `/api/users/clinicX/doctors/updateDoctor`,
-        { filter: { CIN: this.currentUser.CIN }, payload: this.user }
-      );
-      UserService.getDoctorBoard().then((response) => {
-        this.currentUser = response;
-        this.user = this.currentUser;
-        this.user.password = "";
-        this.edit = false;
+      await axios.put(`/api/users/clinicX/doctors/updateDoctor`, {
+        filter: { CIN: this.currentUser.CIN },
+        payload: this.user,
+      });
+      let user = await UserService.getDoctorBoard();
+      this.currentUser = user;
+      this.user = this.currentUser;
+      this.user.password = "";
+      this.edit = false;
+      this.$vs.notify({
+        title: "Hack-Healthy:",
+        text: "Proile Successfully Updated",
+        color: "success",
+        position: "top-center",
       });
     },
     cancelEdit() {
@@ -247,38 +250,25 @@ export default {
         this.edit = false;
       });
     },
-    geolocate: function() {
-      navigator.geolocation.getCurrentPosition(position => {
+    geolocate: function () {
+      navigator.geolocation.getCurrentPosition((position) => {
         this.center = {
           lat: this.center.lat,
-          lng: this.center.lng
+          lng: this.center.lng,
         };
       });
     },
   },
   async beforeMount() {
-    
-    await UserService.getDoctorBoard().then(
-       (response) => {
-        
-        this.currentUser = response;
-        this.user = this.currentUser;
-        this.user.password = "";
-        
-        this.center = {lat: response.marker.lat, lng: response.marker.lng}
-        this.ready = true;
-        this.geolocate()
-        this.addMarker()
-      },
-      (error) => {
-        this.content =
-          (error.currentUser && error.response.data) ||
-          error.message ||
-          error.toString();
-      }
-    );
+    let doctor = await UserService.getDoctorBoard();
+    this.currentUser = doctor;
+    this.user = this.currentUser;
+    this.user.password = "";
+    this.center = { lat: doctor.marker.lat, lng: doctor.marker.lng };
+    this.geolocate();
+    this.addMarker();
+    this.ready = true;
   },
- 
 };
 </script>
 
@@ -286,6 +276,9 @@ export default {
 #doctor-profile-image {
   height: 100%;
   width: 80%;
+}
+#delete {
+  margin-right: 8px;
 }
 .doctor-profile-buttons {
   margin-top: 58px;

@@ -32,19 +32,19 @@ import * as VueGoogleMaps from "vue2-google-maps";
 Vue.use(VueGoogleMaps, {
   load: {
     key: "AIzaSyA5B4dM3gNQRexvjz3ge2mGewwYBWMOJo0",
-    libraries: "places"
+    libraries: "places",
   },
-  installComponents: true
+  installComponents: true,
 });
 
-import VueGmaps from 'vue-gmaps'
+import VueGmaps from "vue-gmaps";
 Vue.use(VueGmaps, {
-  key: "AIzaSyA5B4dM3gNQRexvjz3ge2mGewwYBWMOJo0"
-})
+  key: "AIzaSyA5B4dM3gNQRexvjz3ge2mGewwYBWMOJo0",
+});
 Vue.use(Vuesax, {
   theme: {
     colors: {
-      primary: "#000000",
+      // primary: "#fb9678",
     },
   },
 });

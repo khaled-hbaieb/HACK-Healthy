@@ -1,7 +1,7 @@
 <template lang="html">
   <div v-if="ready" id="parentx">
     <vs-sidebar
-      default-index="1"
+    :default-index='defaultIndex'
       :parent="parent"
       :hiddenBackground="doNotClose"
       :color="sideBarColor"
@@ -94,9 +94,36 @@ export default {
     currentUser: null,
     role: null,
     ready: false,
+    defaultIndex: null,
+    default: {
+      administrator: [
+        "/administrator/currentPatients",
+        "/administrator/patients",
+        "/administrator/doctors",
+        "/administrator/clinicState",
+        "/administrator/makeABill",
+      ],
+      doctor: [
+        "/doctor/appointments",
+        "/doctor/calendar",
+        "/doctor/patients",
+        "/doctor/doctors",
+        "/doctor/chatRoom",
+        "/doctor/forum",
+        "/doctor/assignBill",
+      ],
+      patient: [
+        "/patient/makeAppointment",
+        "/patient/appointments",
+        "/patient/doctors",
+        "/patient/billing",
+        "/patient/history",
+        "/patient/forum",
+        "/patient/emergency",
+      ],
+    },
   }),
   computed: {
-    //This is for mobile trigger
     isSidebarActive: {
       get() {
         return this.$store.state.isSidebarActive;
@@ -150,6 +177,9 @@ export default {
   },
   beforeMount() {
     if (localStorage.role === "administrator") {
+      this.defaultIndex = this.default.administrator.indexOf(
+        window.location.pathname
+      );
       this.role = "administrator";
       UserService.getAdministratorBoard().then(
         (response) => {
@@ -191,6 +221,7 @@ export default {
         },
       ];
     } else if (localStorage.role === "doctor") {
+      this.defaultIndex = this.default.doctor.indexOf(window.location.pathname);
       this.role = "doctor";
       UserService.getDoctorBoard().then(
         (response) => {
@@ -243,6 +274,9 @@ export default {
         },
       ];
     } else {
+      this.defaultIndex = this.default.patient.indexOf(
+        window.location.pathname
+      );
       this.role = "patient";
       UserService.getPatientBoard().then(
         (response) => {

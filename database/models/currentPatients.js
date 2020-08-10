@@ -11,6 +11,9 @@ const currentPatientsSchema = new Schema({
   doctorCIN: {
     type: String,
   },
+  doctorName:{
+    type:String,
+  },
   roomNumber: {
     type: String,
     unique: true,
@@ -22,6 +25,30 @@ const currentPatientsSchema = new Schema({
     type: String,
   },
   createdAt: {
+    type: String,
+  },
+  fullName: {
+    type: String,
+  },
+  email: {
+    type: String,
+  },
+  gender: {
+    type: String,
+  },
+  dateOfBirth: {
+    type: String,
+  },
+  phoneNumber: {
+    type: String,
+  },
+  address: {
+    type: String,
+  },
+  job: {
+    type: String,
+  },
+  imageName: {
     type: String,
   },
 });
