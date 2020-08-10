@@ -164,7 +164,7 @@ export default {
     async getAppoints() {
       let user = await UserService.getDoctorBoard();
       this.currentUser = user;
-      let appoints = await axios.post(`/api/appointments/appointment`, {
+      let appoints = await axios.post(`/api/appointments/findAppointments`, {
         doctorCIN: this.currentUser.CIN,
         state: false,
       });

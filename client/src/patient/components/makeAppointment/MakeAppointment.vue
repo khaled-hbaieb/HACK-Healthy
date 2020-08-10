@@ -225,7 +225,7 @@ export default {
         }
       );
       this.doctorCIN = doctor.data[0].CIN;
-      let appoints = await axios.post(`/api/appointments/appointment`, {
+      let appoints = await axios.post(`/api/appointments/findAppointments`, {
         doctorCIN: doctor.data[0].CIN,
         state: false,
       });

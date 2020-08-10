@@ -107,12 +107,12 @@ export default {
   },
   methods: {
     async submitAssignRoom() {
-      // let patient = await axios.post(
-      //   "/api/users/clinicX/patients/findPatients",
-      //   {
-      //     CIN: this.CINP,
-      //   }
-      // );
+      let patient = await axios.post(
+        "/api/users/clinicX/patients/findPatients",
+        {
+          CIN: this.CINP,
+        }
+      );
       let doctor = await axios.post("/api/users/clinicX/doctors/findDoctors", {
         CIN: this.CIND,
       });

@@ -230,11 +230,11 @@ export default {
         filter: { CIN: this.currentUser.CIN },
         payload: this.user,
       });
-      let user = await UserService.getDoctorBoard()
-        this.currentUser = user;
-        this.user = this.currentUser;
-        this.user.password = "";
-        this.edit = false;
+      let user = await UserService.getDoctorBoard();
+      this.currentUser = user;
+      this.user = this.currentUser;
+      this.user.password = "";
+      this.edit = false;
       this.$vs.notify({
         title: "Hack-Healthy:",
         text: "Proile Successfully Updated",
@@ -260,24 +260,14 @@ export default {
     },
   },
   async beforeMount() {
-    await UserService.getDoctorBoard().then(
-      (response) => {
-        this.currentUser = response;
-        this.user = this.currentUser;
-        this.user.password = "";
-
-        this.center = { lat: response.marker.lat, lng: response.marker.lng };
-        this.ready = true;
-        this.geolocate();
-        this.addMarker();
-      },
-      (error) => {
-        this.content =
-          (error.currentUser && error.response.data) ||
-          error.message ||
-          error.toString();
-      }
-    );
+    let doctor = await UserService.getDoctorBoard();
+    this.currentUser = doctor;
+    this.user = this.currentUser;
+    this.user.password = "";
+    this.center = { lat: doctor.marker.lat, lng: doctor.marker.lng };
+    this.geolocate();
+    this.addMarker();
+    this.ready = true;
   },
 };
 </script>

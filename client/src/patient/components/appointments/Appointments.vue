@@ -16,6 +16,7 @@
 
       <template slot-scope="{ data }">
   <vs-tr
+  
     :state="data[indextr].state == true ? 'success' : 'primary'"
     :key="indextr"
     v-for="(tr, indextr) in data"
