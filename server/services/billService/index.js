@@ -5,7 +5,7 @@ const CurrentPatients = require("../../../database/models/currentPatients");
 
 module.exports = {
   async findBills() {
-    return Bill.find();
+    return Bill.find({})
   },
   async makeBill(bill) {
     console.log(bill);
@@ -23,8 +23,8 @@ module.exports = {
       console.log("e", e);
     });
   },
-  async findBill(bill) {
-    return Bill.find(bill);
+  async findBill(filter) {
+    return Bill.find(filter)
   },
   async updateBill(history) {
     return Bill.updateOne({ patientCIN: Bill.CIN }, bill.bill);
