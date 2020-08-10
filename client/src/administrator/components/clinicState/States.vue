@@ -2,7 +2,7 @@
   <vs-row>
     <vs-col vs-lg="12" vs-xs="12">
       <vs-card>
-        <h3 class="mb-1 font-weight-normal">{{availableRooms(number)}}%</h3>
+        <h1 class="mb-1 font-weight-normal">{{availableRooms(number)}}%</h1>
         <span class="text-muted"><h1>Available Rooms</h1></span>
         <vs-progress :percent="availableRooms(number)" color="success">success</vs-progress>
       </vs-card>

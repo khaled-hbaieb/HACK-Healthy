@@ -13,7 +13,7 @@
       >
         <vs-card class="cardx">
           <div slot="header">
-            <h5 class="card-title">Yearly Patients</h5>
+            <h1 class="card-title">Doctors by gender</h1>
           </div>
           <div>
             <YearlySales />
@@ -32,7 +32,7 @@
       >
         <vs-card class="cardx">
           <div slot="header">
-            <h5 class="card-title">Patients Difference</h5>
+            <h1 class="card-title">Doctors by speciality</h1>
           </div>
           <div>
             <SalesDifference />
