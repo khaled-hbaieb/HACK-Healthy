@@ -22,11 +22,11 @@
               <vs-row class="row text-center m-t-10">
                 <vs-col class="col-md-6 b-r">
                   <strong>Name</strong>
-                  <p>{{doctor.fullName}}</p>
+                  <p>{{ doctor.fullName }}</p>
                 </vs-col>
                 <div class="col-md-6">
                   <strong>Speciality</strong>
-                  <p>{{doctor.speciality}}</p>
+                  <p>{{ doctor.speciality }}</p>
                 </div>
               </vs-row>
               <!-- /.row -->
@@ -35,11 +35,11 @@
               <vs-row class="row text-center m-t-10">
                 <vs-col class="col-md-6 b-r">
                   <strong>Email ID</strong>
-                  <p>{{doctor.email}}</p>
+                  <p>{{ doctor.email }}</p>
                 </vs-col>
                 <vs-col class="col-md-6">
                   <strong>Phone</strong>
-                  <p>{{doctor.phoneNumber}}</p>
+                  <p>{{ doctor.phoneNumber }}</p>
                 </vs-col>
               </vs-row>
               <!-- /.row -->
@@ -48,12 +48,16 @@
               <vs-row class="row text-center m-t-10">
                 <vs-col class="col-md-12">
                   <strong>Address</strong>
-                  <gmap-map :center="center" :zoom="20" style="width:100%;  height: 400px;">
+                  <gmap-map
+                    :center="center"
+                    :zoom="20"
+                    style="width:100%;  height: 400px;"
+                  >
                     <gmap-marker
                       :key="index"
                       v-for="(m, index) in markers"
                       :position="m.position"
-                      @click="center=m.position"
+                      @click="center = m.position"
                     ></gmap-marker>
                   </gmap-map>
                 </vs-col>
@@ -69,17 +73,17 @@
               <div class="col-md-3 col-xs-6 b-r">
                 <strong>Full Name</strong>
                 <br />
-                <p class="text-muted">{{doctor.fullName}}</p>
+                <p class="text-muted">{{ doctor.fullName }}</p>
               </div>
               <div class="col-md-3 col-xs-6 b-r">
                 <strong>Mobile</strong>
                 <br />
-                <p class="text-muted">{{doctor.phoneNumber}}</p>
+                <p class="text-muted">{{ doctor.phoneNumber }}</p>
               </div>
               <div class="col-md-3 col-xs-6 b-r">
                 <strong>Email</strong>
                 <br />
-                <p class="text-muted">{{doctor.email}}</p>
+                <p class="text-muted">{{ doctor.email }}</p>
               </div>
             </div>
           </vs-card>
@@ -96,11 +100,11 @@
               <vs-row class="row text-center m-t-10">
                 <vs-col class="col-md-6 b-r">
                   <strong>Name</strong>
-                  <h1>{{doctor.fullName}}</h1>
+                  <h1>{{ doctor.fullName }}</h1>
                 </vs-col>
                 <div class="col-md-6">
                   <strong>Speciality</strong>
-                  <p>{{doctor.speciality}}</p>
+                  <p>{{ doctor.speciality }}</p>
                 </div>
               </vs-row>
               <!-- /.row -->
@@ -109,11 +113,11 @@
               <vs-row class="row text-center m-t-10">
                 <vs-col class="col-md-6 b-r">
                   <strong>Email ID</strong>
-                  <p>{{doctor.email}}</p>
+                  <p>{{ doctor.email }}</p>
                 </vs-col>
                 <vs-col class="col-md-6">
                   <strong>Phone</strong>
-                  <p>{{doctor.phoneNumber}}</p>
+                  <p>{{ doctor.phoneNumber }}</p>
                 </vs-col>
               </vs-row>
               <!-- /.row -->
@@ -122,12 +126,16 @@
               <vs-row class="row text-center m-t-10">
                 <vs-col class="col-md-12">
                   <strong>Address</strong>
-                  <gmap-map :center="center" :zoom="20" style="width:100%;  height: 400px;">
+                  <gmap-map
+                    :center="center"
+                    :zoom="20"
+                    style="width:100%;  height: 400px;"
+                  >
                     <gmap-marker
                       :key="index"
                       v-for="(m, index) in markers"
                       :position="m.position"
-                      @click="center=m.position"
+                      @click="center = m.position"
                     ></gmap-marker>
                   </gmap-map>
                 </vs-col>
@@ -172,7 +180,7 @@ export default {
       this.center = marker;
       this.currentPlace = null;
     },
-    geolocate: function () {
+    geolocate: function() {
       navigator.geolocation.getCurrentPosition((position) => {
         this.center = {
           lat: this.center.lat,
@@ -181,12 +189,22 @@ export default {
       });
     },
   },
-  beforeMount: async function () {
-    let user = window.location.pathname.slice(23);
-    let doctor = await axios.post(`/api/users/clinicX/doctors/getDoctor`, {
+  beforeMount: async function() {
+    let user;
+    if (localStorage.role === "administrator") {
+      user = window.location.pathname.slice(23);
+    } else if (localStorage.role === "doctor") {
+      user = window.location.pathname.slice(16);
+    } else {
+      user = window.location.pathname.slice(17);
+    }
+    console.log(user);
+    let doctor = await axios.post(`/api/users/clinicX/doctors/findDoctors`, {
       CIN: user,
     });
+    console.log(user);
     this.doctor = doctor.data[0];
+    console.log("here", doctor.data);
     this.center = { lat: this.doctor.marker.lat, lng: this.doctor.marker.lng };
     this.geolocate();
     this.addMarker();

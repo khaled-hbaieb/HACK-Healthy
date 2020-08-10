@@ -79,7 +79,7 @@ router.post("/checkLogin", (req, res) => {
 
 router.post("/checkAdministrator", async (req, res) => {
   try {
-    var Administrators = await services.administratorService.findAdministrators(
+    var Administrators = await services.administratorService.checkAdministrator(
       req.body
     );
     res.send(Administrators);
