@@ -35,6 +35,7 @@ const historySchema = new Schema({
   createdAt: {
     type: String,
   },
+  
 });
 
 module.exports = mongoose.model("History", historySchema);

@@ -11,7 +11,6 @@ module.exports = {
     return Posts.create(post);
   },
   async updatePost(filter, payload) {
-    console.log("filter", filter, "payload", payload);
     return Posts.updateOne(filter, payload);
   },
 };

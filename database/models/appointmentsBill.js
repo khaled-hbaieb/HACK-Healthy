@@ -7,10 +7,22 @@ const AppointmentBillSchema = new Schema({
   doctorCIN: {
     type: String,
   },
+  patientName: {
+    type: String,
+  },
+  doctorName: {
+    type: String,
+  },
+  time: {
+    type: String,
+  },
   date: {
-    type:String
+    type: String,
   },
   toPay: {
+    type: String,
+  },
+  paymentMethod: {
     type: String,
   },
   state: {

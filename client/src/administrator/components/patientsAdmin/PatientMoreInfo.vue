@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="ready">
     <vs-row class="row">
       <vs-col class="col-sm-12">
         <vs-card id="header-titles" class="card">
@@ -18,37 +18,32 @@
               <img width="100%" alt="user" :src="patient.imageName" />
             </div>
             <div class="user-btm-box">
-              <!-- .row -->
               <vs-row class="row text-center m-t-10">
                 <vs-col class="col-md-6 b-r">
                   <strong>Name</strong>
-                  <p>{{patient.fullName}}</p>
+                  <p>{{ patient.fullName }}</p>
                 </vs-col>
                 <div class="col-md-6">
                   <strong>Occupation</strong>
-                  <p>{{patient.job}}</p>
+                  <p>{{ patient.job }}</p>
                 </div>
               </vs-row>
-              <!-- /.row -->
               <hr />
-              <!-- .row -->
               <vs-row class="row text-center m-t-10">
                 <vs-col class="col-md-6 b-r">
                   <strong>Email ID</strong>
-                  <p>{{patient.email}}</p>
+                  <p>{{ patient.email }}</p>
                 </vs-col>
                 <vs-col class="col-md-6">
                   <strong>Phone</strong>
-                  <p>{{patient.phoneNumber}}</p>
+                  <p>{{ patient.phoneNumber }}</p>
                 </vs-col>
               </vs-row>
-              <!-- /.row -->
               <hr />
-              <!-- .row -->
               <vs-row class="row text-center m-t-10">
                 <vs-col class="col-md-12">
                   <strong>Address</strong>
-                  <p>{{patient.address}}</p>
+                  <p>{{ patient.address }}</p>
                 </vs-col>
               </vs-row>
               <hr />
@@ -62,48 +57,48 @@
               <div class="col-md-3 col-xs-6 b-r">
                 <strong>Full Name</strong>
                 <br />
-                <p class="text-muted">{{patient.fullName}}</p>
+                <p class="text-muted">{{ patient.fullName }}</p>
               </div>
               <div class="col-md-3 col-xs-6 b-r">
                 <strong>Mobile</strong>
                 <br />
-                <p class="text-muted">{{patient.phoneNumber}}</p>
+                <p class="text-muted">{{ patient.phoneNumber }}</p>
               </div>
               <div class="col-md-3 col-xs-6 b-r">
                 <strong>Email</strong>
                 <br />
-                <p class="text-muted">{{patient.email}}</p>
+                <p class="text-muted">{{ patient.email }}</p>
               </div>
             </div>
           </vs-card>
           <vs-card>
             <h5>History:</h5>
             <hr />
-            <div class="row">
+            <div v-if="history.length > 0" class="row">
               <div class="col-md-3 col-xs-6 b-r">
                 <strong>Room :</strong>
                 <br />
-                <p class="text-muted">{{history.roomNumber}}</p>
+                <p class="text-muted">{{ history.roomNumber }}</p>
               </div>
               <div class="col-md-3 col-xs-6 b-r">
                 <strong>illness:</strong>
                 <br />
-                <p class="text-muted">{{history.illness}}</p>
+                <p class="text-muted">{{ history.illness }}</p>
               </div>
               <div class="col-md-3 col-xs-6 b-r">
                 <strong>Drugs :</strong>
                 <br />
-                <p class="text-muted">{{history.drugs}}</p>
+                <p class="text-muted">{{ history.drugs }}</p>
               </div>
               <div class="col-md-3 col-xs-6 b-r">
                 <strong>entry Date :</strong>
                 <br />
-                <p class="text-muted">{{history.entryDate}}</p>
+                <p class="text-muted">{{ history.entryDate }}</p>
               </div>
               <div class="col-md-3 col-xs-6 b-r">
                 <strong>Exit Date :</strong>
                 <br />
-                <p class="text-muted">{{history.exitDate}}</p>
+                <p class="text-muted">{{ history.exitDate }}</p>
               </div>
             </div>
           </vs-card>
@@ -114,12 +109,12 @@
               <div class="col-md-3 col-xs-6 b-r">
                 <strong>Tests :</strong>
                 <br />
-                <p class="text-muted">{{history.roomNumber}}</p>
+                <!-- <p class="text-muted">{{ history.roomNumber }}</p> -->
               </div>
               <div class="col-md-3 col-xs-6 b-r">
                 <strong>Operation:</strong>
                 <br />
-                <p class="text-muted">{{history.illness}}</p>
+                <!-- <p class="text-muted">{{ history.illness }}</p> -->
               </div>
             </div>
           </vs-card>
@@ -136,25 +131,31 @@ export default {
   props: ["name"],
   data: () => {
     return {
-      patient: "",
-      history: "",
+      patient: {},
+      history: [],
+      ready: false,
     };
   },
   beforeMount: async function () {
     let user;
     if (localStorage.role === "administrator") {
-      user = window.location.pathname.slice(24);
+      if (window.location.pathname.includes("current")) {
+        user = window.location.pathname.slice(31);
+      } else {
+        user = window.location.pathname.slice(24);
+      }
     } else {
       user = window.location.pathname.slice(17);
     }
-    let patient = await axios.post(`/api/users/clinicX/patients`, {
-      CIN: user,
-    });
+    // let patient = await axios.post(`/api/users/clinicX/patients/findPatients`, {
+    //   filter: { CIN: user },
+    // });
     this.patient = patient.data[0];
     let history = await axios.post(`/api/users/clinicX/history`, {
-      patientCIN: user,
+      patientCIN: this.patient.CIN,
     });
-    this.history = history.data[0];
+    this.history = history.data;
+    this.ready = true;
   },
 };
 </script>

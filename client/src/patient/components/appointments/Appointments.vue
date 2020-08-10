@@ -35,29 +35,22 @@
   </div>
 </template>
 <script>
+import UserService from "../../../services/user.service";
 import axios from "axios";
 export default {
   data: () => ({
     currentUser: null,
     appoints: [],
     currentUser: null,
+    appoints: [],
   }),
   async beforeMount() {
-    UserService.getPatientBoard().then(
-      async (response) => {
-        this.currentUser = response;
-        let appoints = await axios.post("/api/appointments/appointment", {
-          patientCIN: this.currentUser.CIN,
-        });
-        this.appoints = appoints.data;
-      },
-      (error) => {
-        this.content =
-          (error.currentUser && error.response.data) ||
-          error.message ||
-          error.toString();
-      }
-    );
+    let patient = await UserService.getPatientBoard();
+    this.currentUser = patient;
+    let appoints = await axios.post("/api/appointments/findAppointments", {
+      patientCIN: this.currentUser.CIN,
+    });
+    this.appoints = appoints.data;
   },
 };
 </script>
