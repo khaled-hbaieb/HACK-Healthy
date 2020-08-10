@@ -22,11 +22,7 @@
               @change="changeValues(currentPatient)"
             >
               <vs-select-item
-                v-if="currentPatients.length===0"
-                text="There Are No Current Patients"
-              ></vs-select-item>
-              <vs-select-item
-                v-for="(currentPatient,index) in currentPatients"
+                v-for="(currentPatient, index) in currentPatients"
                 :key="index"
                 :value="currentPatient"
                 :text="currentPatient.patientCIN"
@@ -71,9 +67,9 @@
             />
             <label class="col-md-12" for="tests">Tests</label>
             <vs-input
-              v-for="(input,index) in testsInputs"
+              v-for="(input, index) in testsInputs"
               v-model="tests[index]"
-              :key="index+60"
+              :key="index + 60"
               :type="input.type"
               :name="input.name"
               :placeholder="input.placeholder"
@@ -85,16 +81,17 @@
               icon="add"
               id="vaccination-button"
               @click="addTestsInput"
-            >Add Test Input</vs-button>
+              >Add Test Input</vs-button
+            >
             <br />
             <br />
             <br />
             <label class="col-md-12" for="operations">Operations</label>
 
             <vs-input
-              v-for="(input,index) in operationsInputs"
+              v-for="(input, index) in operationsInputs"
               v-model="operations[index]"
-              :key="index+40"
+              :key="index + 40"
               :type="input.type"
               :name="input.name"
               :placeholder="input.placeholder"
@@ -106,15 +103,16 @@
               icon="add"
               id="vaccination-button"
               @click="addOperationsInput"
-            >Add Operation Input</vs-button>
+              >Add Operation Input</vs-button
+            >
             <br />
             <br />
             <br />
             <label class="col-md-12" for="drugs">Drugs</label>
             <vs-input
-              v-for="(input,index) in drugsInputs"
+              v-for="(input, index) in drugsInputs"
               v-model="drugs[index]"
-              :key="index+20"
+              :key="index + 20"
               :type="input.type"
               :name="input.name"
               :placeholder="input.placeholder"
@@ -126,7 +124,8 @@
               icon="add"
               id="vaccination-button"
               @click="addDrugsInput"
-            >Add Drug Input</vs-button>
+              >Add Drug Input</vs-button
+            >
             <br />
             <br />
             <br />
@@ -165,12 +164,17 @@
               <vs-select-item text="Pending" value="Pending"></vs-select-item>
             </vs-select>
             <div id="button-admin-bill-container">
-              <vs-button type="submit" class="btn btn-inverse waves-effect waves-light">Cancel</vs-button>
+              <vs-button
+                type="submit"
+                class="btn btn-inverse waves-effect waves-light"
+                >Cancel</vs-button
+              >
               <vs-button
                 type="submit"
                 class="btn btn-info waves-effect waves-light m-r-10"
                 @click="handleBill"
-              >Submit</vs-button>
+                >Submit</vs-button
+              >
             </div>
           </form>
         </vs-card>
@@ -191,7 +195,7 @@ export default {
       title: "Checkbox",
       status: "",
       method: "",
-      currentPatients: [],
+      currentPatients: null,
       currentPatient: null,
       patientCIN: "",
       doctorCIN: "",
@@ -311,4 +315,3 @@ input::-webkit-inner-spin-button {
   width: 100%;
 }
 </style>
-

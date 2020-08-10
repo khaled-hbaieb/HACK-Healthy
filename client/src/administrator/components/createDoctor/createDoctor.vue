@@ -44,7 +44,6 @@
               :success="gender === 'Male' || gender === 'Female'"
               success-text="Thank You For Selecting Your Gender"
               v-model="gender"
-              
               id="select-gender-doctor-creation"
             >
               <vs-select-item text="Male" value="Male"></vs-select-item>
@@ -103,19 +102,26 @@
             <div>
               <div>
                 <h2>Doctor's Cabinet Location</h2>
-                <vs-label>
-                  <gmap-autocomplete @place_changed="setPlace" id="inputLocation"></gmap-autocomplete>
+                <label>
+                  <gmap-autocomplete
+                    @place_changed="setPlace"
+                    id="inputLocation"
+                  ></gmap-autocomplete>
                   <vs-button @click="addMarker">Submit Location</vs-button>
-                </vs-label>
+                </label>
                 <br />
               </div>
               <br />
-              <gmap-map :center="center" :zoom="12" style="width:100%;  height: 400px;">
+              <gmap-map
+                :center="center"
+                :zoom="12"
+                style="width:100%;  height: 400px;"
+              >
                 <gmap-marker
                   :key="index"
                   v-for="(m, index) in markers"
                   :position="m.position"
-                  @click="center=m.position"
+                  @click="center = m.position"
                 ></gmap-marker>
               </gmap-map>
             </div>
@@ -137,7 +143,7 @@
               placeholder="enter the doctor's email"
               v-model="email"
               success-text="Thank You For entering the doctor's email"
-              :success="email !== ''"
+              :success="email.includes('@') && email.includes('.')"
             />
             <label class="col-md-12" for="example-phone">Phone</label>
             <vs-input
@@ -186,12 +192,17 @@
               placeholder="Your LinkedIN URL"
             />
             <div id="buttons-doctor-creation">
-              <vs-button type="submit" class="btn btn-inverse waves-effect waves-light">Cancel</vs-button>
+              <vs-button
+                type="submit"
+                class="btn btn-inverse waves-effect waves-light"
+                >Cancel</vs-button
+              >
               <vs-button
                 type="submit"
                 class="btn btn-info waves-effect waves-light m-r-10"
                 @click="handleRegisterDoc"
-              >Submit</vs-button>
+                >Submit</vs-button
+              >
             </div>
           </form>
         </vs-card>
@@ -283,7 +294,9 @@ export default {
     submitForm() {},
     async handleRegisterDoc() {
       let user;
-      this.pwd = Math.random().toString(36).slice(-8);
+      this.pwd = Math.random()
+        .toString(36)
+        .slice(-8);
       user = new Doctor(
         this.email,
         this.pwd,
@@ -299,8 +312,9 @@ export default {
         this.imageName,
         this.marker
       );
-      this.$store.dispatch("auth/register", { user, role: "doctor" }).then(
-        (data) => {
+      this.$store
+        .dispatch("auth/register", { user, role: "doctor" })
+        .then(async (data) => {
           if (data.name === "MongoError") {
             this.$vs.notify({
               title: "An Error has occurred!",
@@ -315,20 +329,17 @@ export default {
               color: "success",
               position: "top-center",
             });
-            setTimeout(() => {
-              this.$router.push("/administrator/doctors");
-            }, 2000);
+            await axios.post("/api/service/SMS", {
+              password: this.pwd,
+              email: this.email,
+              phoneNumber: this.phoneNumber,
+            });
+            this.$router.push("/administrator/doctors");
           }
-        },
-        (error) => {
-          this.message =
-            (error.response && error.response.data) ||
-            error.message ||
-            error.toString();
-        }
+        });
+    },
     setPlace(place) {
       this.currentPlace = place;
-      console.log(this.currentPlace);
     },
     addMarker() {
       if (this.currentPlace) {
@@ -344,7 +355,7 @@ export default {
         this.currentPlace = null;
       }
     },
-    geolocate: function () {
+    geolocate: function() {
       navigator.geolocation.getCurrentPosition((position) => {
         this.center = {
           lat: position.coords.latitude,

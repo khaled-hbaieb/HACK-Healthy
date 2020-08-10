@@ -211,7 +211,7 @@ export default {
       this.$router.push("/administrator/doctors/createDoctor");
     },
     rendershowDoctorInfo(args) {
-      this.$router.push(`/administrator/doctors/${args}`);
+      this.$router.push(`/${localStorage.role}/doctors/${args}`);
     },
   },
   beforeMount: async function() {

@@ -15,7 +15,18 @@
         <vs-col class="col-md-4 col-xs-12">
           <vs-card class="card">
             <div class="user-bg">
-              <img width="100%" alt="user" :src="patient.imageName" />
+              <img
+                v-if="patient.imageName"
+                width="100%"
+                alt="user"
+                :src="patient.imageName"
+              />
+              <img
+                v-else
+                width="100%"
+                alt="user"
+                src="@/assets/images/logo/patient.jpg"
+              />
             </div>
             <div class="user-btm-box">
               <vs-row class="row text-center m-t-10">
@@ -136,7 +147,7 @@ export default {
       ready: false,
     };
   },
-  beforeMount: async function () {
+  beforeMount: async function() {
     let user;
     if (localStorage.role === "administrator") {
       if (window.location.pathname.includes("current")) {
@@ -147,9 +158,9 @@ export default {
     } else {
       user = window.location.pathname.slice(17);
     }
-    // let patient = await axios.post(`/api/users/clinicX/patients/findPatients`, {
-    //   filter: { CIN: user },
-    // });
+    let patient = await axios.post(`/api/users/clinicX/patients/findPatients`, {
+      CIN: user,
+    });
     this.patient = patient.data[0];
     let history = await axios.post(`/api/users/clinicX/history`, {
       patientCIN: this.patient.CIN,

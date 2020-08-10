@@ -183,7 +183,6 @@ export default {
       UserService.getDoctorBoard().then(
         (response) => {
           this.currentUser = response;
-          console.log(this.currentUser);
           this.ready = true;
         },
         (error) => {
