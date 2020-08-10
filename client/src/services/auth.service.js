@@ -29,9 +29,9 @@ class AuthService {
   }
 
   async register(user) {
-    console.log("usereeere", user);
-    let newPatient = await axios
-      .post(API_URL + `${user.role}s/create${user.role}`, {
+    let newPatient = await axios.post(
+      API_URL + `${user.role}s/create${user.role}`,
+      {
         email: user.user.email,
         password: user.user.password,
         fullName: user.user.fullName,
@@ -44,10 +44,9 @@ class AuthService {
         yearsOfExperience: user.user.yearsOfExperience,
         imageName: user.user.imageName,
         marker: user.user.marker,
-        educationBackground: user.user.educationBackground,
-      })
-      .catch((err) => console.log(err));
-
+        educationBackground:user.user.educationBackground
+      }
+    )
     return newPatient.data;
   }
 }

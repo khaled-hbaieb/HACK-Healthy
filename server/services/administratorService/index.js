@@ -1,8 +1,10 @@
 const Administrators = require("../../../database/models/administrator");
 const bcrypt = require("bcrypt");
+const jwtDecode = require('jwt-decode')
 
 module.exports = {
   async findAdministrators(administrator) {
+    console.log(administrator)
     return Administrators.find(administrator);
   },
   async createAdministrator(administrator) {
@@ -15,4 +17,8 @@ module.exports = {
       administrator.administrator
     );
   },
+  // async auth(administrator) {
+  //   let token = jwtDecode(localStorage.getItem('token'))
+  //   let user = await (r)
+  // }
 };

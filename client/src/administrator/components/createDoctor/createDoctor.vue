@@ -25,6 +25,8 @@
               name="example-text"
               placeholder="Enter your Full Name"
               v-model="fullName"
+              :success="fullName.length > 3"
+              success-text="Thank You For Typing the Full Name"
             />
             <label class="col-md-12" for="bdate">Date of Birth</label>
             <vs-input
@@ -33,6 +35,8 @@
               type="date"
               id="bdate"
               name="bdate"
+              :success="dateOfBirth !== ''"
+              success-text="Thank You For Entering the Date Of Birth"
             />
             <label class="col-sm-12">Gender</label>
             <vs-select
@@ -40,6 +44,7 @@
               :success="gender === 'Male' || gender === 'Female'"
               success-text="Thank You For Selecting Your Gender"
               v-model="gender"
+              
               id="select-gender-doctor-creation"
             >
               <vs-select-item text="Male" value="Male"></vs-select-item>
@@ -53,6 +58,8 @@
               name="url"
               placeholder="Your CIN"
               v-model="CIN"
+              :success="CIN.length === 8"
+              success-text="Thank You For Entering the CIN"
             />
             <label class="col-md-12" for="special">Speciality</label>
             <vs-select
@@ -74,11 +81,13 @@
             <label class="col-md-12" for="url">Years Of Experience</label>
             <vs-input
               class="doctor-form-inputs-doctor-creation"
-              type="text"
+              type="number"
               id="url"
               name="url"
               placeholder="Your Years Of Experience"
               v-model="yearsOfExperience"
+              success-text="Thank You For adding a description"
+              :success="yearsOfExperience !== ''"
             />
             <label class="col-md-12" for="url">Education Background</label>
             <vs-input
@@ -86,8 +95,10 @@
               type="text"
               id="url"
               name="url"
-              placeholder="Your Education Background"
+              placeholder="Doctor's Education Background"
               v-model="educationBackground"
+              success-text="Thank You For entering the doctor's education background"
+              :success="educationBackground !== ''"
             />
             <div>
               <div>
@@ -123,8 +134,10 @@
               type="email"
               id="example-email"
               name="example-email"
-              placeholder="enter your email"
+              placeholder="enter the doctor's email"
               v-model="email"
+              success-text="Thank You For entering the doctor's email"
+              :success="email !== ''"
             />
             <label class="col-md-12" for="example-phone">Phone</label>
             <vs-input
@@ -132,9 +145,11 @@
               type="number"
               id="example-phone"
               name="example-phone"
-              placeholder="enter your phone"
+              placeholder="enter doctor's phone"
               data-mask="(999) 999-9999"
               v-model="phoneNumber"
+              success-text="Thank You For entering the doctor's Phone Number"
+              :success="phoneNumber !== ''"
             />
           </form>
         </vs-card>
@@ -230,7 +245,6 @@ export default {
         "SURGERY",
         "UROLOGY",
       ],
-      successful: false,
       center: { lat: 45.508, lng: -73.587 },
       markers: [],
       places: [],
@@ -285,21 +299,33 @@ export default {
         this.imageName,
         this.marker
       );
-      this.$store
-        .dispatch("auth/register", { user, role: "doctor" })
-        .then((err) => {
-          if (!err) {
-            this.successful = true;
+      this.$store.dispatch("auth/register", { user, role: "doctor" }).then(
+        (data) => {
+          if (data.name === "MongoError") {
+            this.$vs.notify({
+              title: "An Error has occurred!",
+              text: "Please try again",
+              color: "danger",
+              position: "top-center",
+            });
           } else {
-            this.successful = false;
+            this.$vs.notify({
+              title: "",
+              text: "Doctor created successfully!",
+              color: "success",
+              position: "top-center",
+            });
+            setTimeout(() => {
+              this.$router.push("/administrator/doctors");
+            }, 2000);
           }
-        });
-      await axios.post("/api/service/SMS", {
-        password: this.pwd,
-        email: this.email,
-        phoneNumber: this.phoneNumber,
-      });
-    },
+        },
+        (error) => {
+          this.message =
+            (error.response && error.response.data) ||
+            error.message ||
+            error.toString();
+        }
     setPlace(place) {
       this.currentPlace = place;
       console.log(this.currentPlace);
