@@ -10,4 +10,7 @@ module.exports = {
   async updateHistory(history) {
     return History.updateOne({ CIN: history.CIN }, history.history);
   },
+  async findOneHistory(history) {
+    return History.find({patientCIN : history.CIN});
+  },
 };

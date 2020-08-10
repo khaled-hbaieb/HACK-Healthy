@@ -19,6 +19,14 @@ router.post("/createHistory", async (req, res) => {
     res.send(error);
   }
 });
+router.post("/findOneHistory", async (req, res) => {
+  try {
+    var history = await services.historyService.findOneHistory(req.body);
+    res.send(history);
+  } catch (error) {
+    res.send(error);
+  }
+});
 router.post("/updateHistory", async (req, res) => {
   try {
     var history = await services.historyService.updateHistory(req.body);
