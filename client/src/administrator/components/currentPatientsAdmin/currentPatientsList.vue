@@ -7,17 +7,8 @@
         </vs-col>
         <vs-col class="col-md-7 align-self-center text-right">
           <div class="d-flex justify-content-end align-items-center">
-            <vs-button
-              @click="redirectAssignRoom"
-              type="button"
-              class="btn btn-info d-lg-block"
-            >
-              <vs-icon
-                icon="add_circle_outline"
-                id="patient-icon"
-                round
-              ></vs-icon
-              >Assign A Room
+            <vs-button @click="redirectAssignRoom" type="button" class="btn btn-info d-lg-block">
+              <vs-icon icon="add_circle_outline" id="patient-icon" round></vs-icon>Assign A Room
             </vs-button>
           </div>
         </vs-col>
@@ -46,16 +37,9 @@
         vs-sm="6"
         vs-lg="3"
       >
-        <vs-card
-          vs-xs="12"
-          vs-sm="12"
-          vs-lg="12"
-          id="profile"
-          actionable
-          class="card"
-        >
+        <vs-card vs-xs="12" vs-sm="12" vs-lg="12" id="profile" actionable class="card">
           <div slot="media">
-            <a :href="currentPatientURL(currentPatient.CIN)">
+            <a :href="currentPatientURL(currentPatient.patientCIN)">
               <img
                 v-if="currentPatient.imageName"
                 id="current-patient-profile-image"
@@ -70,15 +54,13 @@
             </a>
           </div>
           <div id="footer" slot="footer">
-            <h3 class="box-title">
-              {{ currentPatient.fullName }}
-            </h3>
+            <h3 class="box-title">{{ currentPatient.fullName }}</h3>
             <small>Job: {{ currentPatient.job }}</small>
             <br />
-            <small
-              >Date Of Birth:
-              {{ currentPatient.dateOfBirth }}</small
-            >
+            <small>
+              Date Of Birth:
+              {{ currentPatient.dateOfBirth }}
+            </small>
             <br />
             <small>Room: {{ currentPatient.roomNumber }}</small>
           </div>
@@ -110,7 +92,7 @@ export default {
         criteria
       );
       this.currentPatients = currentPatients.data;
-      console.log(this.currentPatients)
+      console.log(this.currentPatients);
     },
   },
   async beforeMount() {
@@ -119,7 +101,7 @@ export default {
       {}
     );
     this.currentPatients = currentPatients.data;
-    
+
     this.ready = true;
   },
 };
