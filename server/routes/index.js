@@ -14,5 +14,6 @@ module.exports = {
   commentsRoutes :require ("./commentsRoutes"),
   recordRoutes: require("./recordRoutes"),
   postsRoutes: require('./postsRoutes'),
-  SMSRoutes:require('./SMSRoutes')
+  SMSRoutes:require('./SMSRoutes'),
+  chatRoomRoutes:require('./chatRoomRoutes')
 };

@@ -7,9 +7,7 @@ const cloudinary = require("./cloudinary");
 const fs = require("fs");
 const exphbs = require("express-handlebars");
 const nodemailer = require("nodemailer");
-const axios = require("axios");
-const jwtDecode = require('jwt-decode')
-var io = require('socket.io')(http);
+const jwtDecode = require("jwt-decode");
 require("dotenv").config();
 
 //CRYPTO JS
@@ -69,9 +67,11 @@ app.use("/api/cloud", routes.cloudinaryRoutes);
 
 app.use("/api/comments", routes.commentsRoutes);
 
-app.use("/api/posts",routes.postsRoutes)
+app.use("/api/posts", routes.postsRoutes);
 
-app.use('/api/service/SMS',routes.SMSRoutes)
+app.use("/api/service/SMS", routes.SMSRoutes);
+
+app.use("/api/chatRoom", routes.chatRoomRoutes);
 
 var http = require("http");
 const { find } = require("../database/models/room");
@@ -108,8 +108,6 @@ app.get("/token", function(request, response) {
     token: token.toJwt(),
   });
 });
-
-var server = http.createServer(app);
 
 app.use("/upload-images", upload.array("image"), async (req, res) => {
   const uploader = async (path) => await cloudinary.uploads(path, "Images");
@@ -196,15 +194,14 @@ app.post("/send", (req, res) => {
       });
   } else {
     services.doctorService
-    .updateDoctor(
-      { CIN: req.body.CIN },
-      { password: newPassword.toString("base64") }
-    )
-    .catch((err) => {
-      console.log("err");
-    });
+      .updateDoctor(
+        { CIN: req.body.CIN },
+        { password: newPassword.toString("base64") }
+      )
+      .catch((err) => {
+        console.log("err");
+      });
   }
-  
 
   // if() {
 
@@ -217,26 +214,30 @@ app.post("/send", (req, res) => {
  *
  */
 
-
-
-app.get("*", (req, res) => {
-  let dirPath = path.join(__dirname, "../client/dist/index.html");
-  res.sendFile(dirPath);
-});
-
-app.listen(PORT, (err) => {
+var server = app.listen(PORT, (err) => {
   if (!err) {
     console.log(`App Is Listetning On Port: ${PORT}`);
   }
 });
 
-io.on('connection', function (socket) {
-  socket.on( 'new_notification', function( data ) {
-    console.log(data.title,data.message);
-    io.sockets.emit( 'show_notification', { 
-      title: data.title, 
-      message: data.message, 
-      icon: data.icon, 
-    });
+var io = require("socket.io").listen(server);
+var ChatRoom = require("../database/models/chatRoom");
+io.on("connection", (socket) => {
+  console.log("made socket connection", socket.id);
+
+  // Handle chat event
+  socket.on("chat", function(data) {
+    console.log(data);
+    io.sockets.emit("chat", data);
+    ChatRoom.create(data);
   });
+  // Handle typing event
+  socket.on("typing", function(data) {
+    socket.broadcast.emit("typing", data);
+  });
+});
+
+app.get("*", (req, res) => {
+  let dirPath = path.join(__dirname, "../client/dist/index.html");
+  res.sendFile(dirPath);
 });

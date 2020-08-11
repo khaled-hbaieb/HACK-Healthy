@@ -14,4 +14,5 @@ module.exports = {
   commentsService: require("./commentsService"),
   recordService: require("./recordService"),
   postsService: require("./postsService"),
+  chatRoomService: require('./chatRoomService')
 };
