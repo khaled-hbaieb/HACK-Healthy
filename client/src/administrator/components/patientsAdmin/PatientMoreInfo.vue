@@ -123,6 +123,7 @@
                       <vs-select v-if="!!data.drugs" placeholder="Drugs" >
                         <vs-select-item  :text='dataa' v-for="(dataa,i) in JSON.parse(data.drugs)" :key="i"   :value="dataa"></vs-select-item>
                       </vs-select>
+                    
                       <span v-else>...</span>
                     </td>
                   </tr>
@@ -186,7 +187,6 @@ export default {
     });
     this.history = history.data;
     this.ready = true;
-    console.log(this.role)
   },
 };
 </script>
