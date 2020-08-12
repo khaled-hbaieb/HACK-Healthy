@@ -265,7 +265,6 @@ export default {
   },
   methods: {
     showHistory(arg) {
-      console.log("here", arg);
     },
     createPDF() {
       let pdfName = "Record";
@@ -415,7 +414,6 @@ export default {
     async cancelEdit() {
       let user = await UserService.getPatientBoard();
       this.currentUser = user;
-      console.log(this.currentUser);
       this.user = this.currentUser;
       this.user.password = "";
       this.edit = false;

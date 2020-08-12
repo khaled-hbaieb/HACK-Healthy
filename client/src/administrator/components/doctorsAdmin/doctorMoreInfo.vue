@@ -4,8 +4,14 @@
       <vs-col class="col-sm-12">
         <vs-card id="header-titles" class="card">
           <h4 id="t1" class="text-themecolor">Doctor's Info</h4>
-          <h6 id="t2" class="text-themecolor">
+          <h6  v-if="role === 'administrator'"  id="t2" class="text-themecolor">
             <a href="/administrator/doctors">Doctors</a> > Doctor's Info
+          </h6>
+          <h6  v-else-if="role === 'doctor'"  id="t2" class="text-themecolor">
+            <a href="/doctor/doctors">Doctors</a> > Doctor's Info
+          </h6>
+          <h6  v-else  id="t2" class="text-themecolor">
+            <a href="/patient/doctors">Doctors</a> > Doctor's Info
           </h6>
         </vs-card>
       </vs-col>
@@ -90,8 +96,8 @@
         </vs-col>
       </vs-row>
       <vs-row v-else class="row">
-        <vs-col vs-lg="12">
-          <vs-card vs-lg="12">
+        <vs-col vs-lg="6">
+          <vs-card vs-lg="8">
             <div class="user-bg">
               <img width="100%" alt="user" :src="doctor.imageName" />
             </div>
@@ -99,11 +105,11 @@
               <!-- .row -->
               <vs-row class="row text-center m-t-10">
                 <vs-col class="col-md-6 b-r">
-                  <strong>Name</strong>
-                  <h1>{{ doctor.fullName }}</h1>
+                  <strong><h3>Name</h3></strong>
+                  <p>{{ doctor.fullName }}</p>
                 </vs-col>
                 <div class="col-md-6">
-                  <strong>Speciality</strong>
+                  <strong><h3>Speciality</h3></strong>
                   <p>{{ doctor.speciality }}</p>
                 </div>
               </vs-row>
@@ -112,11 +118,11 @@
               <!-- .row -->
               <vs-row class="row text-center m-t-10">
                 <vs-col class="col-md-6 b-r">
-                  <strong>Email ID</strong>
+                  <strong><h3>Email ID</h3></strong>
                   <p>{{ doctor.email }}</p>
                 </vs-col>
                 <vs-col class="col-md-6">
-                  <strong>Phone</strong>
+                  <strong><h3>Phone</h3></strong>
                   <p>{{ doctor.phoneNumber }}</p>
                 </vs-col>
               </vs-row>
@@ -167,6 +173,7 @@ export default {
       markers: [],
       places: [],
       currentPlace: null,
+      role: localStorage.role
     };
   },
   methods: {

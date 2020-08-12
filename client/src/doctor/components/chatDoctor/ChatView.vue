@@ -203,6 +203,7 @@ export default {
             .split(":")
             .join(""),
       });
+
       let messages = await axios.post(`/api/chatRoom/findMessages`, {
         nameOfReceiver: this.currentUser.fullName,
         nameOfSender: this.currentRoom.name,
@@ -212,33 +213,16 @@ export default {
         nameOfReceiver: this.currentRoom.name,
         nameOfSender: this.currentUser.fullName,
       });
+      this.currentMessages = [];
       this.currentMessages = messages2.data.concat(messages.data);
       console.log(this.currentMessages);
       // for(let i = 0 ; i < this.currentMessages.length; i++) {
       //   this.socket.emit('chat', {nameOfSender: this.currentMessages[i].nameOfSender,
       //   nameOfReceiver: this.currentMessages[i].nameOfReceiver,
-      //   message: this.currentMessages[i].messages,
+      //   message: this.currentMessages[i].message,
       //   imageName: this.currentMessages[i].imageName,
       //   createdAt:
       //     this.currentMessages[i].createdAt})}
-      // axios.post(`/api/chatRoom/messages`, {
-      //   nameOfSender: this.currentUser.fullName,
-      //   nameOfReceiver: this.currentRoom.name,
-      //   message: message,
-      //   imageName: this.currentUser.imageName,
-      //   createdAt:
-      //     moment()
-      //       .format()
-      //       .slice(0, 10)
-      //       .split("-")
-      //       .join("") +
-      //     moment()
-      //       .format()
-      //       .slice(11, 19)
-      //       .split(":")
-      //       .join(""),
-      // });
-      console.log(message);
       this.message = "";
     },
     openTab() {
@@ -268,7 +252,7 @@ export default {
       var rec = document.getElementById("rec");
       this.message = inputmsn.value;
       rec.value = this.message;
-      // socket.to(currentRoom.name).emit(this.doctorName, this.message);
+      socket.to(currentRoom.name).emit("chat", { message: "num" });
       this.message = "";
     },
   },
