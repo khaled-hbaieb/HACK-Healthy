@@ -244,10 +244,12 @@ export default {
 <style>
 #login-page-container {
   /* margin-left: 83% !important; */
-  /* margin-top: 10% !important; */
+  margin-top: 15% !important;
   /* width: auto !important; */
   height: 120%;
   padding: 0px !important;
+  /* background-color: rgb(0, 38, 255); */
+  margin-left: 37% !important;
 }
 .login-page-inputs {
   margin-bottom: 10px;
@@ -260,5 +262,7 @@ export default {
   background-image: url("../assets/images/background/login3.jpg");
   background-repeat: no-repeat;
   background-size: cover;
+   /* filter: blur(1px); */
+  /* -webkit-filter: blur(1px); */
 }
 </style>
